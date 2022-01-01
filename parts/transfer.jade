@@ -72,27 +72,40 @@ template(name='user_picker')
 template(name='transfer_view')
     with current_doc
         .ui.stackable.padded.grid
-            .row
-                .eight.wide.column
-                    // a.ui.basic.icon.button(href="/transfers")
-                    //     +i name='field-and-tractor'
+            .centered.row 
+                .five.wide.column
+                    a(href="/user/#{_author.username}") 
+                        img.ui.circular.centered.pointer.zoom.image(src="{{c.url _author.profile_image_id height=500 width=500 gravity='face' crop='fill'}}" class=currentUser.invert_class)
+                        .ui.large.center.aligned.header.pointer.zoom
+                            |#{_author.name}
+                .five.wide.column
+                    .ui.huge.center.aligned.header
+                        |#{amount}pts
+                    if is_dev
+                        +remove_button
+                    .f14
+                        |#{description}
+                    .spacer
                     +image_view key='image_id' label='image' direct=true
-                    .ui.big.header
-                        | #{amount}
-                    div
-                    +html_view key='notes' label='notes' direct=true
-                .eight.wide.column
-                    +array_view key='tags' label='tags' direct=true
-                    +array_view key='location_tags' label='location tags' icon='marker' direct=true
-                    div
-                    with target_user_id
-                        +user_info
-                    .ui.header #{when}
-                    // .ui.header #{target_user_id}
-                    +comments                
-                    if can_edit
-                        a.ui.icon.button(href="/transfer/#{_id}/edit")
-                            i.pencil.icon
+                    div 
+                    if tags
+                        i.tags.icon
+                        each tags 
+                            .ui.big.basic.circular.label #{this}
+                    +voting_full
+                    .ui.small.header
+                        i.clock.icon
+                        | #{when}
+                    .spacer
+                    .spacer
+                    +comments
+                    //- +array_view key='location_tags' label='location_tags' direct=true
+                .five.wide.column
+                    a(href="/user/#{recipient.username}")
+                        img.ui.circular.centered.fluid.pointer.zoom.image(src="{{c.url recipient.profile_image_id height=500 width=500 gravity='face' crop='fill'}}" class=currentUser.invert_class)
+                        .ui.large.center.aligned.header.pointer.zoom
+                            |#{recipient.name}
+                            
                             
                             
 template(name='transfer_edit')

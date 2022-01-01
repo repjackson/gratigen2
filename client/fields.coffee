@@ -243,6 +243,9 @@ Template.array_edit.events
                 if doc
                     Docs.update parent._id,
                         $addToSet:"#{@key}":element_val
+                else 
+                    Meteor.users.update parent._id,
+                        $addToSet:"#{@key}":element_val
                 # window.speechSynthesis.speak new SpeechSynthesisUtterance element_val
                 t.$('.new_element').val('')
 
@@ -309,7 +312,9 @@ Template.text_edit.events
         if doc
             Docs.update parent._id,
                 $set:"#{@key}":val
-
+        else 
+            Meteor.users.update parent._id,
+                $set:"#{@key}":val
 
 
 # Template.textarea_view.onRendered ->
@@ -405,6 +410,9 @@ Template.boolean_edit.events
         doc = Docs.findOne parent._id
         if doc
             Docs.update parent._id,
+                $set:"#{@key}":!parent["#{@key}"]
+        else 
+            Meteor.users.update parent._id,
                 $set:"#{@key}":!parent["#{@key}"]
 Template.single_doc_view.onCreated ->
     # @autorun => Meteor.subscribe 'model_docs', @data.ref_model

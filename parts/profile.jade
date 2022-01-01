@@ -14,7 +14,7 @@ template(name='user_layout')
                         //- img.ui.image.checkin_banner(src="{{c.url banner_image width=1000 height=1000 crop='crop'}}")
                         .four.wide.column.scrolling
                             a.item.mobile.hidden(href="/user/#{user_from_username_param.username}")
-                                img.ui.fluid.image(src="{{c.url image_id height=300 width=300 gravity='face' crop='fill'}}")
+                                img.ui.circular.image(src="{{c.url image_id height=300 width=300 gravity='face' crop='fill'}}")
                             // .spacer
                             // a(href="/user/#{username}")
                             .ui.center.aligned.header
@@ -34,11 +34,11 @@ template(name='user_layout')
                                         +i name='coins'
                                         |#{user.points}p
                             if is_current_user
-                                a.ui.button(href="/user/#{user_from_username_param.username}/edit" title='profile settings')
+                                a.ui.circular.button(href="/user/#{user_from_username_param.username}/edit" title='profile settings')
                                     i.cog.icon
                                     |edit profile
                             else if is_admin
-                                a.ui.button(href="/user/#{user_from_username_param.username}/edit" title='profile settings')
+                                a.ui.circular.button(href="/user/#{user_from_username_param.username}/edit" title='profile settings')
                                     +i name='settings' cl='ui avatar image'
                                     |edit profile
                             // unless is_current_user
@@ -63,9 +63,13 @@ template(name='user_layout')
 
 
 template(name='user_dashboard')
-    +user_credit
-    .ui.three.stackable.cards
-        +user_orders
+    .ui.two.stackable.cards
+        .ui.card
+            .content
+                +user_credit
+        .ui.card
+            .content
+                +user_orders
         +user_subscriptions   
         +user_addresses
         +user_friends
@@ -80,7 +84,8 @@ template(name='user_ingredients')
     .ui.card
         .content
             a.header(href="/user/#{username}/ingredients")
-                +i name='ingredients' cl='ui avatar image'
+                // +i name='ingredients' cl='ui avatar image'
+                i.large.food.icon
                 |ingredients
             .ui.small.header 
                 |liked ingredients
@@ -93,7 +98,8 @@ template(name='user_favorites')
     .ui.card
         .content
             a.header(href="/user/#{username}/favorites")
-                +i name='love' cl='ui avatar image'
+                // +i name='love' cl='ui avatar image'
+                i.large.heart.icon
                 |favorites
             each favorites
                 .ui.header #{when}
@@ -104,8 +110,8 @@ template(name='user_friends')
     .ui.card
         .content
             .ui.header 
-                // i.users.icon
-                +i name='friends'
+                i.large.handshake.icon
+                // +i name='friends'
                 |friends
             // .ui.input
             //     i.plus.icon
@@ -119,8 +125,10 @@ template(name='user_friends')
 template(name='user_subscriptions')              
     .ui.card
         .content
-            a.header(href="/user/#{username}/subscriptions")
-                +i name='clock' cl='ui avatar image'
+            // a.header(href="/user/#{username}/subscriptions")
+            .ui.header
+                // +i name='clock' cl='ui avatar image'
+                i.large.clock.icon
                 |subscriptions
             each user_subs
                 .ui.header #{when}
@@ -132,10 +140,11 @@ template(name='user_addresses')
     .ui.card
         .content
             .ui.inline.header 
-                +i name='marker'
-                |#{user_address_docs.count} #{user_from_username_param.username} addresses
-            .ui.icon.button.add_address
-                i.large.plus.icon
+                // +i name='marker'
+                i.large.marker.icon
+                |#{user_address_docs.count} addresses
+            // .ui.icon.button.add_address
+            i.large.plus.link.circular.icon.add_address
             .ui.hidden.divider
             .ui.cards
                 each user_address_docs
