@@ -14,12 +14,12 @@ template(name='nav')
                     
                     img.ui.avatar.image.mobile.only(src="/android-chrome-96x96.png")
         a.item.zoomer(href='/' class="{{isActivePath '/'}}" title='dashboard')
-            // +i name='home'
-            i.large.home.icon
+            +i name='home'
+            // i.large.home.icon
             |The Riverside
         a.item.zoomer(href='/shop' class="{{isActivePath '/shop'}}")
-            // +i name='food-cart'
-            i.large.shop.icon
+            +i name='food-cart'
+            // i.large.shop.icon
             span.mobile.hidden shop
             // .mobile.hidden
             // img.ui.small.image(src="https://nudefoodsmarket.com/wp-content/uploads/2021/03/logo-smaller-300x87.jpg")
@@ -109,8 +109,9 @@ template(name='nav')
         //     span.mobile.hidden mishi
         // // a.item(href='/scanner' class="{{isActivePath '/scanner'}}" title='scanner')
         //     +i name='scan-stock'
-        // a.item(href='/wp' class="{{isActivePath '/wp'}}" title='wordpress')
-        //     +i name='wordpress'
+        a.item(href='/events' class="{{isActivePath '/events'}}" title='events')
+            +i name='calendar'
+            |events
         // a.item(href='/recipes' class="{{isActivePath '/recipes'}}" title='recipes')
         //     +i name='cookbook'
         //     span.mobile.hidden recipes
@@ -118,24 +119,24 @@ template(name='nav')
         //     +i name='ask'
         //     span.mobile.hidden questions
         a.item(href='/orders' class="{{isActivePath '/orders'}}" title='orders')
-            // +i name='invoice'
-            i.large.money.icon
+            +i name='invoice'
+            // i.large.money.icon
             span.mobile.hidden orders
         a.item(href='/posts' class="{{isActivePath '/posts'}}" title='posts')
-            // +i name='blog'
-            i.large.blog.icon
+            +i name='blog'
+            // i.large.blog.icon
             span.mobile.hidden blog
         a.item(href='/trips' class="{{isActivePath '/trips'}}" title='trips')
-            // +i name='car'
-            i.large.car.icon
+            +i name='car'
+            // i.large.car.icon
             span.mobile.hidden trips
         a.item(href='/transfers' class="{{isActivePath '/transfers'}}" title='transfers')
-            i.large.exchange.icon
-            // +i name='donate'
+            // i.large.exchange.icon
+            +i name='donate'
             span.mobile.hidden transfers
         a.item(href='/rentals' class="{{isActivePath '/rentals'}}" title='rentals')
-            i.large.clock.icon
-            // +i name='clock'
+            // i.large.clock.icon
+            +i name='clock'
             span.mobile.hidden rentals
 
         

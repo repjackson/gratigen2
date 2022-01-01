@@ -159,7 +159,7 @@ if Meteor.isClient
 
         cart_amount: ->
             cart_amount = Docs.find({
-                model:'thing'
+                model:'cart_item'
                 status:'cart'
                 _author_id:Meteor.userId()
             }).count()
@@ -171,10 +171,10 @@ if Meteor.isClient
             #         _author_id:Meteor.userId()
             # if co 
             Docs.find 
-                model:'thing'
+                model:'cart_item'
                 _author_id: Meteor.userId()
                 # order_id:co._id
-                status:'cart'
+                # status:'cart'
                 
         alert_toggle_class: ->
             if Session.get('viewing_alerts') then 'active' else ''
@@ -251,3 +251,7 @@ if Meteor.isClient
 
     Template.nav.helpers
 
+if Meteor.isServer
+    Meteor.publish 'my_cart', ->
+        Docs.find 
+            model:'cart_item'

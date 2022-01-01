@@ -2,7 +2,7 @@ template(name='product_view')
     with current_doc
         .ui.stackable.padded.grid
             .row
-                .four.wide.column
+                .six.wide.column
                     .ui.large.inline.header 
                         //- small viewing
                         | #{title}
@@ -21,15 +21,15 @@ template(name='product_view')
                     // a(href="{{c.url image_id}}" target="_window")
                     // .four.wide.column
                     img.ui.rounded.fluid.image.zoomer(src="{{c.url image_id}}")
-                if image_id2
-                    .four.wide.column
+                    if image_id2
                         img.ui.rounded.image.zoomer(src="{{c.url image_id2}}")
-                .eight.wide.column
+                .six.wide.column
                     +html_view key='description' direct=true
                     // +text_view key='size_description' label='size description'  direct=true
-                    a.ui.basic.icon.button(href=product_link)
-                        i.wordpress.large.icon
+                    a.ui.circular.button(href=product_link)
+                        // i.wordpress.large.icon
                         i.external.icon
+                        |#{product_link}
                     
                     +boolean_view key='gluten_free' label='gluten free' direct=true icon='no-gluten'
                     +boolean_view key='vegetarian' label='vegetarian' direct=true icon='vegetarian-mark'
@@ -74,10 +74,10 @@ template(name='product_view')
                         i.cart.plus.large.icon
                         |add to cart
                 .four.wide.column
-                    .ui.large.button.generate_qrcode
-                        i.large.qrcode.icon
-                        |generate qr code
-                    #qrcode(width='400px')
+                    // .ui.large.button.generate_qrcode
+                    //     i.large.qrcode.icon
+                    //     |generate qr code
+                    // #qrcode(width='400px')
                     .ui.segment
                         +product_inventory
                     .ui.list
@@ -90,58 +90,34 @@ template(name='product_view')
                         .item #{last_inventory_boh_record} most recent BOH record
                         .item #{last_inventory_foh_record} most recent FOH record
                     i.refresh.large.link.icon.calc_stats(title='refresh_stats')
-                // .four.wide.column
-                //     +product_reviews
+                .four.wide.column
+                    +product_reviews
                 .five.wide.column
-                    +woo_sales
-                .five.wide.column
-                    +mishi_sales
-                // .five.wide.column
-                //     // +product_subscriptions
-                //     // .ui.green.large.button.add_to_cart
-                //     //     // i.cart.plus.large.icon
-                //     //     +i name='add-shopping-cart--v1' cl='ui avatar image'
-                //     //     |add to cart
-                //     // .ui.link.card.zoomer.goto_source
-                //     //     img.ui.fluid.image(src="{{c.url product_source.image_id width=200 height=200 gravity='face' crop='fill'}}")
-                //     //     .content
-                //     //         .ui.header.zoomer
-                //     //             |#{product_source.title}
-                //     .ui.header 
-                //         i.fork.icon
-                //         |related products
-                //     each related_products
-                //         a.ui.header(href="/product/#{_id}") #{title}
+                    +product_subscriptions
+                    // .ui.green.large.button.add_to_cart
+                    //     // i.cart.plus.large.icon
+                    //     +i name='add-shopping-cart--v1' cl='ui avatar image'
+                    //     |add to cart
+                    // .ui.link.card.zoomer.goto_source
+                    //     img.ui.fluid.image(src="{{c.url product_source.image_id width=200 height=200 gravity='face' crop='fill'}}")
+                    //     .content
+                    //         .ui.header.zoomer
+                    //             |#{product_source.title}
+                    .ui.header 
+                        i.fork.icon
+                        |related products
+                    each related_products
+                        a.ui.header(href="/product/#{_id}") #{title}
                             
         
         
-template(name='woo_sales')        
-    .ui.header 
-        i.wordpress.icon
-        |site sales
-    .ui.list 
-        each site_sale_docs
-            a.item(href="/sale/#{_id}") #{title}
-template(name='mishi_sales')        
-    .ui.header 
-        i.tablet.icon
-        |mishi
-    .ui.selection.animated.link.list.scrolling
-        each mishi_sale_docs
-            a.item(href="/mishi_sale/#{_id}")
-                .header
-                    |#{Qty}x #{Order_ID}
-                .content
-                    |{{long_date _converted_date}}
-            
             
 template(name='product_inventory')      
     .ui.inline.header 
         +i name='shield'
         |inventory
     div 
-    .ui.list #{last_inventory_record} most recent FOH record
-    .ui.list #{last_inventory_record} most recent BOH record
+    .ui.list #{last_inventory_record} most recent record
     a.ui.icon.basic.button.add_inventory
         i.plus.icon
     .ui.large.selection.list
