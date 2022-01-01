@@ -173,10 +173,10 @@ template(name='i')
 //     img(src="https://img.icons8.com/office/48/000000/#{name}.png" class=cl title=title)
 // template(name='ismall')
 //     img(src="https://img.icons8.com/fluent/24/000000/#{name}.png" class=cl title=title)
-// template(name='icolor')
-//     // i.icon(name=name)
-//     img(src="https://img.icons8.com/color/48/000000/#{name}.png" class=cl title=title)
-//     // img(src="https://img.icons8.com/dusk/48/000000/#{name}.png" class=cl title=title)
+template(name='icolor')
+    // i.icon(name=name)
+    img(src="https://img.icons8.com/color/48/000000/#{name}.png" class=cl title=title)
+    // img(src="https://img.icons8.com/dusk/48/000000/#{name}.png" class=cl title=title)
 template(name='ibig')
     // i.icon(name=name)
     // if is_hovering
@@ -388,100 +388,100 @@ template(name='text_edit')
 
 
 
-// template(name='clear_value')
-//     if field_value
-//         i.remove.link.large.icon.clear_value
+template(name='clear_value')
+    if field_value
+        i.remove.link.large.icon.clear_value
 
-// template(name='text_view')
-//     if field_value
-//         //- unless header
-//         //-     div
-//         //-     if icon
-//         //-         +i name=icon                
-//         .ui.grey.small.inline.header
-//             if title
-//                 |#{title}
-//             else if label
-//                 |#{label}
-//             else if key
-//                 |#{key}
-//             else
-//                 |#{this}
-//         .ui.inline.header #{field_value}
-
-
+template(name='text_view')
+    if field_value
+        //- unless header
+        //-     div
+        //-     if icon
+        //-         +i name=icon                
+        .ui.grey.small.inline.header
+            if title
+                |#{title}
+            else if label
+                |#{label}
+            else if key
+                |#{key}
+            else
+                |#{this}
+        .ui.inline.header #{field_value}
 
 
 
 
-// template(name='date_edit')
-//     div
-//     if icon
-//         +i name=icon cl='ui inline mini image'   
-//     //-     |&nbsp;
-//     .ui.inline.header
-//         if title
-//             |#{title}
-//         else if label
-//             |#{label}
-//             //- else if key
-//             //-     |#{key}
-//             //- else
-//             //-     |#{this}
-//             //- +clear_value                
-//     .ui.fluid.input
-//         input.edit_date(type='date' value=field_value placeholder=placeholder autocomplete="off")
 
 
-// template(name='date_view')
-//     if field_value
-//         div
-//         if icon
-//             +i name=icon
-//         .ui.grey.inline.small.header
-//             if title
-//                 |#{title}
-//             else if label
-//                 |#{label}
-//             else if key
-//                 |#{key}
-//             else
-//                 |#{this}
-//         .ui.inline.header 
-//             |&nbsp; {{medium_date field_value}}
+template(name='date_edit')
+    div
+    if icon
+        +i name=icon cl='ui inline mini image'   
+    //-     |&nbsp;
+    .ui.inline.header
+        if title
+            |#{title}
+        else if label
+            |#{label}
+            //- else if key
+            //-     |#{key}
+            //- else
+            //-     |#{this}
+            //- +clear_value                
+    .ui.fluid.input
+        input.edit_date(type='date' value=field_value placeholder=placeholder autocomplete="off")
+
+
+template(name='date_view')
+    if field_value
+        div
+        if icon
+            +i name=icon
+        .ui.grey.inline.small.header
+            if title
+                |#{title}
+            else if label
+                |#{label}
+            else if key
+                |#{key}
+            else
+                |#{this}
+        .ui.inline.header 
+            |&nbsp; {{medium_date field_value}}
 
 
 
-// template(name='time_edit')
-//     .ui.inline.grey.header
-//         if icon
-//             +i name=icon cl='ui inline mini image'
-//         if title
-//             |#{title}
-//         else if label
-//             |#{label}
-//         //- else
-//         //-     |#{key}
-//     //- +clear_value                
-//     .ui.fluid.input
-//         input.edit_time(type='time' value=field_value placeholder=placeholder autocomplete="off")
+template(name='time_edit')
+    .ui.inline.grey.header
+        if icon
+            +i name=icon cl='ui inline mini image'
+        if title
+            |#{title}
+        else if label
+            |#{label}
+        //- else
+        //-     |#{key}
+    //- +clear_value                
+    .ui.fluid.input
+        input.edit_time(type='time' value=field_value placeholder=placeholder autocomplete="off")
                 
                 
-// template(name='time_view')
-//     div
-//     if field_value
-//         if icon
-//             +i name=icon cl='ui inline mini image'
-//         .ui.inline.grey.header
-//             if title
-//                 |#{title}
-//             else if label
-//                 |#{label}
-//             else if key
-//                 |#{key}
-//             else
-//                 |#{this}
-//         .ui.inline.header &nbsp; #{field_value}
+template(name='time_view')
+    div
+    if field_value
+        if icon
+            +i name=icon cl='ui inline mini image'
+        .ui.inline.grey.header
+            if title
+                |#{title}
+            else if label
+                |#{label}
+            else if key
+                |#{key}
+            else
+                |#{this}
+        .ui.inline.header &nbsp; #{field_value}
 
 template(name='datetime_edit')
     .ui.form
@@ -891,82 +891,82 @@ template(name='slug_edit')
 
 
 
-// template(name='single_doc_view')
-//     div
-//     if field_value
-//         if icon
-//             //- i.grey.icon(class=icon)
-//             +i name=icon
-//         .ui.inline.header(title=key)
-//             |#{title}
-//         .ui.label
-//             if icon
-//                 //- i.grey.icon(class=icon)
-//                 +i name=icon
-//             |#{field_value}
+template(name='single_doc_view')
+    div
+    if field_value
+        if icon
+            //- i.grey.icon(class=icon)
+            +i name=icon
+        .ui.inline.header(title=key)
+            |#{title}
+        .ui.label
+            if icon
+                //- i.grey.icon(class=icon)
+                +i name=icon
+            |#{field_value}
 
 
-// template(name='single_doc_edit')
-//     div
-//     .ui.inline.header(title=key) 
-//         if icon
-//             //- i.grey.icon(class=icon)
-//             +i name=icon
-//         |#{label} #{title}
-//     each choices
-//         .ui.compact.button.select_choice(class=choice_class)
-//             if icon
-//                 //- i.grey.icon(class=icon)
-//                 +i name=icon cl='ui middle aligned mini image'
-//                 //- +i name=icon cl='ui mini inline image'
-//             |#{calculated_label}
-//             |#{slug} #{title}
+template(name='single_doc_edit')
+    div
+    .ui.inline.header(title=key) 
+        if icon
+            //- i.grey.icon(class=icon)
+            +i name=icon
+        |#{label} #{title}
+    each choices
+        .ui.compact.button.select_choice(class=choice_class)
+            if icon
+                //- i.grey.icon(class=icon)
+                +i name=icon cl='ui middle aligned mini image'
+                //- +i name=icon cl='ui mini inline image'
+            |#{calculated_label}
+            |#{slug} #{title}
 
 
-// template(name='multi_doc_edit')
-//     div
-//     if icon
-//         +i name=icon cl='ui mini inline image'
-//     .ui.inline.header(title=key)
-//         |#{title} #{label}    
-//     each choices
-//         .ui.compact.button.select_choice(class=choice_class)
-//             if icon
-//                 //- i.grey.icon(class=icon)
-//                 +i name=icon cl='ui inline image'
-//             //- |#{title} #{slug}
-//             |#{slug}
-//     //- .ui.sub.header 
-//     //-     if icon
-//     //-         i.grey.icon(class=icon)
-//     //-     |#{title}
-//     //- select.ui.fluid.multiple.selection.dropdown(multiple='')
-//     //-     each choices
-//     //-         option(value=slug) #{title} #{unit_number}
-//     //- .ui.fluid.multiple.selection.dropdown
-//     //-  // input(type='hidden' name='multi_doc_edit')
-//     //-  // i.dropdown.icon
-//     //-  // .default.text 
-//     //-  //     |#{title}
-//     //-  // .menu
-//     //-  //     each choices
-//     //-  //         .item(data-value=slug) 
-//     //-  //             if icon
-//     //-  i.grey.icon(class=icon)
-//     //-  //             |#{title}
+template(name='multi_doc_edit')
+    div
+    if icon
+        +i name=icon cl='ui mini inline image'
+    .ui.inline.header(title=key)
+        |#{title} #{label}    
+    each choices
+        .ui.compact.button.select_choice(class=choice_class)
+            if icon
+                //- i.grey.icon(class=icon)
+                +i name=icon cl='ui inline image'
+            //- |#{title} #{slug}
+            |#{slug}
+    //- .ui.sub.header 
+    //-     if icon
+    //-         i.grey.icon(class=icon)
+    //-     |#{title}
+    //- select.ui.fluid.multiple.selection.dropdown(multiple='')
+    //-     each choices
+    //-         option(value=slug) #{title} #{unit_number}
+    //- .ui.fluid.multiple.selection.dropdown
+    //-  // input(type='hidden' name='multi_doc_edit')
+    //-  // i.dropdown.icon
+    //-  // .default.text 
+    //-  //     |#{title}
+    //-  // .menu
+    //-  //     each choices
+    //-  //         .item(data-value=slug) 
+    //-  //             if icon
+    //-  i.grey.icon(class=icon)
+    //-  //             |#{title}
     
     
     
-// template(name='multi_doc_view')
-//     div
-//     //- if icon
-//     //-     +i name=icon cl='ui mini inline image'
-//     if field_value
-//         .ui.inline.header(title=key)
-//             |#{title} #{label}
-//         each sorted_field_values
-//             .ui.large.label
-//                 |#{this}
+template(name='multi_doc_view')
+    div
+    //- if icon
+    //-     +i name=icon cl='ui mini inline image'
+    if field_value
+        .ui.inline.header(title=key)
+            |#{title} #{label}
+        each sorted_field_values
+            .ui.large.label
+                |#{this}
 
 
 

@@ -180,42 +180,41 @@ template(name='group_view')
                     if can_edit
                         a.ui.circular.basic.icon.button(href="/group/#{_id}/edit")
                             i.setting.large.icon
-                .twelve.wide.column
-                    a.ui.basic.icon.circular.compact.disabled.button(href="/group/#{_id}" class="{{isActiveRoute regex='group_dashboard'}}" title='dashboard')
-                        +i name='dashboard' cl='ui inline image'
-                        // |dashboard
-                    a.ui.basic.icon.circular.compact.disabled.button(href="/group/#{_id}/members" class="{{isActiveRoute regex='group_members'}}" title='members')
-                        +i name='info' cl='ui inline image'
-                        // |members
-                    a.ui.basic.icon.circular.compact.disabled.button(href="/group/#{_id}/credit" class="{{isActiveRoute regex='group_credit'}}" title='points')
-                        +i name='coins' cl='ui inline image'
-                        // |credit
-                    a.ui.basic.icon.circular.compact.disabled.button(href="/group/#{_id}/meals" class="{{isActiveRoute regex='group_meals'}}" title='meals')
-                        +i name='meal' cl='ui inline image'
-                        // |meals
-                    a.ui.basic.icon.circular.compact.disabled.button(href="/group/#{_id}/dishes" class="{{isActiveRoute regex='group_dishes'}}" title='dishes')
-                        +i name='meal' cl='ui inline image'
-                        // |dishes
-                    a.ui.basic.icon.circular.compact.disabled.button(href="/group/#{_id}/voting" class="{{isActiveRoute regex='group_voting'}}")
-                        +i name='elections' cl='ui inline image'
-                        // |voting
-                    a.ui.basic.icon.circular.compact.disabled.button(href="/group/#{_id}/events" class="{{isActiveRoute regex='group_events'}}")
-                        +i name='calendar' cl='ui inline image'
-                        // |events
-                    a.ui.basic.icon.circular.compact.disabled.button(href="/group/#{_id}/food" class="{{isActiveRoute regex='group_food'}}")
-                        +i name='food' cl='ui inline image'
-                        // |food
+                // .twelve.wide.column
+                    // a.ui.basic.icon.circular.compact.disabled.button(href="/group/#{_id}" class="{{isActiveRoute regex='group_dashboard'}}" title='dashboard')
+                    //     +i name='dashboard' cl='ui inline image'
+                    //     // |dashboard
+                    // a.ui.basic.icon.circular.compact.disabled.button(href="/group/#{_id}/members" class="{{isActiveRoute regex='group_members'}}" title='members')
+                    //     +i name='info' cl='ui inline image'
+                    //     // |members
+                    // a.ui.basic.icon.circular.compact.disabled.button(href="/group/#{_id}/credit" class="{{isActiveRoute regex='group_credit'}}" title='points')
+                    //     +i name='coins' cl='ui inline image'
+                    //     // |credit
+                    // a.ui.basic.icon.circular.compact.disabled.button(href="/group/#{_id}/meals" class="{{isActiveRoute regex='group_meals'}}" title='meals')
+                    //     +i name='meal' cl='ui inline image'
+                    //     // |meals
+                    // a.ui.basic.icon.circular.compact.disabled.button(href="/group/#{_id}/dishes" class="{{isActiveRoute regex='group_dishes'}}" title='dishes')
+                    //     +i name='meal' cl='ui inline image'
+                    //     // |dishes
+                    // a.ui.basic.icon.circular.compact.disabled.button(href="/group/#{_id}/voting" class="{{isActiveRoute regex='group_voting'}}")
+                    //     +i name='elections' cl='ui inline image'
+                    //     // |voting
+                    // a.ui.basic.icon.circular.compact.disabled.button(href="/group/#{_id}/events" class="{{isActiveRoute regex='group_events'}}")
+                    //     +i name='calendar' cl='ui inline image'
+                    //     // |events
+                    // a.ui.basic.icon.circular.compact.disabled.button(href="/group/#{_id}/food" class="{{isActiveRoute regex='group_food'}}")
+                    //     +i name='food' cl='ui inline image'
+                    //     // |food
                     //- a.ui.basic.circular.compact.button(href="/group/#{_id}/settings" class="{{isActiveRoute regex='group_settings'}}")
                     //-     +ismall name='settings' cl='ui inline image'
                     //-     |settings
-                    a.ui.basic.circular.icon.compact.button(href="/group/#{_id}/products" class="{{isActiveRoute regex='group_products'}}")
-                        +i name='shopping-cart' cl='ui inline image'
-                        // |products
-                    a.ui.basic.circular.icon.compact.button(href="/group/#{_id}/services" class="{{isActiveRoute regex='group_services'}}")
-                        +i name='service-bell' cl='ui inline image'
-                        // |services
+                    // a.ui.basic.circular.icon.compact.button(href="/group/#{_id}/products" class="{{isActiveRoute regex='group_products'}}")
+                    //     +i name='shopping-cart' cl='ui inline image'
+                    //     // |products
+                    // a.ui.basic.circular.icon.compact.button(href="/group/#{_id}/services" class="{{isActiveRoute regex='group_services'}}")
+                    //     +i name='service-bell' cl='ui inline image'
+                    //     // |services
 
-            .row
                 .four.wide.column 
                     +image_view key='image_id' icon='image' label='image'
                     +array_view key='tags' icon='tags'
