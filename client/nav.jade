@@ -71,14 +71,14 @@ template(name='nav')
                     else
                         i.user.icon
                     strong.mobile.hidden #{currentUser.name}
-                a.icon.item.toggle_rightbar.no_blink
-                    // .ui.avatar.image
-                    //     if currentUser.image_id
-                    //         img.ui.mini.inline.image(src="{{c.url currentUser.image_id width=200 height=200 gravity='face' crop='fill'}}")
-                    //     else
-                    //         i.user.large.icon
-                    // strong.mobile.hidden #{currentUser.name}
-                    i.bars.large.icon
+                // a.icon.item.toggle_rightbar.no_blink
+                //     // .ui.avatar.image
+                //     //     if currentUser.image_id
+                //     //         img.ui.mini.inline.image(src="{{c.url currentUser.image_id width=200 height=200 gravity='face' crop='fill'}}")
+                //     //     else
+                //     //         i.user.large.icon
+                //     // strong.mobile.hidden #{currentUser.name}
+                //     i.bars.large.icon
             unless currentUser
                 if subs_ready
                     a.item(href='/login' title='login') 

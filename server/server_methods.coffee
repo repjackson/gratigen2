@@ -97,7 +97,7 @@ Meteor.methods
         if role_filter
             Meteor.users.find({
                 username: {$regex:"#{username_query}", $options: 'i'}
-                roles:$in:[role_filter]
+                # roles:$in:[role_filter]
                 },{limit:10}).fetch()
         else
             Meteor.users.find({

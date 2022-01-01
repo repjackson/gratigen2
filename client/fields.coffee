@@ -51,23 +51,23 @@ Template.html_edit.onRendered ->
                 'subscript' 
                 'superscript'
                 'fontColor' 
-                'hiliteColor' 
+                # 'hiliteColor' 
                 'textStyle'
                 'removeFormat'
                 'outdent' 
                 'indent'
                 'align' 
-                'horizontalRule' 
+                # 'horizontalRule' 
                 'list' 
-                'lineHeight'
+                # 'lineHeight'
                 'fullScreen' 
-                'showBlocks' 
-                'codeView' 
-                'preview' 
-                'table' 
-                'image' 
-                'video' 
-                'audio' 
+                # 'showBlocks' 
+                # 'codeView' 
+                # 'preview' 
+                # 'table' 
+                # 'image' 
+                # 'video' 
+                # 'audio' 
                 'link'
             ]
         ]
@@ -181,7 +181,11 @@ Template.image_edit.events
                     if doc
                         Docs.update parent._id,
                             $set:"#{@key}":res.public_id
-
+                    else 
+                        Meteor.users.update parent._id,
+                            $set:"#{@key}":res.public_id
+                            
+                        
     'click .call_cloud_visual': (e,t)->
         Meteor.call 'call_visual', Router.current().params.doc_id, 'cloud', ->
             $('body').toast(
@@ -613,5 +617,71 @@ Template.multi_user_edit.events
 
         #     page_doc = Docs.findOne Router.current().params.doc_id
             # Meteor.call 'unassign_user', page_doc._id, @
+
+
+Template.single_user_edit.onCreated ->
+    @user_results = new ReactiveVar
+Template.single_user_edit.helpers
+    user_results: ->Template.instance().user_results.get()
+Template.single_user_edit.events
+    'click .clear_results': (e,t)->
+        t.user_results.set null
+
+    'keyup .single_user_select_input': (e,t)->
+        search_value = $(e.currentTarget).closest('.single_user_select_input').val().trim()
+        if search_value.length > 1
+            console.log 'searching', search_value
+            Meteor.call 'lookup_user', search_value, @role_filter, (err,res)=>
+                if err then console.error err
+                else
+                    t.user_results.set res
+
+    'click .select_user': (e,t) ->
+        page_doc = Docs.findOne Router.current().params.doc_id
+        field = Template.currentData()
+
+        # console.log @
+        # console.log Template.currentData()
+        # console.log Template.parentData()
+        # console.log Template.parentData(1)
+        # console.log Template.parentData(2)
+        # console.log Template.parentData(3)
+        # console.log Template.parentData(4)
+
+
+        val = t.$('.edit_text').val()
+        if field.direct
+            parent = Template.parentData()
+        else
+            parent = Template.parentData(5)
+
+        doc = Docs.findOne parent._id
+        if doc
+            Docs.update parent._id,
+                $set:"#{field.key}":@_id
+        else
+            Meteor.users.update parent._id,
+                $set:"#{field.key}":@_id
+            
+        t.user_results.set null
+        $('.single_user_select_input').val ''
+        # Docs.update page_doc._id,
+        #     $set: assignment_timestamp:Date.now()
+
+    'click .pull_user': ->
+        if confirm "remove #{@username}?"
+            parent = Template.parentData(1)
+            field = Template.currentData()
+            doc = Docs.findOne parent._id
+            if doc
+                Docs.update parent._id,
+                    $unset:"#{field.key}":1
+            else
+                Meteor.users.update parent._id,
+                    $unset:"#{field.key}":1
+
+        #     page_doc = Docs.findOne Router.current().params.doc_id
+            # Meteor.call 'unassign_user', page_doc._id, @
+
 
 

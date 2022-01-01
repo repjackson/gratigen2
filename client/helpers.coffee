@@ -68,8 +68,7 @@ Template.registerHelper 'cart_product_docs', ()->
             model:'product'
             _id:$in:@cart_product_ids
 
-Template.registerHelper 'user_from_id', (id)->
-    Meteor.users.findOne id
+Template.registerHelper 'user_from_id', (id)-> Meteor.users.findOne id
 Template.registerHelper 'kve', (key,value)-> @["#{key}"] is value
 Template.registerHelper 'skv_is', (key,value)-> Session.equals(key,value)
 
