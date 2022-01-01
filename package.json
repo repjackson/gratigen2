@@ -1,0 +1,12 @@
+{
+	"dependencies": {
+		"@babel/runtime": "^7.9.2",
+		"bcrypt": "^5.0.1",
+		"html5-qrcode": "^2.1.2",
+		"papaparse": "^5.3.1"
+	},
+	"scripts": {
+		"start": "MONGO_URL=mongodb+srv://daoadmin:daoadminpassword@cluster1-etul3.mongodb.net/daodb meteor --settings settings.json",
+		"local": "meteor --settings settings.json"
+	}
+}

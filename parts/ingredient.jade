@@ -1,0 +1,206 @@
+template(name='ingredients')
+    .ui.stackable.padded.grid
+        .three.wide.column
+            .ui.inline.header 
+                +i name='ingredients'
+                |#{ingredient_docs.count}
+                |ingredients
+            // if currentUser
+            a.ui.icon.circular.button.add_ingredient(title='add ingredient')
+                i.plus.green.large.icon
+            .ui.left.icon.search.small.input
+                i.search.icon.refresh_tags
+                input#search_tag.prompt(type='text' autocomplete="off" placeholder='tags')
+            if selected_tag_plural
+                .ui.icon.circular.black.compact.button.clear_picked_tags
+                    i.remove.icon
+            each picked_tags
+                button.ui.blue.compact.circular.small.button.unselect_tag(tabindex='0')
+                    //- i.remove.icon
+                    | #{this}
+            each tags
+                button.ui.circular.compact.button.tag_result(tabindex="0" class=result_class title=count) #{title}
+                    //- small #{count}
+            // +key_value_edit key='view_private' value=true  label='view private'
+            // +key_value_edit key='view_private' value=false label='view all'
+            .spacer
+        .thirteen.wide.column
+            // .ui.inline.header CC demo data 
+            .spacer 
+            .sorting_row
+                .ui.icon.input
+                    i.search.icon
+                    input.tag_search(type='text' placeholder='search...')
+                +session_set key='sort_key' value='cookTime' label='cook time' icon='kitchen'
+                +session_set key='sort_key' value='prepTime' label='prep time' icon='clock'
+                |&nbsp;
+                |&nbsp;
+                // +limit_menu
+            .ui.stackable.five.cards.scrolling
+                each ingredient_docs
+                    +ingredient_card
+
+
+template(name='ingredient_card')
+    .ui.card.card_fly_right(class=ingredient_card_class)
+        a.image.zoomer(href="/ingredient/#{_id}")
+            if image_id
+                img.ui.zoomer.pointer.goto_ingredient.image(src="{{c.url image_id width=400 height=400}}")
+            // else if images.full
+            //     img(src=images.full)
+        .content
+            a.ui.header.zoomer(href="/ingredient/#{_id}/") 
+                | #{title}
+            a.zoomer.pointer.zoomer(href="/ingredient/#{_id}/") 
+                |!{description}
+            if tags
+                +ismall name='tags'
+                each tags
+                    .ui.small.basic.label #{this}
+            if tags
+                span(title='tags')
+                    |#{tags.count}
+                    // +i name='ingredients'
+            each ingredient_products
+                .ui.basic.label #{title}
+            .ui.small.inline.header
+                |#{product_count} products
+            // a.ui.icon.circular.basic.button.zoomer(href="/ingredient/#{_id}/edit")
+            //     i.pencil.icon
+            a.ui.icon.circular.basic.button.zoomer(href="/ingredient/#{_id}")
+                i.right.chevron.icon
+
+
+template(name='ingredient_view')
+    with current_doc
+        .ui.stackable.padded.grid
+            .row
+                .six.wide.column 
+                    h1.ui.header #{title} 
+                    a(href="https://www.google.com/search?q=#{title}" target='_window' title='search title')
+                        i.search.icon
+                    a(href="https://www.google.com/search?tbm=isch&q=#{title}" target='_window' title='image search title')
+                        i.image.icon
+                    a(href="https://www.amazon.com/s?k=#{title}&ref=nb_sb_noss_2" target='_window' title='amazon search title')
+                        i.amazon.icon
+                    a.ui.compact.circular.basic.button.fly_left(href="/ingredients")
+                        i.left.chevron.icon
+                        +i name='food' cl='ui inline image'
+                        // |ingredients
+                    img.ui.fluid.rounded.image(src=images.full)
+                    .ui.small.grey.inline.header 
+                        small viewing ingredient
+                        // strong #{title}
+                    // if can_edit
+                    a.ui.icon.circular.button(href="/ingredient/#{_id}/edit")
+                        i.pencil.large.icon
+                    +voting_full
+                    +viewing
+                    if in_dev 
+                        +print_this
+                    // +view_visibility
+                    // +author_card
+                .six.wide.column
+                    +image_view key='image_id' label='image' direct=true
+                    .f6
+                        +html_view key='description' icon='content' label='body' direct=true
+                    +array_view key='location_tags' label='location tags' icon='marker' direct=true
+                    +array_view key='tags' label='tags' icon='tags' direct=true
+                .four.wide.column
+                    .ui.header 
+                        +i name='food-cart'
+                        |#{ingredient_products.length}
+                        |products included in
+                    .ui.doubling.cards 
+                        each ingredient_products
+                            a.card(href="/product/#{_id}")
+                                img.ui.zoomer.pointer.image(src="{{c.url image_id width=400 height=400}}")
+                                .content
+                                    .header #{title}
+                    .ui.header 
+                        +i name='cookbook'
+                        |#{ingredient_recipes.length}
+                        |recipes included in
+                    .ui.ordered.big.spaced.list
+                        each ingredient_recipes
+                            .item.zoomer
+                                |#{instructions}
+                                a(href="https://www.google.com/search?q=#{instructions}" target='_window' title='search instructions')
+                                    i.search.icon
+                                a(href="https://www.google.com/search?tbm=isch&q=#{instructions}" target='_window' title='image search instructions')
+                                    i.image.icon
+
+                                if optional 
+                                    | (optional)
+                            // // .item instructions: String #{instructions}
+                            // .item optional: Boolean #{optional}
+                    .ui.button
+                        +i name='heart'
+                        |mark favorite
+                    .ui.button
+                        +i name='no-milk'
+                        |mark allergen
+                    +comments
+                .four.wide.column
+                    if can_purchase
+                        .ui.header 
+                            +i name='coins' cl='ui avatar image'
+                            |purchase price: #{purchase_price}pt
+                        +purchase_ingredient_button
+                        +ingredient_orders
+                    +number_view key='servings' label='servings'
+                    // // .item     prepTime: Number
+                    // +number_view key='prepTime' label='prep time' icon='clock' direct=true
+                    // // .item     cookTime: Number
+                    // +number_view key='cookTime' label='cook time' icon='kitchen' direct=true
+                    // // .item     postDate: Date
+                    // +date_view key='postDate' label='post date' icon='pencil' direct=true
+                    // // .item     editDate: Date
+                    // +date_view key='editDate' label='edit date' icon='pencil' direct=true
+                
+                
+                
+template(name='purchase_ingredient_button')                
+    unless has_purchased
+        .ui.button.purchase_ingredient
+            |purchase ingredient for #{purchase_price}
+    else 
+        .ui.header 
+            |purchased on {{medium_date purchase_timestamp}}
+                
+                
+template(name='ingredient_orders')
+    .ui.header
+        +i name='order-history'
+        |ingredient orders 
+    .ui.selection.link.animated.list
+        each ingredient_order_docs 
+            a.item.fly_right(href="/order/#{_id}")
+                |#{when}
+                |#{_author_username}
+    
+        
+                
+
+template(name='ingredient_edit')
+    with current_doc
+        .ui.stackable.padded.grid
+            .row
+                .four.wide.column
+                    .ui.header 
+                        small editing ingredient
+                        strong #{title}
+                    a.ui.big.icon.green.button(href="/#{model}/#{_id}" title='save')
+                        i.checkmark.big.icon
+                    +remove_button
+                    +image_edit key='image_id' label='image' direct=true
+                    // +visibility_settings
+                    // +boolean_edit key='private' label='private' direct=true
+                    // if in_dev 
+                    //     +text_edit key='model' label='model' direct=true
+                .seven.wide.column.scrolling
+                    +text_edit key='title' direct=true
+                    // +text_edit key='name' direct=true
+                    +html_edit key='body' label='body' icon='content' direct=true
+                    +array_edit key='tags' label='tags' icon='tags' direct=true
+                .four.wide.column.scrolling

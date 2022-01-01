@@ -1,0 +1,204 @@
+template(name='labels')
+    .ui.stackable.padded.grid
+        .four.wide.column.scrollin
+            .ui.inline.header 
+                +i name='tags'
+                |#{label_docs.count}
+                |labels
+            // .ui.small.inline.header 
+            //     |#{label_total}
+            // +cfacet model='_week_number'
+            .ui.icon.input(title='search product')
+                if current_search
+                    i.remove.red.link.icon.zoomer.clear_search
+                else
+                    i.search.icon
+                input.search_product(type='text' placeholder='product' value=current_search)
+            // .scrolling
+            // .ui.circular.basic.button
+            +i name='vegan-symbol'
+            // .ui.inline.header 
+                // |vegan
+            // +cfacet model='_week_number'
+            each vegan_results
+                // .ui.button.pick_vegan
+                //     |#{name}
+                //     small #{count}
+                if name 
+                    .ui.icon.circular.button.pick_vegan(title=count)
+                        // |#{name}
+                        i.large.checkmark.icon
+                else
+                    .ui.icon.circular.button.pick_vegan(title=count)
+                        i.remove.large.icon
+                        // small #{count}-
+            div
+            .ui.circular.basic.button
+                +i name='kitchen'
+            div
+            +i name='no-gluten'
+            // .ui.inline.header 
+                // |gluten free
+            // +cfacet model='_week_number'
+            each gluten_results
+                if name 
+                    .ui.icon.circular.button.pick_gluten(title=count)
+                        // |#{name}
+                        i.large.checkmark.icon
+                else
+                    .ui.icon.circular.button.pick_gluten(title=count)
+                        i.remove.large.icon
+                        // small #{count}-
+            // .ui.small.inline.header
+            //     i.download.icon
+            //     |'Info for Labels'
+            // // +cfacet model='_product'
+            if in_dev 
+                .ui.segment
+                    i.code.icon
+                    .ui.icon.button.clear_labels 
+                        i.remove.icon
+                    .ui.input.import
+                        input(type='file' accept='.csv')
+                    
+        .twelve.wide.column
+            if picked_color
+                .ui.button.unpick_color(style="background-color:##{picked_color}" )
+                    |##{picked_color}
+            else 
+                each color_results
+                    button.ui.massive.circular.button.pick_color.zoomer(style="background-color:##{name}" title="#{count} #{name}")
+                        // |#{name}
+                        // |#{count}
+            div
+            i.sort.icon
+            // +set_sort_key key='orders' label='orders' icon='shopping cart'
+            // +set_sort_key key='units' label='units' icon='hashtag'
+            // +set_sort_key key='profit' label='profit' icon='line chart'
+            // +set_sort_key key='revenue' label='revenue' icon='line chart'
+            // +set_sort_key key='shrink' label='shrink' icon='line chart'
+            +sort_direction_button
+            // .ui.compact.icon.button.set_sort_direction(title='toggle sort direction')
+            //     if sorting_up
+            //         i.sort.amount.down.icon
+            //     else
+            //         i.sort.amount.up.icon
+            // |&nbsp;
+            |&nbsp;
+            .ui.doubling.centered.four.cards.scrolling
+                if label_docs.count
+                    each label_docs
+                        +label_card
+                else 
+                    .ui.center.aligned.basic.segment 
+                        .ui.hidden.divider
+                        .ui.hidden.divider
+                        .ui.hidden.divider
+                        .ui.hidden.divider
+                        i.tag.massive.loading.red.icon
+                            
+                            
+template(name='label_card')
+    .card(style="background-color:##{color}")
+        if related_product.image_id
+            img.ui.image.goto_product.zoomer.fly_left.pointer(src="{{c.url related_product.image_id width=500 height=500 gravity='face' crop='fill'}}")
+        .content
+            a.ui.header.goto_product.zoomer.fly_left #{name}
+            if retail_price
+                .ui.inline.header
+                    |$#{retail_price}
+            .ui.inline.small.grey.header #{query_params}
+            if gf
+                // div
+                +i name='no-gluten' cl='pointer zoomer' title='gluten free'
+                // |gluten free
+            if vegan
+                // div
+                +i name='vegan-symbol' cl='pointer zoomer' title='vegan'
+                // |vegan
+            if origin.length
+                // div
+                .ui.inline.small.header
+                    // +i name='marker' cl='pointer zoomer' title='local'
+                    // i.red.marker.icon
+                    |#{origin}
+            if local
+                // div
+                +i name='marker' cl='pointer zoomer' title='local'
+                // |local
+            if description
+                i.about.icon
+                |#{description}
+            if url
+                a.ui.circular.icon.button(href=url target='_blank' title=url)
+                    // |#{url}
+                    i.external.large.icon
+            if ingredients
+                +i name='ingredients'
+                |#{ingredients}
+                    
+            .item 
+                if cogs
+                    |cogs: #{cogs}
+            // .item 
+            //     if gf
+            //         |gf: #{gf}
+            if goes_well_with
+                .ui.basic.label 
+                    |goes_well_with: #{goes_well_with}
+            if net_weight_
+                .ui.basic.label 
+                    |net_weight_: #{net_weight_}
+            if net_weight_
+                .ui.basic.label 
+                    |net_weight_: #{net_weight_}
+            if nude_made
+                .ui.basic.label 
+                    |nude_made: #{nude_made}
+            if packaging
+                .ui.basic.label 
+                    |packaging: #{packaging}
+            if price
+                .ui.basic.label 
+                    .ui.inline.header $#{price}
+            if rescued
+                .ui.basic.label 
+                    |rescued: #{rescued}
+            if shelf_life
+                .ui.basic.label 
+                    |shelf_life: #{shelf_life}
+            if size_
+                .ui.basic.label 
+                    |size_: #{size_}
+            if we_love_it_in
+                .ui.basic.label 
+                    |we_love_it_in: #{we_love_it_in}
+            if wholefoods_retail_price
+                .ui.basic.label 
+                    |wholefoods_retail_price: #{wholefoods_retail_price}
+            if wholesale_price
+                .ui.basic.label 
+                    |wholesale_price: #{wholesale_price}
+            +print_this
+            i.refresh.icon.link.calc.pointer.zoomer
+
+
+// template(name='cfacet')
+//     .ui.inline.header #{model}
+//     each picked
+//         +unpick
+//     each unpicked 
+//         +pick
+        
+        
+// template(name='unpick')        
+//     .ui.blue.button.unpick
+//         |#{this}
+
+// template(name='pick')     
+//     if name
+//         .ui.compact.circular.large.button.pick
+//             |#{name}
+//             small #{count}x
+//             |(=#{total})
+            
