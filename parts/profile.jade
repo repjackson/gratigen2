@@ -76,7 +76,7 @@ template(name='user_dashboard')
         .ui.card
             .content
                 +user_giftcards
-        +user_favorites
+        +user_bookmarks
         +user_ingredients
         +user_deliveries
         +user_pantry
@@ -94,14 +94,16 @@ template(name='user_ingredients')
             each disliked_ingredients
                 |disliked ingredients
                 .ui.header #{when}
-template(name='user_favorites')        
+                
+                
+template(name='user_bookmarks')        
     .ui.card
         .content
-            a.header(href="/user/#{username}/favorites")
-                // +i name='love' cl='ui avatar image'
-                i.large.heart.icon
-                |favorites
-            each favorites
+            a.header(href="/user/#{username}/bookmarks")
+                +i name='bookmark' cl='ui avatar image'
+                // i.large.heart.icon
+                |bookmarks
+            each user_bookmark_docs
                 .ui.header #{when}
               
               

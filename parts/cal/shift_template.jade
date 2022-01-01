@@ -1,0 +1,136 @@
+template(name='shift_templates')
+    .ui.padded.stackable.grid
+        .sixteen.wide.column
+            // .ui.button 
+            //     |debit count
+            // .ui.button 
+            //     |debit amount
+            // .ui.button 
+            //     |credit count
+            // .ui.button 
+            //     |credit amount
+            .ui.header 
+                i.calendar.icon
+                |shift_templates
+            if is_admin
+                .ui.button.add_shift_template
+                    i.plus.icon
+                    |add shift_template
+            .scrolling
+                .ui.stackable.six.cards
+                    each next_shift_templates
+                        +shift_template_card
+        .sixteen.wide.column
+            // +shift_template_cloud
+
+
+template(name='shift_template_card')
+    a.card(href="/shift_template/#{_id}/view")
+        .image
+            img.ui.raw.image(src="{{c.url image_id width=400 height=300 crop='fill'}}")    
+        .content
+            .ui.header
+                |#{title}
+            .ui.header 
+                i.clock.icon
+                |{{start_time}} - {{end_time}}
+            if default_leader
+                .item #{default_shift_template_leader.name} default leader
+        a.ui.button(href="/shift_template/#{_id}/view")
+            |view
+            i.right.chevron.icon
+
+
+template(name='shift_template_view')
+    with current_doc
+        .ui.stackable.padded.grid
+            .center.aligned.row 
+                .four.wide.center.aligned.column
+                    a.ui.fluid.big.compact.button(href="/shifts")
+                        i.chevron.left.icon
+                        i.large.clock.icon
+                        |shifts
+                .eight.wide.center.aligned.column
+                    .ui.header 
+                        +icon name='invoice'
+                        |view shift template
+                        |#{title}
+                .four.wide.center.aligned.column
+                    if can_edit 
+                        a.ui.big.blue.icon.button(href="/shift_template/#{_id}/edit" title='edit shift_template')
+                            i.pencil.large.icon
+            .row 
+                .four.wide.column
+                    .ui.big.green.fluid.button.create_instance
+                        i.plus.icon
+                        |create instance
+                    .ui.header instances
+                    each instances
+                        a.ui.header(href="/shift") #{date}
+                .eight.wide.column
+                    .ui.header
+                        |default leader:
+                        |#{shift_default_template_leader.name}
+                    +textarea_view key='description' label='description' direct=true
+                    +image_view key='image_id' label='image' direct=true
+                    div 
+                    +array_view key='tags' label='tags' direct=true
+                    .spacer
+                    .spacer
+                    +comments
+                    // +voting_full
+                    //- +array_view key='location_tags' label='location_tags' direct=true
+                .four.wide.column
+                    .ui.header from {{start_time}}
+                        | to {{end_time}}
+
+
+template(name='shift_template_edit')
+    with current_doc
+        .ui.stackable.padded.grid
+            .middle.aligned.row 
+                .four.wide.center.aligned.column
+                    a.ui.big.green.icon.button(href="/shift_template/#{_id}/view" title='save')
+                        i.checkmark.big.icon
+                        // |save
+                .eight.wide.center.aligned.column
+                    .ui.header 
+                        +icon name='invoice'
+                        small edit shift template
+                        |#{title}
+                .four.wide.center.aligned.column
+                    .ui.icon.button.delete_item(title='delete shift_template')
+                        i.large.remove.icon
+            .row 
+                .four.wide.column
+                    +image_edit key='image_id' label='image' direct=true
+                    +time_edit key='start_time' label='start time' direct=true
+                    +time_edit key='end_time' label='end time' direct=true
+                .eight.wide.column
+                    .ui.header 
+                        small author
+                        |#{_author.username}
+                    
+                    +text_edit key='title' label='title' direct=true
+                    +textarea_edit key='description' label='description' direct=true
+                    div 
+                    +array_edit key='tags' label='tags' direct=true
+                    //- +array_edit key='location_tags' label='location_tags' direct=true
+                .four.wide.column
+                    .ui.header
+                        i.user.tie.icon
+                        |default leader
+                    with default_shift_template_leader
+                        a.ui.big.button(href="/user/#{username}") 
+                            img.ui.avatar.image(src="{{c.url profile_image_id height=200 width=200 gravity='face' crop='fill'}}")
+                            |#{username}
+                        i.remove.link.icon.clear_default_leader
+                    unless default_shift_template_leader
+                        .ui.segment
+                            .ui.small.header select steward as default leader
+                            each unselected_stewards
+                                .ui.basic.button.select_default_leader
+                                    img.ui.avatar.compact.image(src="{{c.url profile_image_id height=200 width=200 gravity='face' crop='fill'}}")
+                                    |#{name}
+                    +number_edit key='default_leader_bounty' label='default leader bounty' direct=true
+                    

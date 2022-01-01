@@ -1,0 +1,93 @@
+template(name='event_edit')
+    with current_doc
+        .ui.stackable.padded.grid
+            .centered.middle.aligned.row 
+                .sixteeen.wide.column
+                    a.ui.icon.green.big.circular.button(href="/event/#{_id}/view" title='save')
+                        i.checkmark.big.icon
+                    .ui.inline.header 
+                        +icolor name='tear-off-calendar'
+                        |edit event
+                    +boolean_edit key='published' label='published' direct=true
+                    .ui.icon.basic.circular.button.delete_item(title='delete')
+                        i.remove.red.icon
+            .row
+                .six.wide.column
+                    .ui.header 
+                        small author
+                        |#{_author.name}
+                    +text_edit key='title' label='title' direct=true
+                    // +slug_edit key='slug' label='slug' icon='slug' direct=true
+                    // if reservation_exists
+                    //     .ui.header date: #{date}
+                    //     .ui.header time: #{time}
+                    // else
+                    +date_edit key='date' label='date' direct=true
+                    // +time_edit key='time' label='time' direct=true
+                    // +number_edit key='hour_duration' label='hours' direct=true
+                    +range_edit label='time range' direct=true
+                    +single_user_edit key='facilitator_id' label='facilitator' icon='chess king' direct=true
+                    +single_user_edit key='support_id' label='support' icon='chess queen' direct=true
+                    div 
+                    +array_edit key='tags' label='tags' icon='red tags' direct=true
+                    .ui.header
+                        i.users.icon
+                        |audience
+                    +number_edit key='max_attendees' label='max attendees' min='0' max='100' direct=true
+                    +number_edit key='max_attendees_tickets' label='max attendees for points' min='0' max=max_attendees direct=true
+                    // div
+                    // +boolean_edit key='free' label='free' direct=true
+                    // unless free
+                    +number_edit key='point_price' label='minimum points per ticket' min='0' max='100' direct=true
+                    +number_edit key='usd_price' label='minimum dollars per ticket' min='0' max='100' direct=true
+                .ten.wide.column
+                    .ui.segment
+                        .ui.inline.header room
+                        each rooms 
+                            .ui.circular.button.select_room(class=room_button_class)
+                                img.ui.mini.rounded.inline.image(src="{{c.url image_id height=500 width=500 gravity='face' crop='fill'}}")
+                                .ui.small.inline.header #{title}
+                                if dollars_per_hour
+                                    | $#{dollars_per_hour}/hr
+                        if room_id
+                            unless key_value_is 'room_title' 'other'
+                                with event_room
+                                    // .ui.header #{title}
+                                    // |$#{dollars_per_hour}
+                                    .ui.small.header schedule for #{current_doc.date}
+                                .ui.header slot 1: 9am-11am
+                                +reserve_button slot=1
+                                .ui.header slot 2: 11am-1pm
+                                +reserve_button slot=2
+                                .ui.header slot 3: 1pm-3pm  
+                                +reserve_button slot=3
+                                .ui.header slot 4: 3pm-5pm   
+                                +reserve_button slot=4
+                            else
+                                +text_edit key='location' label='location' icon='red marker' direct=true
+                                +array_edit key='location_tags' label='location tags' icon='red tags' direct=true
+                                
+                                +datetime_edit key='start_datetime' label='start' direct=true
+                                +datetime_edit key='end_datetime' label='end' direct=true
+                         each room_reservations
+                            .ui.header reserved
+                            
+                    +html_edit key='description' label='description' direct=true
+                    +image_edit key='image_id' label='image' direct=true
+
+
+template(name='reserve_button')
+    if slot_res
+        .ui.segment
+            with slot_res
+                .ui.header 
+                    |reserved by #{_author.name}
+                if can_edit
+                    .ui.circular.icon.button.cancel_res
+                        i.red.remove.icon
+    else 
+        // if event_room.dollars_per_hour
+        //     .ui.green.button.buy_slot buy slot #{slot}
+        //     .ui.green.button.request_slot request for points
+        // else
+        .ui.green.button.reserve_slot reserve slot #{slot}

@@ -1,0 +1,231 @@
+template(name='event_view')
+    with current_doc
+        .ui.stackable.padded.grid
+            .middle.aligned.row 
+                .sixteen.wide.column
+                    if currentUser
+                        a(href="/events")
+                            i.calendar.big.circular.link.icon
+                    a.pointer(href="http://oneboulder.one" target="_window")
+                        img.ui.inline.tiny.image(src="{{c.url 'one_logo' }}" class=currentUser.invert_class)
+                
+                    .ui.large.inline.header #{title}
+                    if can_edit
+                        if published 
+                            i.big.eye.green.icon(title='published')
+                        else 
+                            i.big.eye.red.slash.icon(title='unpublished')
+                    // div
+                    .ui.inline.header {{medium_date date}}
+                    // .ui.inline.header {{long_date start_datetime}}
+                    // .ui.inline.grey.header {{from_now date}}
+                    if time 
+                        .ui.inline.grey.header {{time}}
+                    if can_edit
+                        a.edit_event(href="/event/#{_id}/edit" title='edit')
+                            i.large.blue.link.pencil.circular.icon
+                    if is_admin
+                        a.edit_event(href="/event/#{_id}/edit" title='edit')
+                            i.large.blue.link.pencil.circular.icon
+            .row 
+                .five.wide.column.scrolling
+                    if location 
+                        i.large.marker.icon(title='location')
+                        |#{location}
+                    a(href="{{c.url image_id }}")
+                        img.ui.fluid.rounded.image(src="{{c.url image_id }}" class=currentUser.invert_class)
+                    .spacer
+                    a(href="/m/room/#{event_room._id}/view")
+                        img.ui.small.circular.inline.image.pointer.zoom(src="{{c.url event_room.image_id }}" class=currentUser.invert_class)
+                        .ui.inline.header.pointer.zoom
+                            |#{event_room.title}
+                    if is_admin
+                        .ui.segment
+                            .ui.header 
+                                i.shield.icon
+                                | author
+                            a.ui.header(href="/user/#{_author.username}") 
+                                img.ui.avatar.image(src="{{c.url _author.profile_image_id height=200 width=200 gravity='face' crop='fill'}}" class=currentUser.invert_class)
+                                |#{_author.name}
+                    if facilitator
+                        .ui.dividing.header 
+                            i.chess.king.grey.icon
+                            |facilitator
+                        a.ui.header(href="/user/#{fac.username}") 
+                            img.ui.avatar.image(src="{{c.url fac.profile_image_id height=200 width=200 gravity='face' crop='fill'}}" class=currentUser.invert_class)
+                            |#{fac.name}
+                    if support
+                        .ui.dividing.header 
+                            i.chess.queen.grey.icon
+                            |support
+                        a.ui.header(href="/user/#{support.username}") 
+                            img.ui.avatar.image(src="{{c.url support.profile_image_id height=200 width=200 gravity='face' crop='fill'}}" class=currentUser.invert_class)
+                            |#{support.name}
+                    if is_admin
+                        .ui.header
+                            |#{max_attendees} max attendees
+                    // .ui.small.grey.header 
+                    //     i.line.chart.icon
+                    //     |stats
+                    if is_dev
+                        .ui.small.header #{views} views
+                        each viewers
+                            .ui.label #{username}
+                        with current_doc
+                            +gcal_button
+                    .ui.hidden.divider
+                    +array_view key='tags' label='tags' icon='tags red' direct=true
+                    div
+                    if currentUser
+                        +voting_full
+                    +array_view key='location_tags' label='location tags' icon='marker' direct=true
+                .seven.wide.column
+                    // a.ui.header(href="/user/#{target.username}")
+                    //     |#{target.username}
+                    .f13.scrolling
+                        |!{description}
+                    // div 
+                    // .spacer
+                    // .spacer
+                    +comments
+                .four.wide.column
+                    .ui.inline.large.header 
+                        |RSVP
+                    if tickets_left
+                        .ui.grey.small.inline.header #{tickets_left} available
+                        .spacer
+                        .ui.grey.small.inline.header  min requested 
+                        // .spacer
+                        // .ui.grey.small.inline.header (give more if you want to)
+                        div
+                    if my_ticket
+                        .ui.header your ticket
+                        with my_ticket
+                            .ui.segment
+                                if is_usd
+                                    .ui.inline.green.header ${{money_format amount}}
+                                else
+                                    .ui.inline.header #{point_amount}pts
+                                |#{when} 
+                                if is_usd
+                                    .ui.button.request_refund
+                                        i.undo.icon
+                                        |request refund
+                                else
+                                    .ui.button.return
+                                        i.undo.icon
+                                        |return
+                    unless my_ticket
+                        .ui.huge.fluid.action.left.icon.input
+                            i.dollar.icon
+                            input.usd_input(type='number' min=usd_price value=usd_price)
+                            .ui.green.icon.button.buy_for_usd
+                                i.checkmark.large.icon
+                        // unless currentUser
+                        //     .ui.green.large.fluid.button
+                        //         i.sun.icon
+                        //         |add on day membership +$10
+                        if currentUser
+                            .ui.horizontal.divider or
+                            .ui.big.fluid.action.left.icon.input
+                                i.hashtag.icon
+                                input.point_input(type='number' min=point_price value=point_price)
+                                .ui.teal.icon.button.buy_for_points
+                                    i.checkmark.large.icon
+                    // .ui.big.green.fluid.button.buy_for_usd
+                    //     i.cart.icon
+                    //     |buy for min
+                    //     |$#{usd_price} 
+
+                    // if currentUser
+                    //     .ui.horizontal.divider or
+                    //     if currentUser.has_points
+                    //         .ui.big.teal.fluid.button.buy_for_points
+                    //             // i.cart.icon
+                    //             // |buy for 
+                    //             |#{point_price}pts
+                    //     else
+                    //         .ui.big.teal.disabled.fluid.button
+                    //             // i.cart.icon
+                    //             // |buy for 
+                    //             |#{point_price}pts
+                    if currentUser
+                        .spacer
+                        .spacer
+                        .ui.dividing.header
+                            // +icolor name='activity-history' cl='ui inline image'
+                            |#{event_tickets.count} spots reserved
+                        .ui.comments
+                            each event_tickets
+                                .comment
+                                    a.avatar(href="/user/#{_author.username}") 
+                                        img(src="{{c.url _author.profile_image_id height=200 width=200 gravity='face' crop='fill'}}" class=currentUser.invert_class)
+                                    a.content(href="/m/ticket/#{_id}/view")
+                                        a.author(href="/user/#{_author.username}") 
+                                            |#{_author.name}
+                                        .metadata
+                                            span.date #{when}
+                                        .text
+                                            if is_usd
+                                                .ui.inline.green.header ${{money_format amount}}
+                                            else
+                                                .ui.inline.header #{point_amount}pts
+                                        // span.meta
+                                        //     if can_edit
+                                        //         +remove_icon
+                                        //     else
+                                        //         +voting_small
+                            
+                        +attendance
+    .ui.modal
+        i.close.icon
+        .header buy ticket for #{current_doc.point_price}pts?
+        .content
+            .description
+                .ui.header event title: #{current_doc.title}
+                .ui.input
+                    input(type='number' min=current_doc.point_price)
+        .actions
+            .ui.red.cancel.button cancel
+            .ui.green.big.ok.button ok
+
+
+
+
+
+
+
+template(name='attendance')
+    if event_tickets.length
+        .ui.inline.green.header 
+            |#{ticket.length} going
+    // .ui.inline.small.grey.header ticket required
+    // .ui.icon.button.pick_going 
+    //     i.green.checkmark.big.icon
+    // each going 
+    //     a.ui.circular.basic.circular.button(href="/user/#{username}")    
+    //         img.ui.avatar.compact.image(src="{{c.url profile_image_id height=200 width=200 gravity='face' crop='fill'}}" class=currentUser.invert_class)
+    //         |#{username}
+    .ui.basic.circular.button.mark_maybe
+        .ui.orange.header
+            // if currentUser
+            //     +icolor name='clock' cl='mark_maybe pointer'
+            // else
+            i.question.icon
+            |#{maybe_going.count} maybe
+    // .ui.icon.button.mark_maybe 
+    //     i.yellow.minus.big.icon
+    each maybe_going
+        a.ui.circular.basic.circular.button(href="/user/#{username}")    
+            img.ui.avatar.compact.image(src="{{c.url profile_image_id height=200 width=200 gravity='face' crop='fill'}}" class=currentUser.invert_class)
+            |#{username}
+    .ui.basic.circular.button.mark_not
+        .ui.red.header
+            i.ban.icon
+            |#{not_going.count} not going
+        // .ui.icon.button.pick_not
+            // i.big.ban.icon
+    each not_going
+        a.ui.circular.basic.circular.button(href="/user/#{username}")    
+            img.ui.avatar.compact.image(src="{{c.url profile_image_id height=200 width=200 gravity='face' crop='fill'}}" class=currentUser.invert_class)
+            |#{username}

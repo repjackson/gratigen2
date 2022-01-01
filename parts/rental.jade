@@ -211,7 +211,7 @@ template(name='rental_view')
                     +rental_view_reservations
                     +comments
                 .four.wide.column.scrolling
-                    +reserve_button
+                    +reserve_rental_button
                     +boolean_view key='daily_rate' label='daily rate' icon='sun' direct=true
                     if daily_rate
                         +float_view key='daily_dollars' label='daily rate' icon='exchange' direct=true
@@ -340,7 +340,7 @@ template(name='rental_status')
         
         
         
-template(name='reserve_button')
+template(name='reserve_rental_button')
     unless approval_required
         .ui.big.green.fluid.button.new_reservation 
             |reserve

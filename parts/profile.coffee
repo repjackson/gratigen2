@@ -35,10 +35,10 @@ if Meteor.isClient
         @layout 'user_layout'
         @render 'user_deliveries'
         ), name:'user_deliveries'
-    Router.route '/user/:username/favorites', (->
+    Router.route '/user/:username/bookmarks', (->
         @layout 'user_layout'
-        @render 'user_favorites'
-        ), name:'user_favorites'
+        @render 'user_bookmarks'
+        ), name:'user_bookmarks'
     Router.route '/user/:username/posts', (->
         @layout 'user_layout'
         @render 'user_posts'
@@ -57,7 +57,16 @@ if Meteor.isClient
     Template.user_layout.onCreated ->
         @autorun -> Meteor.subscribe 'user_from_username', Router.current().params.username, ->
         # @autorun -> Meteor.subscribe 'user_referenced_docs', Router.current().params.username, ->
+    Template.user_bookmarks.onCreated ->
+        @autorun -> Meteor.subscribe 'user_bookmark_docs', Router.current().params.username, ->
+        # @autorun -> Meteor.subscribe 'user_referenced_docs', Router.current().params.username, ->
+if Meteor.isServer 
+    Meteor.publish 'user_bookmark_docs', ->
+        Docs.find 
+            _id:$in:Meteor.user().bookmark_ids
 
+
+if Meteor.isClient 
     Template.user_layout.onRendered ->
         Meteor.setTimeout ->
             $('.button').popup()

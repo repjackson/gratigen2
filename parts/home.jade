@@ -10,23 +10,6 @@ template(name='home')
         //     .center.aligned.column
         //         .ui.header start shopping zero waste!
 
-        .four.column.row
-            a.center.aligned.column.zoomer(href="/shop")
-                img.ui.image(src="https://nudefoodsmarket.com/wp-content/uploads/2020/09/localbites300x300-300x300.jpg")
-                // +i name='shopping-cart' cl='ui inline image'
-                // i.food.icon
-                .ui.header local bites
-            a.center.aligned.column.zoomer(href="/shop") 
-                // i.users.icon
-                img.ui.image(src="https://nudefoodsmarket.com/wp-content/uploads/2020/09/Producebox300x300-300x300.jpg")
-                // +i name='conference' cl='ui inline image'
-                .ui.header 'ugly' produce
-            a.center.aligned.column.zoomer(href="/shop")
-                img.ui.image(src="https://nudefoodsmarket.com/wp-content/uploads/2020/09/buildyourown600x600-300x300.jpg")
-                .ui.header pantry staples
-            a.center.aligned.column.zoomer(href="/shop")
-                img.ui.image(src="https://nudefoodsmarket.com/wp-content/uploads/2020/10/Lemony-Lentil-Soup-e1604278933195.jpg")
-                .ui.header nude meals
     .ui.vertical.stripe.segment
         .ui.stackable.padded.grid
             .seven.column.center.aligned.row
@@ -100,6 +83,361 @@ template(name='home')
             each latest_created
                 .ui.header #{title}
             .ui.header 
-                
+    .ui.center.aligned.basic.segment
+        .ui.basic.big.compact.circular.button.debit
+            i.gift.red.icon
+            |send points
+        .ui.basic.big.compact.circular.button.request
+            i.concierge.bell.teal.icon
+            |+ request
+        .ui.basic.big.compact.circular.button.offer
+            i.hand.holding.heart.olive.icon
+            |+ offer
+        .ui.basic.big.compact.circular.button.add_message
+            i.chat.blue.icon
+            |+ message
+        .ui.basic.big.compact.circular.button.add_event
+            i.calendar.purple.icon
+            |+ event
+        .ui.basic.big.compact.circular.button.add_expense
+            i.dollar.purple.icon
+            |+ expense
+        .ui.basic.big.compact.circular.button.add_bug
+            i.bug.red.icon
+            |+ bug
+        a.ui.basic.big.circular.button(href='/register')
+            i.user.plus.green.icon
+            |member
+
+    .ui.stackable.grid
+        .row 
+            // if is_admin
+            //     .ui.big.button.check_notifications
+            //         |check
+            //     .ui.big.button.send_notification
+            //         |send
+            if template_subs_ready
+                +finance_bar
+                    
+        // .centered.row
+        //     .sixteen.wide.center.aligned.column
+        //         each members 
+        //             if profile_image_id
+        //                 a(href="/user/#{username}" title="{{name}} {{points}}")
+        //                     img.ui.tiny.pointer.inline.circular.spaced_image.zoom.image(src="{{c.url profile_image_id height=200 width=200 gravity='face' crop='fill'}}" class=user_class)
+        //                 // if avatar_image_id
+        //                 // .ui.move.reveal.tiny.circular.spaced_image.image
+        //                 //     .visible.content
+        //                 //         img(src="{{c.url profile_image_id height=500 width=500 gravity='face' crop='fill'}}") 
+        //                 //     .hidden.content
+        //                 //         img(src="{{c.url avatar_image_id height=500 width=500 gravity='face' crop='fill'}}") 
+        //                 // else
+        // .centered.row
+            // .sixteen.wide.center.aligned.column
+    
+
+        // .centered.row
+        //     .four.wide.column
+                // if can_debit
+            // .four.wide.column
+            //     // if can_debit
+            //     .ui.fluid.teal.button.request
+            //         // i.hand.holding.heart.icon
+            //         +icolor name='compass' cl='ui mini inline image'
+            //         |add explorer
+                // else
+                //     .ui.fluid.teal.disabled.button
+                //         // i.hand.holding.heart.icon
+                //         +icolor name='request-service' cl='ui mini inline image'
+                //         |request
+            // .two.wide.column
+            //     // .ui.center.aligned.grey.header.refresh_stats
+            //     //     i.line.chart.icon
+            //     //     |stats
+            //     with stats_doc
+            //         .ui.list
+            //             .item #{total_points} system points
                         
-    +footer
+        .row
+            // .four.wide.column
+            //     .ui.center.aligned.header
+            //         // i.shop.icon
+            //         +icolor name='shop' cl='ui image'
+            //         |featured products
+            //     // if is_admin 
+            //     //     i.plus.icon.add_shift
+            //     .medscroll
+            //         each featured_products
+            //             a.ui.fluid.card(href="/product/#{_id}/view")
+            //                 .image
+            //                     img.ui.image(src="{{c.url image_id height=200 width=500 crop='fill'}}")
+            //                 .content
+            //                     .header
+            //                         |#{title}
+            //                     .description
+            //                         // if _author.profile_image_id
+            //                         //     img.ui.avatar.image(src="{{c.url _author.profile_image_id height=500 width=500 gravity='face' crop='fill'}}" class=user_class)
+            //                         // | #{_author_username}
+            //                         // div
+            //                         .ui.inline.header $#{usd_price}
+            //                         .ui.inline.header #{point_price}
+            //                     // .meta #{when}
+            //                     // .description 
+            //                     //     |#{description}
+            //                     // each tags 
+            //                     //     .ui.tiny.basic.label #{this}
+            // .four.wide.column
+            //     .ui.center.aligned.header
+            //         // i.clock.icon
+            //         +icolor name='clock' cl='ui image'
+            //         |next shifts
+            //     // if is_admin 
+            //     //     i.plus.icon.add_shift
+            //     .medscroll
+            //         each next_shifts
+                            +home_shift_card
+            .four.wide.column
+                // .ui.center.aligned.header
+                a.ui.center.aligned.header(href="/m/debit")
+                    i.gift.red.icon
+                    |gifts
+                .medscroll
+                    each latest_debits
+                        +debit_card
+            .four.wide.column
+                // .ui.center.aligned.header
+                a.ui.center.aligned.header(href="/events")
+                    i.calendar.orange.icon
+                    |events
+                // if is_admin 
+                //     i.plus.icon.add_event
+                    
+                .medscroll
+                    each next_events
+                        +home_event_card
+            .four.wide.column
+                // .ui.center.aligned.header
+                a.ui.center.aligned.header(href="/m/request")
+                    i.concierge.bell.teal.icon
+                    |requests
+                .medscroll
+                    each latest_requests
+                        +home_request_card
+                                            
+            .four.wide.column
+                a.ui.center.aligned.header(href="/m/offer")
+                    i.hand.holding.heart.icon
+                    |offers
+                .ui.large.link.selection.list.medscroll
+                    each latest_offers
+                        +home_offer_card
+            .four.wide.column
+                a.ui.center.aligned.header(href="/m/post")
+                    i.newspaper.icon
+                    |news
+                .ui.large.link.selection.list.medscroll
+                    each latest_posts
+                        a.item(href="/m/post/#{_id}/view")
+                            .header #{title}
+                
+                // .medscroll
+                    // each latest_debits
+                    //     a.ui.card(href="/debit/#{_id}/view")
+                    //         .content
+                    //             .description 
+                    //                 if _author.profile_image_id
+                    //                     img.ui.avatar.image(src="{{c.url _author.profile_image_id height=500 width=500 gravity='face' crop='fill'}}" class=user_class)
+                    //                 | #{_author_username}
+                    //                 .ui.inline.header >
+                    //                 if recipient.profile_image_id
+                    //                     img.ui.avatar.image(src="{{c.url recipient.profile_image_id height=500 width=500 gravity='face' crop='fill'}}" class=user_class)
+                    //                 |#{recipient.username}
+                    //                 .ui.inline.header #{amount}p
+                    //             .meta #{when}
+                    //             .description 
+                    //                 |#{description}
+                    //             each tags 
+                    //                 .ui.tiny.basic.label #{this}
+                    
+                    
+                    
+template(name='finance_bar')
+    .sixteen.wide.column.toggle_finance_details
+        .ui.green.small.progress.bar.pointer
+            .bar
+                .progress
+            .label
+                |monthly budget progress / 20k
+        if viewing_finance_details
+            .ui.stackable.grid
+                .two.column.row
+                    .column
+                        .ui.header #{finance_stat.membership_count} memberships totaling $#{finance_stat.total_membership_sum}
+                        // .ui.header income from events
+                    .column
+                        // .ui.header most generative event
+                        // .ui.header most generative member
+                            
+                                    
+template(name='home_request_card')
+    .ui.segment.view_request.pointer
+        .content
+            if youtube_id
+                +youtube_view key='youtube_id' direct=true
+            else if image_id
+                img.ui.raw.image(src="{{c.url image_id width=400 height=300 crop='fill'}}")    
+
+            .header
+                .ui.inline.header #{point_bounty}p: #{title}
+                if _author.profile_image_id
+                    with _author
+                        img.ui.avatar.image(src="{{c.url profile_image_id height=500 width=500 gravity='face' crop='fill'}}" class=user_class title=shortname)
+                | #{_author.name}
+            |!{description}
+            .meta #{when}
+            // each tags 
+            //     .ui.tiny.basic.label #{this}
+            if doc_comments.count
+                .meta
+                    each doc_comments 
+                        i.grey.chat.outline.icon
+                        img.ui.avatar.image(src="{{c.url _author.profile_image_id height=200 width=200 gravity='face' crop='fill'}}" class=user_class)
+                        |#{body}
+                        div
+
+
+                                    
+template(name='home_offer_card')
+    .ui.segment.view_offer.pointer
+        .content
+            if youtube_id
+                +youtube_view key='youtube_id' direct=true
+            else if image_id
+                img.ui.raw.image(src="{{c.url image_id width=400 height=300 crop='fill'}}")    
+            .header
+                .ui.inline.header #{title}
+                if _author.profile_image_id
+                    with _author
+                        img.ui.avatar.image(src="{{c.url profile_image_id height=500 width=500 gravity='face' crop='fill'}}" class=user_class title=shortname)
+                | #{_author.name}
+            // |!{description}
+            .meta #{when}
+            if point_price
+                |#{point_price}p
+            if dollar_price
+                |$#{dollar_price}
+            // each tags 
+            //     .ui.tiny.basic.label #{this}
+            +comments_view_small
+            
+            
+template(name='comments_view_small')            
+    if doc_comments.count
+        .meta
+            each doc_comments 
+                i.grey.chat.outline.icon
+                img.ui.avatar.image(src="{{c.url _author.profile_image_id height=200 width=200 gravity='face' crop='fill'}}" class=user_class)
+                |#{body}
+                div
+
+
+                                    
+                                    
+template(name='home_event_card')
+    a.ui.fluid.card(href="/event/#{_id}/view")
+        img.ui.image(src="{{c.url image_id height=200 width=500 crop='fill'}}")
+        .content
+            .header
+                | #{title} 
+            .meta    
+                |{{medium_date date}}
+                |#{time}
+                // |{{home_long_date start_datetime}}
+                // .ui.small.grey.inline.header {{from_now start_datetime}}
+            .meta    
+                .ui.inline.small.header $#{usd_price} / #{point_price}p
+            .meta
+                if fac
+                    |led by
+                    if fac.profile_image_id
+                        with fac
+                            img.ui.avatar.spaced.image(src="{{c.url profile_image_id height=500 width=500 gravity='face' crop='fill'}}" class=user_class title=shortname)
+                    | #{fac.name}
+            // .meta #{when}
+            .description 
+            if location
+                i.marker.icon 
+                |#{location}
+            div 
+        .content
+            |#{going.count}
+            i.checkmark.green.large.icon
+            each going
+                img.ui.avatar.image(src="{{c.url profile_image_id height=200 width=200 gravity='face' crop='fill'}}" class=user_class title=shortname)
+            // i.question.orange.large.icon
+            // | #{maybe_user_ids.length}
+            // each maybe_going
+            //     img.ui.avatar.image(src="{{c.url profile_image_id height=200 width=200 gravity='face' crop='fill'}}" class=user_class title=shortname)
+            // | #{not_user_ids.length}
+            // i.remove.red.large.icon
+            // each not_going
+            //     img.ui.avatar.image(src="{{c.url profile_image_id height=200 width=200 gravity='face' crop='fill'}}" class=user_class title=shortname)
+            +comments_view_small
+                               
+                               
+                               
+                                    
+template(name='debit_card')
+    .ui.card.pointer.view_debit
+        if image_id
+            img.ui.image(src="{{c.url image_id height=200 width=500 crop='fill'}}")
+        .content
+            .description 
+                if _author.profile_image_id
+                    with _author
+                        img.ui.avatar.image(src="{{c.url profile_image_id height=500 width=500 gravity='face' crop='fill'}}" class=user_class)
+                | #{_author.shortname}
+                a.ui.inline.header(href="/debit/#{_id}/view") #{amount}p
+                .ui.inline.header >
+                if recipient.profile_image_id
+                    with recipient
+                        img.ui.avatar.image(src="{{c.url profile_image_id height=500 width=500 gravity='face' crop='fill'}}" class=user_class)
+                |#{recipient.shortname}
+            .meta #{when}
+            .description.f11
+                |#{description}
+            .spacer
+            each tags 
+                .ui.small.basic.label #{this}
+            if upvoter_ids
+                +voting_tiny
+            +comments_view_small
+                                    
+template(name='join_button')
+    .ui.fluid.green.button.join
+        i.checkmark.icon
+        |join
+
+
+
+
+template(name='home_shift_card')
+    a.ui.card(href="/shift/#{_id}/view")
+        .content
+            .header
+                .ui.inline.header
+                // if _author.profile_image_id
+                //     img.ui.avatar.image(src="{{c.url _author.profile_image_id height=500 width=500 gravity='face' crop='fill'}}" class=user_class)
+                // | #{_author_username}
+                .item from {{from_now start_datetime}} > {{from_now end_datetime}}
+                if shift_contributors 
+                    each shift_contributors
+                        img.ui.avatar.image(src="{{c.url profile_image_id height=500 width=500 gravity='face' crop='fill'}}" class=user_class)
+                        |#{username}
+            .meta #{when}
+            .description 
+                |#{description}
+            each tags 
+                .ui.tiny.basic.label #{this}
+                        
+    // +footer

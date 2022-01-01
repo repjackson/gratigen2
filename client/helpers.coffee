@@ -6,6 +6,10 @@ Template.registerHelper 'parent_doc', () ->
     Docs.findOne @parent_id
     # Template.parentData()
 
+Template.registerHelper 'user_bookmark_docs', (model) ->
+    Docs.find 
+        _id:$in:Meteor.user().bookmark_ids
+
 Template.registerHelper 'model_docs_helper', (model) ->
     console.log model
     Docs.find 
@@ -23,7 +27,7 @@ Template.registerHelper 'product_count',-> Counts.get('product_count')
 Template.registerHelper 'ingredient_count',-> Counts.get('ingredient_count')
 Template.registerHelper 'subscription_count',-> Counts.get('subscription_count')
 Template.registerHelper 'source_count',-> Counts.get('source_count')
-Template.registerHelper 'giftcard_count',-> Counts.get('giftcard_count')
+# Template.registerHelper 'giftcard_count',-> Counts.get('giftcard_count')
 Template.registerHelper 'user_count',-> Counts.get('user_count')
 Template.registerHelper 'staff_count',-> Counts.get('staff_count')
 Template.registerHelper 'customer_count',-> Counts.get('customer_count')
