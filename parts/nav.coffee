@@ -15,7 +15,7 @@ if Meteor.isClient
             $('.ui.left.sidebar')
                 .sidebar({
                     context: $('.bottom.segment')
-                    transition:'overlay'
+                    transition:'push'
                     mobileTransition:'scale'
                     exclusive:true
                     duration:200
@@ -27,8 +27,8 @@ if Meteor.isClient
             $('.ui.rightbar')
                 .sidebar({
                     context: $('.bottom.segment')
-                    transition:'overlay'
-                    mobileTransition:'overlay'
+                    transition:'push'
+                    mobileTransition:'push'
                     exclusive:true
                     duration:200
                     scrollLock:true

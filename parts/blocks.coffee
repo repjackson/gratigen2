@@ -19,6 +19,38 @@ if Meteor.isClient
         'click .print': ->
             console.log @
    
+    Template.bookmark_button.helpers
+        is_bookmarked: ->
+            Meteor.user().bookmark_ids and @_id in Meteor.user().bookmark_ids
+            
+    Template.bookmark_button.events
+        'click .toggle_bookmark': ->
+            if Meteor.user().bookmark_ids and @_id in Meteor.user().bookmark_ids
+                Meteor.users.update Meteor.userId(), 
+                    $pull: 
+                        bookmark_ids:@_id
+                $('body').toast(
+                    showIcon: 'bookmark'
+                    message: 'bookmark removed'
+                    # showProgress: 'bottom'
+                    class: 'info'
+                    displayTime: 'auto',
+                    position: "bottom right"
+                )
+                        
+            else 
+                Meteor.users.update Meteor.userId(), 
+                    $addToSet: 
+                        bookmark_ids:@_id
+                $('body').toast(
+                    showIcon: 'bookmark'
+                    message: 'bookmark added'
+                    # showProgress: 'bottom'
+                    class: 'success'
+                    displayTime: 'auto',
+                    position: "bottom right"
+                )
+                
    
     Template.comments.onRendered ->
         Meteor.setTimeout ->

@@ -4,8 +4,9 @@ template(name='giftcards')
             .ui.inline.header 
                 +i name='gift-card'
                 |Giftcards
-            .ui.basic.icon.button.add_giftcard
-                i.large.plus.icon
+            if currentUser
+                .ui.basic.icon.button.add_giftcard
+                    i.large.plus.icon
         .sixteen.wide.column
             .ui.four.stackable.centered.cards
                 each model_docs_helper 'giftcard'
