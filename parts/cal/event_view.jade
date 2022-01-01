@@ -6,9 +6,6 @@ template(name='event_view')
                     if currentUser
                         a(href="/events")
                             i.calendar.big.circular.link.icon
-                    a.pointer(href="http://oneboulder.one" target="_window")
-                        img.ui.inline.tiny.image(src="{{c.url 'one_logo' }}" class=currentUser.invert_class)
-                
                     .ui.large.inline.header #{title}
                     if can_edit
                         if published 
@@ -16,8 +13,8 @@ template(name='event_view')
                         else 
                             i.big.eye.red.slash.icon(title='unpublished')
                     // div
-                    .ui.inline.header {{medium_date date}}
-                    // .ui.inline.header {{long_date start_datetime}}
+                    // .ui.inline.header {{medium_date date}}
+                    .ui.inline.header {{long_date start_datetime}}
                     // .ui.inline.grey.header {{from_now date}}
                     if time 
                         .ui.inline.grey.header {{time}}
@@ -35,10 +32,10 @@ template(name='event_view')
                     a(href="{{c.url image_id }}")
                         img.ui.fluid.rounded.image(src="{{c.url image_id }}" class=currentUser.invert_class)
                     .spacer
-                    a(href="/m/room/#{event_room._id}/view")
-                        img.ui.small.circular.inline.image.pointer.zoom(src="{{c.url event_room.image_id }}" class=currentUser.invert_class)
-                        .ui.inline.header.pointer.zoom
-                            |#{event_room.title}
+                    // a(href="/m/room/#{event_room._id}/view")
+                    //     img.ui.small.circular.inline.image.pointer.zoom(src="{{c.url event_room.image_id }}" class=currentUser.invert_class)
+                    //     .ui.inline.header.pointer.zoom
+                    //         |#{event_room.title}
                     if is_admin
                         .ui.segment
                             .ui.header 
@@ -79,11 +76,11 @@ template(name='event_view')
                     if currentUser
                         +voting_full
                     +array_view key='location_tags' label='location tags' icon='marker' direct=true
-                .seven.wide.column
+                .seven.wide.column.scrolling
                     // a.ui.header(href="/user/#{target.username}")
                     //     |#{target.username}
-                    .f13.scrolling
-                        |!{description}
+                    // .scrolling
+                    |!{description}
                     // div 
                     // .spacer
                     // .spacer
@@ -102,10 +99,10 @@ template(name='event_view')
                         .ui.header your ticket
                         with my_ticket
                             .ui.segment
-                                if is_usd
-                                    .ui.inline.green.header ${{money_format amount}}
-                                else
-                                    .ui.inline.header #{point_amount}pts
+                                // if is_usd
+                                //     .ui.inline.green.header ${{money_format amount}}
+                                // else
+                                .ui.inline.header #{point_amount}pts
                                 |#{when} 
                                 if is_usd
                                     .ui.button.request_refund
@@ -116,22 +113,24 @@ template(name='event_view')
                                         i.undo.icon
                                         |return
                     unless my_ticket
-                        .ui.huge.fluid.action.left.icon.input
-                            i.dollar.icon
-                            input.usd_input(type='number' min=usd_price value=usd_price)
-                            .ui.green.icon.button.buy_for_usd
-                                i.checkmark.large.icon
-                        // unless currentUser
-                        //     .ui.green.large.fluid.button
-                        //         i.sun.icon
-                        //         |add on day membership +$10
-                        if currentUser
-                            .ui.horizontal.divider or
-                            .ui.big.fluid.action.left.icon.input
-                                i.hashtag.icon
-                                input.point_input(type='number' min=point_price value=point_price)
-                                .ui.teal.icon.button.buy_for_points
-                                    i.checkmark.large.icon
+                        .ui.green.button.buy_ticket
+                            |buy ticket
+                        // .ui.huge.fluid.action.left.icon.input
+                        //     i.dollar.icon
+                        //     input.usd_input(type='number' min=usd_price value=usd_price)
+                        //     .ui.green.icon.button.buy_for_usd
+                        //         i.checkmark.large.icon
+                        // // unless currentUser
+                        // //     .ui.green.large.fluid.button
+                        // //         i.sun.icon
+                        // //         |add on day membership +$10
+                        // if currentUser
+                        //     .ui.horizontal.divider or
+                        //     .ui.big.fluid.action.left.icon.input
+                        //         i.hashtag.icon
+                        //         input.point_input(type='number' min=point_price value=point_price)
+                        //         .ui.teal.icon.button.buy_for_points
+                        //             i.checkmark.large.icon
                     // .ui.big.green.fluid.button.buy_for_usd
                     //     i.cart.icon
                     //     |buy for min
@@ -177,17 +176,17 @@ template(name='event_view')
                                         //         +voting_small
                             
                         +attendance
-    .ui.modal
-        i.close.icon
-        .header buy ticket for #{current_doc.point_price}pts?
-        .content
-            .description
-                .ui.header event title: #{current_doc.title}
-                .ui.input
-                    input(type='number' min=current_doc.point_price)
-        .actions
-            .ui.red.cancel.button cancel
-            .ui.green.big.ok.button ok
+    // .ui.modal
+    //     i.close.icon
+    //     .header buy ticket for #{current_doc.point_price}pts?
+    //     .content
+    //         .description
+    //             .ui.header event title: #{current_doc.title}
+    //             .ui.input
+    //                 input(type='number' min=current_doc.point_price)
+    //     .actions
+    //         .ui.red.cancel.button cancel
+    //         .ui.green.big.ok.button ok
 
 
 

@@ -98,20 +98,20 @@ if Meteor.isClient
         room_button_class: -> 
             if Session.equals('viewing_room_id', @_id) then 'blue' else 'basic'
         viewing_past: -> Session.get('viewing_past')
-        events: ->
+        event_docs: ->
             # console.log moment().format()
             if Session.get('viewing_past')
                 Docs.find {
                     model:'event'
                     published:true
-                    date:$lt:moment().subtract(1,'days').format("YYYY-MM-DD")
+                    # date:$lt:moment().subtract(1,'days').format("YYYY-MM-DD")
                 }, 
                     sort:start_datetime:-1
             else
                 Docs.find {
                     model:'event'
                     published:true
-                    date:$gt:moment().subtract(1,'days').format("YYYY-MM-DD")
+                    # date:$gt:moment().subtract(1,'days').format("YYYY-MM-DD")
                 }, 
                     sort:date:1
     
