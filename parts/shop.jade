@@ -54,13 +54,13 @@ template(name='shop')
             // // div
             // +i name='clock' cl='ui inline mini image'
             .sorting_row.hscroll
-                +session_set key='view_shop_section' value='beans' label='beans' icon='white-beans'
-                +session_set key='view_shop_section' value='coffee' label='coffee' icon='coffee'
-                +session_set key='view_shop_section' value='snacks' label='snacks' icon='potato-chips'
-                +session_set key='view_shop_section' value='fridge' label='fridge' icon='fridge'
-                +session_set key='view_shop_section' value='freezer' label='freezer' icon='ice-cream-freezer'
-                +session_set key='view_shop_section' value='nuts_seeds' label='nuts & seeds' icon='chia-seeds'
-                +session_set key='view_shop_section' value='rice_grains' label='rice & grains' icon='wheat'
+                // +session_set key='view_shop_section' value='beans' label='beans' icon='white-beans'
+                // +session_set key='view_shop_section' value='coffee' label='coffee' icon='coffee'
+                // +session_set key='view_shop_section' value='snacks' label='snacks' icon='potato-chips'
+                // +session_set key='view_shop_section' value='fridge' label='fridge' icon='fridge'
+                // +session_set key='view_shop_section' value='freezer' label='freezer' icon='ice-cream-freezer'
+                // +session_set key='view_shop_section' value='nuts_seeds' label='nuts & seeds' icon='chia-seeds'
+                // +session_set key='view_shop_section' value='rice_grains' label='rice & grains' icon='wheat'
             
                 // +session_set key='view_shop_section' value='coffee' label='coffee' icon='coffee'
                 // +session_set key='view_shop_section' value='beans' label='beans' icon='white-beans'
@@ -182,26 +182,16 @@ template(name='product_card')
             // //- a.image(href="/product/#{_id}")
                 
         .content    
-            +boolean_view key='has_2cup' label='2 cup' direct=true icon='cup'
-            if has_2cup
-                +float_view key='2cup_price' label='2 cup price' icon='cup' direct=true
-            +boolean_view key='has_4cup' label='4 cup' direct=true icon='mason-jar'
-            if has_4cup
-                +float_view key='4cup_price' label='4 cup price' icon='mason-cup' direct=true
-            +boolean_view key='has_8cup' label='8 cup' direct=true icon='glass-jar'
-            if has_8cup
-                +float_view key='8cup_price' label='8 cup price' icon='glass-jar' direct=true
-        
-            // .ui.inline.header 
-            //     |${{fixed price_usd}}
-            // i.big.link.cart.plus.green.icon.add_to_cart
-            // if is_admin
-            //     a(href="/product/#{_id}/edit")
-            //         i.pencil.link.icon
-            // .ui.inline.small.header 
-            //     |(#{menu_section}) 
-            // div
-            // .ui.inline.inline.small.grey.header #{views}
-                // i.eye.icon
-            // .ui.inline.inline.small.grey.header #{points} 
-                // i.line.chart.icon
+            .ui.inline.header 
+                |${{fixed price_usd}}
+            i.big.link.cart.plus.green.icon.add_to_cart
+            if is_admin
+                a(href="/product/#{_id}/edit")
+                    i.pencil.link.icon
+            .ui.inline.small.header 
+                |(#{menu_section}) 
+            div
+            .ui.inline.inline.small.grey.header #{views}
+                i.eye.icon
+            .ui.inline.inline.small.grey.header #{points} 
+                i.line.chart.icon

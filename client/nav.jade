@@ -7,17 +7,19 @@ template(name='nav')
         else 
             a.icon.item.toggle_leftbar.no_blink
                 // .ui.avatar.image.leftmenu
-                .ui.avatar.image
-                    .mobile.hidden
-                        +i name='menu--v1'
+                i.large.bars.icon
+                // .ui.avatar.image
+                //     .mobile.hidden
+                //         +i name='menu--v1'
+                    
                     img.ui.avatar.image.mobile.only(src="/android-chrome-96x96.png")
         a.item.zoomer(href='/' class="{{isActivePath '/'}}" title='dashboard')
-            +i name='home'
+            // +i name='home'
+            i.large.home.icon
             |The Riverside
         a.item.zoomer(href='/shop' class="{{isActivePath '/shop'}}")
-            +i name='food-cart'
-            // +i name='food'
-            // i.home.icon
+            // +i name='food-cart'
+            i.large.shop.icon
             span.mobile.hidden shop
             // .mobile.hidden
             // img.ui.small.image(src="https://nudefoodsmarket.com/wp-content/uploads/2021/03/logo-smaller-300x87.jpg")
@@ -86,49 +88,54 @@ template(name='nav')
                 else 
                     i.food.loading.icon
     .ui.small.attached.borderless.menu.hscroll
-        a.item(href='/ingredients' class="{{isActivePath '/ingredients'}}" title='ingredients')
-            // +i name='ingredients'
-            +i name='grocery-shelf'
+        a.item(href='/groups' class="{{isActivePath '/groups'}}" title='groups')
+            i.user.circle.large.icon
             // span.mobile.hidden &nbsp; 
             // span.mobile.hidden &nbsp; 
-            span.mobile.hidden ingredients
-        a.item(href='/sources' class="{{isActivePath '/sources'}}" title='sources')
-            +i name='field-and-tractor'
-            // span.mobile.hidden &nbsp; 
-            // span.mobile.hidden &nbsp; 
-            span.mobile.hidden sources
+            span.mobile.hidden groups
+        // a.item(href='/sources' class="{{isActivePath '/sources'}}" title='sources')
+        //     +i name='field-and-tractor'
+        //     // span.mobile.hidden &nbsp; 
+        //     // span.mobile.hidden &nbsp; 
+        //     span.mobile.hidden sources
         a.item(href='/members' class="{{isActivePath '/members'}}" title='sources')
-            +i name='groups'
+            // +i name='groups'
+            i.large.users.icon
             // span.mobile.hidden &nbsp; 
             // span.mobile.hidden &nbsp; 
             span.mobile.hidden members
-        a.item(href='/mishi' class="{{isActivePath '/mishi'}}" title='mishi orders')
-            +i name='money'
-            span.mobile.hidden mishi
-        // a.item(href='/scanner' class="{{isActivePath '/scanner'}}" title='scanner')
+        // a.item(href='/mishi' class="{{isActivePath '/mishi'}}" title='mishi orders')
+        //     +i name='money'
+        //     span.mobile.hidden mishi
+        // // a.item(href='/scanner' class="{{isActivePath '/scanner'}}" title='scanner')
         //     +i name='scan-stock'
         // a.item(href='/wp' class="{{isActivePath '/wp'}}" title='wordpress')
         //     +i name='wordpress'
-        a.item(href='/recipes' class="{{isActivePath '/recipes'}}" title='recipes')
-            +i name='cookbook'
-            span.mobile.hidden recipes
-        a.item(href='/questions' class="{{isActivePath '/questions'}}" title='questions')
-            +i name='ask'
-            span.mobile.hidden questions
-        a.icon.item(href='/orders' class="{{isActivePath '/orders'}}" title='orders')
-            +i name='invoice'
+        // a.item(href='/recipes' class="{{isActivePath '/recipes'}}" title='recipes')
+        //     +i name='cookbook'
+        //     span.mobile.hidden recipes
+        // a.item(href='/questions' class="{{isActivePath '/questions'}}" title='questions')
+        //     +i name='ask'
+        //     span.mobile.hidden questions
+        a.item(href='/orders' class="{{isActivePath '/orders'}}" title='orders')
+            // +i name='invoice'
+            i.large.money.icon
             span.mobile.hidden orders
-        a.icon.item(href='/posts' class="{{isActivePath '/posts'}}" title='posts')
-            +i name='blog'
+        a.item(href='/posts' class="{{isActivePath '/posts'}}" title='posts')
+            // +i name='blog'
+            i.large.blog.icon
             span.mobile.hidden blog
-        a.icon.item(href='/trips' class="{{isActivePath '/trips'}}" title='trips')
-            +i name='car'
+        a.item(href='/trips' class="{{isActivePath '/trips'}}" title='trips')
+            // +i name='car'
+            i.large.car.icon
             span.mobile.hidden trips
-        a.icon.item(href='/transfers' class="{{isActivePath '/transfers'}}" title='transfers')
-            +i name='donate'
+        a.item(href='/transfers' class="{{isActivePath '/transfers'}}" title='transfers')
+            i.large.exchange.icon
+            // +i name='donate'
             span.mobile.hidden transfers
-        a.icon.item(href='/rentals' class="{{isActivePath '/rentals'}}" title='rentals')
-            +i name='clock'
+        a.item(href='/rentals' class="{{isActivePath '/rentals'}}" title='rentals')
+            i.large.clock.icon
+            // +i name='clock'
             span.mobile.hidden rentals
 
         
@@ -278,9 +285,9 @@ template(name='right_sidebar')
             a.item.toggle_rightbar(href="/user/#{username}/subscriptions" class="{{isActiveRoute 'user_subscriptions'}}")
                 +i name='clock' cl='ui avatar image'
                 |subscriptions
-            a.item.toggle_rightbar(href="/user/#{username}/pantry" class="{{isActiveRoute 'user_pantry'}}")
-                +i name='cupboard' cl='ui avatar image'
-                |pantry
+            // a.item.toggle_rightbar(href="/user/#{username}/pantry" class="{{isActiveRoute 'user_pantry'}}")
+            //     +i name='cupboard' cl='ui avatar image'
+            //     |pantry
             a.item.toggle_rightbar(href="/user/#{username}/friends" class="{{isActiveRoute 'user_friends'}}")
                 +i name='friends' cl='ui avatar image'
                 |friends
@@ -335,12 +342,12 @@ template(name='left_sidebar')
         a.item.toggle_leftbar(href='/ingredients' class="{{isActivePath '/ingredients'}}" title='shop')
             +i name='ingredients'
             | #{ingredient_count} ingredients
-        a.item.toggle_leftbar(href='/sources' class="{{isActivePath '/sources'}}")
-            +i name='field-and-tractor'
-            | #{source_count} sources
-        a.item.toggle_leftbar(href='/mishi' class="{{isActivePath '/mishi'}}")
-            +i name='money'
-            | mishi orders
+        // a.item.toggle_leftbar(href='/sources' class="{{isActivePath '/sources'}}")
+        //     +i name='field-and-tractor'
+        //     | #{source_count} sources
+        // a.item.toggle_leftbar(href='/mishi' class="{{isActivePath '/mishi'}}")
+        //     +i name='money'
+        //     | mishi orders
         a.item.toggle_leftbar(href='/transfers' class="{{isActivePath '/transfers'}}")
             +i name='donate'
             | point transfers

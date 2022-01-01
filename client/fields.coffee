@@ -112,23 +112,23 @@
 #                     $unset:"#{@key}":1
 
 
-# Template.link_edit.events
-#     'blur .edit_url': (e,t)->
-#         val = t.$('.edit_url').val()
-#         parent = Template.parentData()
-#         doc = Docs.findOne parent._id
-#         if doc
-#             Docs.update parent._id,
-#                 $set:"#{@key}":val
+Template.link_edit.events
+    'blur .edit_url': (e,t)->
+        val = t.$('.edit_url').val()
+        parent = Template.parentData()
+        doc = Docs.findOne parent._id
+        if doc
+            Docs.update parent._id,
+                $set:"#{@key}":val
 
-# Template.datetime_edit.events
-#     'blur .edit_datetime': (e,t)->
-#         val = t.$('.edit_datetime').val()
-#         parent = Template.parentData()
-#         doc = Docs.findOne parent._id
-#         if doc
-#             Docs.update parent._id,
-#                 $set:"#{@key}":val
+Template.datetime_edit.events
+    'blur .edit_datetime': (e,t)->
+        val = t.$('.edit_datetime').val()
+        parent = Template.parentData()
+        doc = Docs.findOne parent._id
+        if doc
+            Docs.update parent._id,
+                $set:"#{@key}":val
 
 
 # Template.i.onCreated ->
@@ -166,119 +166,119 @@
 #                 $set:"#{@key}":val
 
 
-# Template.image_edit.events
-#     "change input[name='upload_image']": (e) ->
-#         files = e.currentTarget.files
-#         parent = Template.parentData()
-#         Cloudinary.upload files[0],
-#             # folder:"secret" # optional parameters described in http://cloudinary.com/documentation/upload_images#remote_upload
-#             # model:"private" # optional: makes the image accessible only via a signed url. The signed url is available publicly for 1 hour.
-#             (err,res) => #optional callback, you can catch with the Cloudinary collection as well
-#                 if err
-#                     console.error 'Error uploading', err
-#                 else
-#                     doc = Docs.findOne parent._id
-#                     if doc
-#                         Docs.update parent._id,
-#                             $set:"#{@key}":res.public_id
+Template.image_edit.events
+    "change input[name='upload_image']": (e) ->
+        files = e.currentTarget.files
+        parent = Template.parentData()
+        Cloudinary.upload files[0],
+            # folder:"secret" # optional parameters described in http://cloudinary.com/documentation/upload_images#remote_upload
+            # model:"private" # optional: makes the image accessible only via a signed url. The signed url is available publicly for 1 hour.
+            (err,res) => #optional callback, you can catch with the Cloudinary collection as well
+                if err
+                    console.error 'Error uploading', err
+                else
+                    doc = Docs.findOne parent._id
+                    if doc
+                        Docs.update parent._id,
+                            $set:"#{@key}":res.public_id
 
-#     'click .call_cloud_visual': (e,t)->
-#         Meteor.call 'call_visual', Router.current().params.doc_id, 'cloud', ->
-#             $('body').toast(
-#                 showIcon: 'dna'
-#                 message: 'image autotagged'
-#                 # showProgress: 'bottom'
-#                 class: 'success'
-#                 displayTime: 'auto',
-#                 position: "bottom center"
-#             )
-
-
-#     'blur .cloudinary_id': (e,t)->
-#         cloudinary_id = t.$('.cloudinary_id').val()
-#         parent = Template.parentData()
-#         Docs.update parent._id,
-#             $set:"#{@key}":cloudinary_id
+    'click .call_cloud_visual': (e,t)->
+        Meteor.call 'call_visual', Router.current().params.doc_id, 'cloud', ->
+            $('body').toast(
+                showIcon: 'dna'
+                message: 'image autotagged'
+                # showProgress: 'bottom'
+                class: 'success'
+                displayTime: 'auto',
+                position: "bottom center"
+            )
 
 
-#     'click #remove_photo': ->
-#         parent = Template.parentData()
-
-#         if confirm 'Remove Photo?'
-#             # Docs.update parent._id,
-#             #     $unset:"#{@key}":1
-#             doc = Docs.findOne parent._id
-#             if doc
-#                 Docs.update parent._id,
-#                     $unset:"#{@key}":1
+    'blur .cloudinary_id': (e,t)->
+        cloudinary_id = t.$('.cloudinary_id').val()
+        parent = Template.parentData()
+        Docs.update parent._id,
+            $set:"#{@key}":cloudinary_id
 
 
+    'click #remove_photo': ->
+        parent = Template.parentData()
+
+        if confirm 'Remove Photo?'
+            # Docs.update parent._id,
+            #     $unset:"#{@key}":1
+            doc = Docs.findOne parent._id
+            if doc
+                Docs.update parent._id,
+                    $unset:"#{@key}":1
 
 
 
 
-# Template.array_edit.events
-#     # 'click .touch_element': (e,t)->
-#     #     $(e.currentTarget).closest('.touch_element').transition('slide left')
+
+
+Template.array_edit.events
+    'click .touch_element': (e,t)->
+        $(e.currentTarget).closest('.touch_element').transition('slide left')
         
-#     'click .pick_tag': (e,t)->
-#         # console.log @
-#         picked_tags.clear()
-#         picked_tags.push @valueOf()
-#         Router.go "/#{Router.current().params.group}"
+    'click .pick_tag': (e,t)->
+        # console.log @
+        picked_tags.clear()
+        picked_tags.push @valueOf()
+        Router.go "/#{Router.current().params.group}"
 
-#     'keyup .new_element': (e,t)->
-#         if e.which is 13
-#             element_val = t.$('.new_element').val().trim()
-#             if element_val.length>0
-#                 if true
-#                     parent = Template.parentData()
-#                 else
-#                     parent = Template.parentData(5)
-#                 doc = Docs.findOne parent._id
-#                 if doc
-#                     Docs.update parent._id,
-#                         $addToSet:"#{@key}":element_val
-#                 # window.speechSynthesis.speak new SpeechSynthesisUtterance element_val
-#                 t.$('.new_element').val('')
+    'keyup .new_element': (e,t)->
+        if e.which is 13
+            element_val = t.$('.new_element').val().trim()
+            if element_val.length>0
+                if true
+                    parent = Template.parentData()
+                else
+                    parent = Template.parentData(5)
+                doc = Docs.findOne parent._id
+                if doc
+                    Docs.update parent._id,
+                        $addToSet:"#{@key}":element_val
+                # window.speechSynthesis.speak new SpeechSynthesisUtterance element_val
+                t.$('.new_element').val('')
 
-#     'click .remove_element': (e,t)->
-#         $(e.currentTarget).closest('.touch_element').transition('slide left', 1000)
+    'click .remove_element': (e,t)->
+        $(e.currentTarget).closest('.touch_element').transition('slide left', 1000)
 
-#         element = @valueOf()
-#         field = Template.currentData()
-#         if field.direct
-#             parent = Template.parentData()
-#         else
-#             parent = Template.parentData(5)
+        element = @valueOf()
+        field = Template.currentData()
+        if field.direct
+            parent = Template.parentData()
+        else
+            parent = Template.parentData(5)
 
-#         doc = Docs.findOne parent._id
-#         if doc
-#             Docs.update parent._id,
-#                 $pull:"#{field.key}":element
+        doc = Docs.findOne parent._id
+        if doc
+            Docs.update parent._id,
+                $pull:"#{field.key}":element
 
-#         t.$('.new_element').focus()
-#         t.$('.new_element').val(element)
+        t.$('.new_element').focus()
+        t.$('.new_element').val(element)
 
-# # Template.textarea.onCreated ->
-# #     @editing = new ReactiveVar false
+# Template.textarea.onCreated ->
+#     @editing = new ReactiveVar false
 
-# # Template.textarea.helpers
-# #     is_editing: -> Template.instance().editing.get()
+# Template.textarea.helpers
+#     is_editing: -> Template.instance().editing.get()
 
 
-# Template.textarea_edit.events
-#     # 'click .toggle_edit': (e,t)->
-#     #     t.editing.set !t.editing.get()
+Template.textarea_edit.events
+    # 'click .toggle_edit': (e,t)->
+    #     t.editing.set !t.editing.get()
 
-#     'blur .edit_textarea': (e,t)->
-#         textarea_val = t.$('.edit_textarea').val()
-#         parent = Template.parentData()
+    'blur .edit_textarea': (e,t)->
+        textarea_val = t.$('.edit_textarea').val()
+        parent = Template.parentData()
 
-#         doc = Docs.findOne parent._id
-#         if doc
-#             Docs.update parent._id,
-#                 $set:"#{@key}":textarea_val
+        doc = Docs.findOne parent._id
+        if doc
+            Docs.update parent._id,
+                $set:"#{@key}":textarea_val
 
 
 # Template.raw_edit.events
@@ -296,15 +296,15 @@
 
 
 
-# Template.text_edit.events
-#     'blur .edit_text': (e,t)->
-#         val = t.$('.edit_text').val()
-#         parent = Template.parentData()
+Template.text_edit.events
+    'blur .edit_text': (e,t)->
+        val = t.$('.edit_text').val()
+        parent = Template.parentData()
 
-#         doc = Docs.findOne parent._id
-#         if doc
-#             Docs.update parent._id,
-#                 $set:"#{@key}":val
+        doc = Docs.findOne parent._id
+        if doc
+            Docs.update parent._id,
+                $set:"#{@key}":val
 
 
 
@@ -315,15 +315,15 @@
 
 
 
-# Template.number_edit.events
-#     'blur .edit_number': (e,t)->
-#         # console.log @
-#         parent = Template.parentData()
-#         val = parseInt t.$('.edit_number').val()
-#         doc = Docs.findOne parent._id
-#         if doc
-#             Docs.update parent._id,
-#                 $set:"#{@key}":val
+Template.number_edit.events
+    'blur .edit_number': (e,t)->
+        # console.log @
+        parent = Template.parentData()
+        val = parseInt t.$('.edit_number').val()
+        doc = Docs.findOne parent._id
+        if doc
+            Docs.update parent._id,
+                $set:"#{@key}":val
 
 # Template.float_edit.events
 #     'blur .edit_float': (e,t)->
@@ -335,15 +335,15 @@
 #                 $set:"#{@key}":val
 
 
-# Template.slug_edit.events
-#     'blur .edit_text': (e,t)->
-#         val = t.$('.edit_text').val()
-#         parent = Template.parentData()
+Template.slug_edit.events
+    'blur .edit_text': (e,t)->
+        val = t.$('.edit_text').val()
+        parent = Template.parentData()
 
-#         doc = Docs.findOne parent._id
-#         if doc
-#             Docs.update parent._id,
-#                 $set:"#{@key}":val
+        doc = Docs.findOne parent._id
+        if doc
+            Docs.update parent._id,
+                $set:"#{@key}":val
 
 
 #     'click .slugify_title': (e,t)->
@@ -373,16 +373,16 @@ Template.kvs.events
 
 
 
-# Template.skvs.helpers
-#     kve_class: ->
-#         if Session.equals(@key, @value) then 'active' else 'basic'
+Template.skvs.helpers
+    kve_class: ->
+        if Session.equals(@key, @value) then 'active' else 'basic'
 
 
-# Template.skvs.events
-#     'click .set_value': (e,t)->
-#         # $(e.currentTarget).closest('.button').transition('pulse', 100)
+Template.skvs.events
+    'click .set_value': (e,t)->
+        # $(e.currentTarget).closest('.button').transition('pulse', 100)
 
-#         Session.set(@key,@value)
+        Session.set(@key,@value)
 
 
 

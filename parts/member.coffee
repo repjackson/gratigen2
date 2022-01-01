@@ -120,17 +120,6 @@ if Meteor.isClient
         'click .calc': (e,t)->
             Meteor.call 'member_meta', @_id, ->
                 
-        'change .import': (e,t)->
-            papa.parse(e.target.files[0], {
-                header: true
-                complete: (results)->
-                    console.log results
-                    Meteor.call 'parse_member', results, ->
-                    # _.each(results.data, (csvData)-> 
-                    #     console.log(csvData.empId + ' , ' + csvData.empCode)
-                    # )
-                skipEmptyLines: true
-            })
 
 if Meteor.isServer 
     Meteor.methods
