@@ -91,48 +91,48 @@ template(name='nav')
     .ui.small.attached.borderless.inverted.menu.hscroll
         each model_docs
             a.item.zoomer(href='/m/#{slug}' class="{{isActivePath '/delta'}}")
-                +i name=color_icon
+                +i name=icon
                 span.mobile.hidden #{title}
-    .ui.small.attached.borderless.inverted.menu.hscroll
-        a.item.zoomer(href='/shop' class="{{isActivePath '/shop'}}")
-            +i name='shop'
-            span.mobile.hidden shop
-        a.item(href='/users' class="{{isActivePath '/users'}}" title='users')
-            +i name='groups'
-            span.mobile.hidden users
-        a.item(href='/events' class="{{isActivePath '/events'}}" title='events')
-            +i name='calendar'
-            span.mobile.hidden events
-        a.item(href='/groups' class="{{isActivePath '/groups'}}" title='groups')
-            +i name='campfire'
-            span.mobile.hidden groups
-        a.item(href='/photos' class="{{isActivePath '/photos'}}" title='photos')
-            +i name='image'
-            span.mobile.hidden photos
-        a.item(href='/orders' class="{{isActivePath '/orders'}}" title='orders')
-            +i name='invoice'
-            // i.large.money.icon
-            span.mobile.hidden orders
-        a.item(href='/requests' class="{{isActivePath '/requests'}}" title='requests')
-            +i name='request-service'
-            // i.large.money.icon
-            span.mobile.hidden requests
-        a.item(href='/posts' class="{{isActivePath '/posts'}}" title='posts')
-            +i name='blog'
-            // i.large.blog.icon
-            span.mobile.hidden blog
-        a.item(href='/trips' class="{{isActivePath '/trips'}}" title='trips')
-            +i name='car'
-            // i.large.car.icon
-            span.mobile.hidden trips
-        a.item(href='/transfers' class="{{isActivePath '/transfers'}}" title='transfers')
-            // i.large.exchange.icon
-            +i name='donate'
-            span.mobile.hidden transfers
-        a.item(href='/rentals' class="{{isActivePath '/rentals'}}" title='rentals')
-            // i.large.clock.icon
-            +i name='clock'
-            span.mobile.hidden rentals
+        // .item man
+        // a.item.zoomer(href='/shop' class="{{isActivePath '/shop'}}")
+        //     +i name='shop'
+        //     span.mobile.hidden shop
+        // a.item(href='/users' class="{{isActivePath '/users'}}" title='users')
+        //     +i name='groups'
+        //     span.mobile.hidden users
+        // a.item(href='/events' class="{{isActivePath '/events'}}" title='events')
+        //     +i name='calendar'
+        //     span.mobile.hidden events
+        // a.item(href='/groups' class="{{isActivePath '/groups'}}" title='groups')
+        //     +i name='campfire'
+        //     span.mobile.hidden groups
+        // a.item(href='/photos' class="{{isActivePath '/photos'}}" title='photos')
+        //     +i name='image'
+        //     span.mobile.hidden photos
+        // a.item(href='/orders' class="{{isActivePath '/orders'}}" title='orders')
+        //     +i name='invoice'
+        //     // i.large.money.icon
+        //     span.mobile.hidden orders
+        // a.item(href='/requests' class="{{isActivePath '/requests'}}" title='requests')
+        //     +i name='request-service'
+        //     // i.large.money.icon
+        //     span.mobile.hidden requests
+        // a.item(href='/posts' class="{{isActivePath '/posts'}}" title='posts')
+        //     +i name='blog'
+        //     // i.large.blog.icon
+        //     span.mobile.hidden blog
+        // a.item(href='/trips' class="{{isActivePath '/trips'}}" title='trips')
+        //     +i name='car'
+        //     // i.large.car.icon
+        //     span.mobile.hidden trips
+        // a.item(href='/transfers' class="{{isActivePath '/transfers'}}" title='transfers')
+        //     // i.large.exchange.icon
+        //     +i name='donate'
+        //     span.mobile.hidden transfers
+        // a.item(href='/rentals' class="{{isActivePath '/rentals'}}" title='rentals')
+        //     // i.large.clock.icon
+        //     +i name='clock'
+        //     span.mobile.hidden rentals
 
         
                 

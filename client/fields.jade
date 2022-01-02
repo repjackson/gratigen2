@@ -127,6 +127,7 @@ template(name='icon_edit')
             |#{this}    
     if field_value
         i.large.icon(class=field_value)
+        +i name=field_value
     .ui.right.icon.input
         input.icon_val(type='text' value=field_value placeholder='fa class' autocomplete="off")
     a(href="https://fomantic-ui.com/elements/icon.html" target='_window')
