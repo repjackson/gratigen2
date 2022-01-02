@@ -1,13 +1,13 @@
 template(name='events')
     .ui.stackable.padded.grid 
         .row
-            .four.wide.column
-                .ui.header room
-                each rooms 
-                    .ui.circular.button.select_room(class=room_button_class)
-                        img.ui.avatar.image(src="{{c.url image_id height=500 width=500 gravity='face' crop='fill'}}" class=currentUser.invert_class)
-                        |#{title}
-            .twelve.wide.column
+            // .four.wide.column
+            //     .ui.header room
+            //     each rooms 
+            //         .ui.circular.button.select_room(class=room_button_class)
+            //             img.ui.avatar.image(src="{{c.url image_id height=500 width=500 gravity='face' crop='fill'}}" class=currentUser.invert_class)
+            //             |#{title}
+            .sixteen.wide.column
                 .ui.inline.header
                     i.orange.calendar.icon
                     |events
@@ -22,7 +22,7 @@ template(name='events')
                     |past
                 .spacer
                 .spacer
-                .ui.stackable.five.cards
+                .ui.stackable.cards
                     each event_docs
                         +event_card
 

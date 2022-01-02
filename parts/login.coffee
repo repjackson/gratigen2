@@ -87,21 +87,21 @@ if Meteor.isClient
         Session.setDefault 'email_status', 'invalid'
         
     Template.register.events
-        'keyup .first_name': ->
-            first_name = $('.first_name').val()
-            Session.set 'first_name', first_name
-        'keyup .last_name': ->
-            last_name = $('.last_name').val()
-            Session.set 'last_name', last_name
-        'keyup .email_field': ->
-            email = $('.email_field').val()
-            Session.set 'email', email
-            Meteor.call 'validate_email', email, (err,res)->
-                console.log res
-                if res is true
-                    Session.set 'email_status', 'valid'
-                else
-                    Session.set 'email_status', 'invalid'
+        # 'keyup .first_name': ->
+        #     first_name = $('.first_name').val()
+        #     Session.set 'first_name', first_name
+        # 'keyup .last_name': ->
+        #     last_name = $('.last_name').val()
+        #     Session.set 'last_name', last_name
+        # 'keyup .email_field': ->
+        #     email = $('.email_field').val()
+        #     Session.set 'email', email
+        #     Meteor.call 'validate_email', email, (err,res)->
+        #         console.log res
+        #         if res is true
+        #             Session.set 'email_status', 'valid'
+        #         else
+        #             Session.set 'email_status', 'invalid'
 
         'keyup .username': ->
             username = $('.username').val()
@@ -127,7 +127,7 @@ if Meteor.isClient
 
         'click .register': (e,t)->
             username = $('.username').val()
-            email = $('.email_field').val()
+            # email = $('.email_field').val()
             password = $('.password').val()
             # if Session.equals 'enter_mode', 'register'
             # if confirm "register #{username}?"
@@ -138,7 +138,7 @@ if Meteor.isClient
             #     password:password
             # }
             options = {
-                email:email
+                # email:email
                 username:username
                 password:password
                 }
@@ -152,12 +152,12 @@ if Meteor.isClient
                     # console.log username
                     Meteor.users.update res,
                         $addToSet: 
-                            roles: 'customer'
-                            levels: 'customer'
+                            roles: 'member'
+                            levels: 'member'
                         $set:
-                            first_name: Session.get('first_name')
-                            last_name: Session.get('last_name')
-                            app:'nf'
+                            # first_name: Session.get('first_name')
+                            # last_name: Session.get('last_name')
+                            # app:'nf'
                             username:username
                     Router.go "/user/#{username}"
                     # Meteor.loginWithPassword username, password, (err,res)=>

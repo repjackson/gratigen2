@@ -4,17 +4,19 @@ template(name='login')
             .eight.wide.column
                 // img.ui.image(src="{{c.url 'kitchen_logo' gravity='face' crop='fill'}}")
                 // img.ui.centered.image(src="https://nudefoodsmarket.com/wp-content/uploads/2021/03/logo-smaller-300x87.jpg")
-                .ui.center.aligned.header Riverside login
+                .ui.center.aligned.header 
+                    +ibig name='creek'
+                    |Riverside login
                 .ui.inline.small.header 
-                    // +i name='user-male'
-                    i.user.outline.icon
+                    +i name='user-male'
+                    // i.user.outline.icon
                     |username
                 .ui.fluid.large.input(class=login_class)
                     input.username(type='text')
                 .spacer
                 .ui.inline.small.header 
-                    // +i name='password'
-                    i.lock.icon
+                    +i name='password'
+                    // i.lock.icon
                     | password
                 .ui.fluid.large.input(class=login_class)
                     input.password(type='password')
