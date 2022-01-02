@@ -34,6 +34,9 @@ template(name='nav')
             // .icon.item 
             //     i.large.search.icon
             if currentUser
+                a.icon.item(href="/m/model")
+                    // i.large.inbox.icon
+                    +i name='database'
                 // a.icon.item(href="/cart" class="{{isActivePath '/cart'}}")
                 // if cart_items.count
                 a.icon.item.toggle_cartbar

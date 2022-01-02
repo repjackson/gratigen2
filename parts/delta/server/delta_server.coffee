@@ -122,9 +122,9 @@ Meteor.methods
         #
 
 
-        for facet in delta.facets
-            if facet.filters.length > 0
-                built_query["#{facet.key}"] = $all: facet.filters
+        # for facet in delta.facets
+        #     if facet.filters.length > 0
+        #         built_query["#{facet.key}"] = $all: facet.filters
 
         if model.collection and model.collection is 'users'
             total = Meteor.users.find(built_query).count()
@@ -132,16 +132,16 @@ Meteor.methods
             total = Docs.find(built_query).count()
         # console.log 'built query', built_query
         # response
-        for facet in delta.facets
-            values = []
-            local_return = []
+        # for facet in delta.facets
+        #     values = []
+        #     local_return = []
 
-            agg_res = Meteor.call 'agg', built_query, facet.key, model.collection
-            # agg_res = Meteor.call 'agg', built_query, facet.key
+        #     agg_res = Meteor.call 'agg', built_query, facet.key, model.collection
+        #     # agg_res = Meteor.call 'agg', built_query, facet.key
 
-            if agg_res
-                Docs.update { _id:delta._id, 'facets.key':facet.key},
-                    { $set: 'facets.$.res': agg_res }
+        #     if agg_res
+        #         Docs.update { _id:delta._id, 'facets.key':facet.key},
+        #             { $set: 'facets.$.res': agg_res }
         if delta.sort_key
             # console.log 'found sort key', delta.sort_key
             sort_by = delta.sort_key
@@ -195,6 +195,7 @@ Meteor.methods
         console.log 'running agg', query
         limit=20
         options = { explain:false }
+        # options = { explain:true }
         pipe =  [
             { $match: query }
             { $project: "#{key}": 1 }
@@ -203,6 +204,7 @@ Meteor.methods
             { $sort: count: -1, _id: 1 }
             { $limit: limit }
             { $project: _id: 0, name: '$_id', count: 1 }
+            # { $out : "results" }
         ]
         if pipe
             if collection and collection is 'users'
@@ -210,12 +212,12 @@ Meteor.methods
             else
                 agg = global['Docs'].rawCollection().aggregate(pipe,options)
             # else
-            res = {}
-            if agg
+            # res = {}
+            # if agg
                 # console.log 'have agg', agg
                 # agg.toArray()
-                agg.forEach (tag, i) ->
-                    console.log 'tag', tag
+                # agg.forEach (tag, i) ->
+                #     console.log 'tag', tag
 
         else
             return null

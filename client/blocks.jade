@@ -356,17 +356,17 @@ template(name='creation_info')
     .ui.small.inline.header #{when}
 
 
-// template(name='user_list_toggle')
-//     if currentUser
-//         .ui.icon.compact.button.toggle(class=user_list_toggle_class title=label)
-//             if in_list
-//                 i.large.icon(class=remove_icon)
-//             else
-//                 i.large.icon(class=add_icon)
-//             //- +ismall name=icon
-//             //- |#{label}
-//         //- each list_users
-//         //-     +user_info
+template(name='user_list_toggle')
+    if currentUser
+        .ui.icon.compact.button.toggle(class=user_list_toggle_class title=label)
+            if in_list
+                i.large.icon(class=remove_icon)
+            else
+                i.large.icon(class=add_icon)
+            //- +ismall name=icon
+            //- |#{label}
+        //- each list_users
+        //-     +user_info
 
 
 template(name='voting')

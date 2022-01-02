@@ -63,7 +63,7 @@ if Meteor.isClient
     
         # 'click .result': (e,t)->
         #     Meteor.call 'log_term', @title, ->
-        #     selected_tags.push @title
+        #     picked_tags.push @title
         #     $('#search').val('')
         #     Meteor.call 'call_wiki', @title, ->
         #     Meteor.call 'calc_term', @title, ->
@@ -71,7 +71,7 @@ if Meteor.isClient
         #     Session.set('current_query', '')
         #     Session.set('searching', false)
     
-        #     Meteor.call 'search_reddit', selected_tags.array(), ->
+        #     Meteor.call 'search_reddit', picked_tags.array(), ->
         #     # Meteor.setTimeout ->
         #     #     Session.set('dummy', !Session.get('dummy'))
         #     # , 7000

@@ -291,60 +291,60 @@ template(name='image_link_view')
 
 
 
-// template(name='textarea_view')
-//     if field_value
-//         div
-//         //- if icon
-//         //-     i.icon(class=field_value)
-//             //- +i name=icon cl='ui inline image'
-//         .ui.inline.small.grey.header
-//             if title
-//                 |#{title}
-//             else if label
-//                 |#{label}
-//             //- else if key
-//             //-     |#{key}
-//             //- else
-//             //-     |#{this}     
-//         //- .spacer       
-//         |{{nl2br field_value}}
+template(name='textarea_view')
+    if field_value
+        div
+        //- if icon
+        //-     i.icon(class=field_value)
+            //- +i name=icon cl='ui inline image'
+        .ui.inline.small.grey.header
+            if title
+                |#{title}
+            else if label
+                |#{label}
+            //- else if key
+            //-     |#{key}
+            //- else
+            //-     |#{this}     
+        //- .spacer       
+        |{{nl2br field_value}}
 
-// template(name='raw_edit')
-//     .ui.large.form
-//         // .ui.small.inline.header raw
-//         .field
-//             label 
-//                 if icon
-//                     // i.icon(class=field_value)
-//                     +i name=icon
-//                 if title
-//                     |#{title}
-//                 else if label
-//                     |#{label}
-//                 //- else if key
-//                 //-     |#{key}
-//                 //- else
-//                 //-     |#{this}
-//             textarea.edit_textarea(rows='7') #{field_value}
+template(name='raw_edit')
+    .ui.large.form
+        // .ui.small.inline.header raw
+        .field
+            label 
+                if icon
+                    // i.icon(class=field_value)
+                    +i name=icon
+                if title
+                    |#{title}
+                else if label
+                    |#{label}
+                //- else if key
+                //-     |#{key}
+                //- else
+                //-     |#{this}
+            textarea.edit_textarea(rows='7') #{field_value}
             
             
-// template(name='raw_view')
-//     .ui.large.form
-//         .ui.small.inline.header raw
-//         .field
-//             label 
-//                 if icon
-//                     // i.icon(class=field_value)
-//                     +i name=icon
-//                 if title
-//                     |#{title}
-//                 else if label
-//                     |#{label}
-//                 //- else if key
-//                 //-     |#{key}
-//                 //- else
-//                 //-     |#{this}
-//             textarea.edit_textarea(rows='7') !{field_value}
+template(name='raw_view')
+    .ui.large.form
+        .ui.small.inline.header raw
+        .field
+            label 
+                if icon
+                    // i.icon(class=field_value)
+                    +i name=icon
+                if title
+                    |#{title}
+                else if label
+                    |#{label}
+                //- else if key
+                //-     |#{key}
+                //- else
+                //-     |#{this}
+            textarea.edit_textarea(rows='7') !{field_value}
 
         
 template(name='textarea_edit')
