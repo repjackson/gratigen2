@@ -142,23 +142,24 @@ if Meteor.isClient
                 username:username
                 password:password
                 }
+            console.log options
             Meteor.call 'create_user', options, (err,res)=>
                 if err
                     alert err
                 else
                     console.log res
-                    unless username
-                        username = "#{Session.get('first_name').toLowerCase()}_#{Session.get('last_name').toLowerCase()}"
+                    # unless username
+                    #     username = "#{Session.get('first_name').toLowerCase()}_#{Session.get('last_name').toLowerCase()}"
                     # console.log username
-                    Meteor.users.update res,
-                        $addToSet: 
-                            roles: 'member'
-                            levels: 'member'
-                        $set:
-                            # first_name: Session.get('first_name')
-                            # last_name: Session.get('last_name')
-                            # app:'nf'
-                            username:username
+                    # Meteor.users.update res,
+                    #     # $addToSet: 
+                    #     #     roles: 'member'
+                    #     #     levels: 'member'
+                    #     $set:
+                    #         # first_name: Session.get('first_name')
+                    #         # last_name: Session.get('last_name')
+                    #         # app:'nf'
+                    #         username:username
                     Router.go "/user/#{username}"
                     # Meteor.loginWithPassword username, password, (err,res)=>
                     #     if err
@@ -183,7 +184,7 @@ if Meteor.isClient
     Template.register.helpers
         can_register: ->
             # Session.get('first_name') and Session.get('last_name') and Session.get('email_status', 'valid') and Session.get('password').length>3
-            Session.get('username') and Session.get('password').length>3
+            Session.get('username') and Session.get('password').length>2
 
             # Session.get('username')
 
