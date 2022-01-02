@@ -7,7 +7,7 @@ template(name='nav')
         else 
             a.icon.item.toggle_leftbar.no_blink
                 // .ui.avatar.image.leftmenu
-                i.large.bars.icon
+                i.large.bars.grey.icon
                 // .ui.avatar.image
                 //     .mobile.hidden
                 //         +i name='menu--v1'
@@ -74,14 +74,14 @@ template(name='nav')
                     else
                         i.user.icon
                     strong.mobile.hidden #{currentUser.name}
-                // a.icon.item.toggle_rightbar.no_blink
-                //     // .ui.avatar.image
-                //     //     if currentUser.image_id
-                //     //         img.ui.mini.inline.image(src="{{c.url currentUser.image_id width=200 height=200 gravity='face' crop='fill'}}")
-                //     //     else
-                //     //         i.user.large.icon
-                //     // strong.mobile.hidden #{currentUser.name}
-                //     i.bars.large.icon
+                a.icon.item.toggle_rightbar.no_blink
+                    // .ui.avatar.image
+                    //     if currentUser.image_id
+                    //         img.ui.mini.inline.image(src="{{c.url currentUser.image_id width=200 height=200 gravity='face' crop='fill'}}")
+                    //     else
+                    //         i.user.large.icon
+                    // strong.mobile.hidden #{currentUser.name}
+                    i.bars.large.grey.icon
             unless subs_ready
                 .icon.item
                     i.food.loading.icon
