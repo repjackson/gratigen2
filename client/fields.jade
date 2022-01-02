@@ -96,42 +96,42 @@ template(name='html_edit')
 
 
 
-// template(name='color_icon_edit')
-//     div
-//     .ui.inline.header
-//         if title
-//             |#{title}
-//         else if key
-//             |#{key}
-//         else
-//             |#{this}
-//     .ui.input
-//         input.color_icon(type='url' value=field_value placeholder='icons8 class' autocomplete="off")
-//     if field_value
-//         //- i.large.icon(class=field_value)
-//         //- img.ui.inline.image(src="https://img.icons8.com/fluent/48/000000/#{field_value}.png")
-//         //- img.ui.inline.image(src="https://img.icons8.com/dusk/48/000000/#{field_value}.png")
-//         img.ui.inline.image(src="https://img.icons8.com/color/48/000000/#{field_value}.png")
-//         //- img.ui.inline.image(src="https://img.icons8.com/office/48/000000/#{field_value}.png")
-// template(name='icon_edit')
-//     div
-//     if icon
-//         //- i.grey.icon(class=icon)
-//         +i name=icon
-//     .ui.inline.header
-//         if title
-//             |#{title}
-//         else if key
-//             |#{key}
-//         else
-//             |#{this}    
-//     if field_value
-//         i.large.icon(class=field_value)
-//     .ui.right.icon.input
-//         input.icon_val(type='text' value=field_value placeholder='fa class' autocomplete="off")
-//     a(href="https://fomantic-ui.com/elements/icon.html" target='_window')
-//         i.external.icon
-//         |icons
+template(name='color_icon_edit')
+    div
+    .ui.inline.header
+        if title
+            |#{title}
+        else if key
+            |#{key}
+        else
+            |#{this}
+    .ui.input
+        input.color_icon(type='url' value=field_value placeholder='icons8 class' autocomplete="off")
+    if field_value
+        //- i.large.icon(class=field_value)
+        //- img.ui.inline.image(src="https://img.icons8.com/fluent/48/000000/#{field_value}.png")
+        //- img.ui.inline.image(src="https://img.icons8.com/dusk/48/000000/#{field_value}.png")
+        img.ui.inline.image(src="https://img.icons8.com/color/48/000000/#{field_value}.png")
+        //- img.ui.inline.image(src="https://img.icons8.com/office/48/000000/#{field_value}.png")
+template(name='icon_edit')
+    div
+    if icon
+        //- i.grey.icon(class=icon)
+        +i name=icon
+    .ui.inline.header
+        if title
+            |#{title}
+        else if key
+            |#{key}
+        else
+            |#{this}    
+    if field_value
+        i.large.icon(class=field_value)
+    .ui.right.icon.input
+        input.icon_val(type='text' value=field_value placeholder='fa class' autocomplete="off")
+    a(href="https://fomantic-ui.com/elements/icon.html" target='_window')
+        i.external.icon
+        |icons
 
 
 // template(name='color_icon_view')

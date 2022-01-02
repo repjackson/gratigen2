@@ -1,0 +1,264 @@
+template(name='delta')
+    .ui.stackable.padded.grid
+        with current_model
+            // unless current_model.show_facets
+            //     .middle.aligned.row
+            //         .sixteen.wide.column
+            //             +model_top
+            .row
+                if current_model.show_facets
+                    .four.wide.column
+                        +model_top
+                        each sorted_facets
+                            +facet
+                div(class=result_column_class)
+                    unless current_model.show_facets
+                        +model_top
+                    if current_model.show_filter_bar
+                        |&nbsp;
+                        .ui.icon.input(class=query_class)
+                            if current_delta.search_query
+                                i.link.remove.large.icon.clear_query
+                            else
+                                i.search.icon
+                            input#search(type='text' autocomplete="off" value=current_delta.search_query)
+                        unless single_doc
+                            // - .ui.segment(class=loading_class)
+                            .ui.inline.small.grey.header(title='change sort direction')
+                                |sort by
+                            if sortable_fields.count
+                                .ui.simple.large.dropdown(title='sort by')
+                                    strong #{current_delta.sort_key}
+                                    i.dropdown.icon
+                                    .menu
+                                        each sortable_fields
+                                            .item.set_sort_key 
+                                                if icon 
+                                                    +icon name=icon
+                                                |#{title}
+                                .ui.tertiary.icon.button.set_sort_direction(title='sort direction')
+                                    if sorting_up
+                                        i.sort.amount.down.large.icon
+                                    else
+                                        i.sort.amount.up.large.icon
+                            //- .ui.compact.button.set_sort_direction
+                            //-     |#{current_delta.sort_direction}
+                            |&nbsp;
+                            |&nbsp;
+                            //- .ui.inline.small.grey.header
+                            //-     |viewing
+                            //- .ui.simple.dropdown(title='visible fields')
+                            //-     | fields
+                            //-     i.dropdown.icon
+                            //-     .menu
+                            //-         each model_fields
+                            //-             +toggle_visible_field
+                            |&nbsp;
+                            |&nbsp;
+                            |&nbsp;
+                        
+                            .ui.simple.dropdown(title='result limit')
+                                .text.large #{current_delta.limit}
+                                i.dropdown.icon
+                                .menu
+                                    +set_limit amount=1
+                                    +set_limit amount=5
+                                    +set_limit amount=10
+                                    +set_limit amount=20
+                                    +set_limit amount=50
+                            |&nbsp;
+                            |&nbsp;
+                            |&nbsp;
+                            |of 
+                            .ui.small.inline.header(title='total results') #{current_delta.total}
+                            |&nbsp;
+                            |&nbsp;
+                            // - with delta
+                            // -     +key_value_edit key='view_mode' value='list'
+                            // -     +key_value_edit key='view_mode' value='cards'
+                            +set_view_mode title='list' icon='list'
+                            +set_view_mode title='cards' icon='clone'
+                            //- .ui.inline.small.grey.header view
+                            //- .ui.simple.dropdown.item
+                            //-     |#{current_delta.view_mode}
+                            //-     i.dropdown.icon
+                            //-     .menu
+                            //-         //- +set_view_mode title='table' icon='table'
+                                    //- +set_view_mode title='items' icon='list'
+                                    //- +set_view_mode title='map' icon='map'
+                                    //- +set_view_mode title='graph' icon='graph'
+                            //- .ui.compact.small.icon.button.toggle_right_panel
+                            //-     i.table.large.icon
+                            //- .spacer
+                    .scrolling
+                        //- each current_delta.result_ids
+                        //-     .ui.header #{this}
+                        if delta_key_value_is 'view_mode' 'cards'
+                            .ui.stackable.cards
+                                if is_loading
+                                    each current_delta.result_ids
+                                        .ui.card
+                                            .ui.placeholder
+                                                .rectangular.image
+                                            .content
+                                                .ui.fluid.placeholder
+                                                    .header
+                                                        .line
+                                                    .line
+                                                    .line
+                                                    .line
+                                                    .line
+                                else
+                                    each current_delta.result_ids
+                                        +delta_result_card
+                        else if delta_key_value_is 'view_mode' 'list'
+                            //- .ui.segments
+                            each current_delta.result_ids
+                                if is_loading
+                                    .ui.basic.segment
+                                        .ui.fluid.placeholder
+                                            .line
+                                            .line
+                                            .line
+                                            .line
+                                else 
+                                    +delta_list_result
+                                    // .ui.divider
+                    //- +Template.dynamic template=view_mode_template
+            .row 
+                .sixteen.wide.column
+                    if model_stats_exists
+                        +Template.dynamic template=model_stats
+        unless current_model
+            if subs_ready
+                if is_dev
+                    .ui.big.button.create_model create model
+                //- else 
+                    //- .ui.header model not found
+            //- else
+            .ui.basic.segment
+                .ui.header
+                    i.big.loading.grey.yin.yang.icon
+            
+            
+template(name='model_top')
+    if is_loading
+        .ui.header
+            i.grey.loading.yin.yang.icon
+            | loading #{current_model.title}...
+    else
+        unless key_value_is current_delta.model_filter 'model'
+            if is_admin
+                a.ui.icon.basic.compact.circular.button.go_home
+                    i.big.home.icon
+        a.ui.inline.large.header.reset(title="#{description}, #{views} views")
+            i.large.icon(class=icon)
+            | #{current_model.title}
+    unless is_loading
+        if currentUser
+            unless key_value_is current_delta.model_filter 'model'
+                unless key_value_is current_model.collection 'user'
+                    // if is_admin
+                    i.plus.large.green.circular.link.icon.add_model_doc(title="add #{slug}")
+            else 
+                if is_admin
+                    .ui.icon.basic.circular.button.add_model_doc(title="add #{slug}")
+                        i.plus.large.green.icon
+        //- +user_list_toggle key='bookmark_ids' add_icon='bookmark outline' remove_icon='bookmark' label="bookmark"
+        if is_admin
+            i.cog.large.circular.link.icon.edit_model(title='edit model')
+        if current_delta
+            // if is_admin
+            if is_dev
+                i.refresh.link.reset.grey.circular.icon(title='reload session')
+                i.code.link.icon.print_delta(title='print session doc')
+                i.trash.delete_delta.link.icon(title='delete session')
+        else
+            .create_delta.ui.big.green.circular.button(title='new session')
+                i.plus.icon
+                |start your session
+            
+            
+            
+template(name='toggle_visible_field')            
+    .item.toggle_visibility
+        if field_visible
+            i.green.checkmark.icon
+        | #{title}
+    
+//- template(name='delta_table')
+//-     .ui.table
+//-         thead
+//-             each fields
+//-                 th #{title}
+//-         tbody
+//-             each current_delta.result_ids
+//-                 tr
+//-                     each fields
+//-                         td
+//-                             |#{field_value}   
+//- 
+                            
+template(name='delta_list')
+    each current_delta.result_ids
+        //- .column
+        +delta_list_result
+                        
+                    
+                        
+                
+                
+                
+template(name='set_limit')
+    .item.set_limit #{amount}
+
+template(name='set_view_mode')
+    a.ui.tertiary.icon.button.set_view_mode(title=title)
+        i.large.icon(class=icon)
+        //- if icon 
+        //- |#{title}
+
+template(name='facet')
+    div
+    if filtering_res
+        .ui.inline.header.pointer.toggle_view_facet
+            if icon
+                i.small.icon(class=icon)
+            if title
+                |#{title}
+            else 
+                |#{key}
+                //- i.dropdown.icon
+        // .ui.icon.tiny.input
+        //     i.search.icon
+        //     input.add_filter(type='text')
+            //- .active.content
+                //- div
+        if viewing_results
+            each filtering_res
+                // if name
+                a.selector.ui.compact.basic.circular.button.toggle_selection.select_term(class=toggle_value_class title=count)
+                    //- with ..
+                    //- if parent_key_value_is 'field_type' 'color_icon'
+                    //-     .ui.header icon
+                    //- else 
+                    strong #{name}
+                    if is_admin
+                        small #{cal_count} #{count}
+                // else
+                //     a.selector.ui.compact.basic.circular.button.toggle_selection(class=toggle_value_class)
+                //         strong none/false
+                //         //- small #{cal_count}
+            //- .ui.hidden.divider
+        .spacer
+        
+        
+template(name='toggle_delta_config')
+    if boolean_true
+        .ui.active.icon.button.disable_key(title=label)
+            // | #{label}
+    else
+        .ui.icon.button.enable_key(title=label)
+            // | #{label}
+            
+            

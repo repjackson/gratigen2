@@ -316,9 +316,10 @@ Template.registerHelper 'product_subs', () ->
 #         if 'frontdesk' in Meteor.user().current_roles then true else false
 
 
-# Template.registerHelper 'is_dev', () ->
-#     if Meteor.user() and Meteor.user().roles
-#         if 'dev' in Meteor.user().roles then true else false
+Template.registerHelper 'is_dev', () ->
+    Meteor.user() and Meteor.user().username is 'dev'
+    # if Meteor.user() and Meteor.user().roles
+    #     if 'dev' in Meteor.user().roles then true else false
 
 # Template.registerHelper 'is_eric', () -> if Meteor.userId() and Meteor.userId() in ['ytjpFxiwnWaJELZEd','rDqxdcTBTszjeMh9T'] then true else false
 

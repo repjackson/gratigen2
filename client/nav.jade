@@ -13,22 +13,24 @@ template(name='nav')
                 //         +i name='menu--v1'
                     
                     img.ui.avatar.image.mobile.only(src="/android-chrome-96x96.png")
-        a.item.zoomer(href='/' class="{{isActivePath '/'}}" )
+        a.header.item.zoomer(href='/' class="{{isActivePath '/'}}" )
             +i name='creek'
             // i.large.home.icon
             span.mobile.hidden The Riverside
-        // .search.item.zoomer.mobile.hidden(title='search')
-        //     .ui.icon.transparent.input
-        //         if current_product_search
-        //             i.remove.large.red.link.icon.clear_search
-        //         else
-        //             i.search.large.icon
-        //         input.search_products(type='text' autocomplete="off" value=current_product_search)
-        // if currentUser
+        .search.item.zoomer.mobile.hidden(title='search')
+            .ui.icon.transparent.input
+                if current_product_search
+                    i.remove.large.red.link.icon.clear_search
+                else
+                    i.search.large.icon
+                input.search_products(type='text' autocomplete="off" value=current_product_search)
         .right.menu
             a.icon.item(href="/inbox")
                 // i.large.inbox.icon
                 +i name='inbox'
+            a.icon.item(href="/chat")
+                // i.large.inbox.icon
+                +i name='chat'
             // .icon.item 
             //     i.large.search.icon
             if currentUser
@@ -96,6 +98,9 @@ template(name='nav')
         a.item(href='/groups' class="{{isActivePath '/groups'}}" title='groups')
             +i name='campfire'
             span.mobile.hidden groups
+        a.item(href='/photos' class="{{isActivePath '/photos'}}" title='photos')
+            +i name='image'
+            span.mobile.hidden photos
         a.item(href='/orders' class="{{isActivePath '/orders'}}" title='orders')
             +i name='invoice'
             // i.large.money.icon

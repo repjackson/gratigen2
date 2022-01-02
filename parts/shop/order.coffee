@@ -133,7 +133,7 @@ if Meteor.isClient
 if Meteor.isServer
     Meteor.publish 'orders', (order_id, status)->
         # order = Docs.findOne order_id
-        match = {model:'order', app:'nf'}
+        match = {model:'order'}
         if status 
             match.status = status
 

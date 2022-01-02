@@ -1,0 +1,43 @@
+template(name='model_doc_edit')
+    if template_exists
+        +Template.dynamic template=model_template
+    else
+        with current_doc
+            .ui.stackable.padded.grid
+                .centered.row
+                    .four.wide.column
+                        .ui.header(title="model: #{model}")
+                            |edit #{model}
+                        +creation_info
+                        a.ui.big.icon.green.circular.button(href="/m/#{model}/#{_id}/view")
+                            i.big.checkmark.icon
+                        #delete_doc.ui.icon.circular.button
+                            i.trash.icon
+                        if is_user
+                            +boolean_edit key='private' direct=true
+                    .twelve.wide.column
+                        //- |#{model}
+                        each edit_fields
+                            +Template.dynamic template=edit_template 
+                            .spacer
+                            // .ui.header #{key} [#{field}] #{label}
+                //- if watson 
+                //-     .row
+                //-         .sixteen.wide.column
+                //-             +watson_view
+                
+            
+template(name='points_transaction')
+    .ui.header my points #{currentUser.points}
+    .ui.header offer points
+    .ui.input
+        input.offer_points_amount(type='number')
+    .ui.button.offer_points
+        i.right.chevron.icon
+    each offers
+        +offer
+        
+        
+template(name='offer')
+    .ui.small.inline.header amount #{amount}
+    +author_info

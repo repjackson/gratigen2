@@ -147,23 +147,23 @@ Template.datetime_edit.events
 # Template.ibig.helpers
 #     is_hovering: -> Template.instance().hovering.get()
 
-# Template.icon_edit.events
-#     'blur .icon_val': (e,t)->
-#         val = t.$('.icon_val').val()
-#         parent = Template.parentData()
-#         doc = Docs.findOne parent._id
-#         if doc
-#             Docs.update parent._id,
-#                 $set:"#{@key}":val
+Template.icon_edit.events
+    'blur .icon_val': (e,t)->
+        val = t.$('.icon_val').val()
+        parent = Template.parentData()
+        doc = Docs.findOne parent._id
+        if doc
+            Docs.update parent._id,
+                $set:"#{@key}":val
 
-# Template.image_link_edit.events
-#     'blur .image_link_val': (e,t)->
-#         val = t.$('.image_link_val').val()
-#         parent = Template.parentData()
-#         doc = Docs.findOne parent._id
-#         if doc
-#             Docs.update parent._id,
-#                 $set:"#{@key}":val
+Template.image_link_edit.events
+    'blur .image_link_val': (e,t)->
+        val = t.$('.image_link_val').val()
+        parent = Template.parentData()
+        doc = Docs.findOne parent._id
+        if doc
+            Docs.update parent._id,
+                $set:"#{@key}":val
 
 
 Template.image_edit.events

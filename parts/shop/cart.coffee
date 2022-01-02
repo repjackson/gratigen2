@@ -203,7 +203,7 @@ if Meteor.isServer
         picked_weekday=null
         )->
             self = @
-            match = {model:'cart', app:'nf'}
+            match = {model:'cart'}
     
             # match.tags = $all: picked_tags
             # if model then match.model = model
