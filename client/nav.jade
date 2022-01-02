@@ -16,7 +16,7 @@ template(name='nav')
         a.item.zoomer(href='/' class="{{isActivePath '/'}}" title='dashboard')
             +i name='creek'
             // i.large.home.icon
-            |The Riverside
+            span.mobile.hidden The Riverside
         a.item.zoomer(href='/shop' class="{{isActivePath '/shop'}}")
             +i name='food-cart'
             // i.large.shop.icon
@@ -35,7 +35,7 @@ template(name='nav')
         // if currentUser
         a.item(href='/users' class="{{isActivePath '/users'}}" title='users')
             +i name='groups'
-            |users
+            span.mobile.hidden users
         a.icon.item(href="/inbox")
             i.large.inbox.icon
         .icon.item 
@@ -95,29 +95,11 @@ template(name='nav')
                     |login
     .ui.small.attached.borderless.menu.hscroll
         a.item(href='/groups' class="{{isActivePath '/groups'}}" title='groups')
-            i.user.circle.large.icon
-            // span.mobile.hidden &nbsp; 
-            // span.mobile.hidden &nbsp; 
+            +i name='groups'
             span.mobile.hidden groups
-        // a.item(href='/sources' class="{{isActivePath '/sources'}}" title='sources')
-        //     +i name='field-and-tractor'
-        //     // span.mobile.hidden &nbsp; 
-        //     // span.mobile.hidden &nbsp; 
-        //     span.mobile.hidden sources
-        // a.item(href='/members' class="{{isActivePath '/members'}}" title='sources')
-        //     // +i name='groups'
-        //     i.large.users.icon
-        //     // span.mobile.hidden &nbsp; 
-        //     // span.mobile.hidden &nbsp; 
-        //     span.mobile.hidden members
-        // a.item(href='/mishi' class="{{isActivePath '/mishi'}}" title='mishi orders')
-        //     +i name='money'
-        //     span.mobile.hidden mishi
-        // // a.item(href='/scanner' class="{{isActivePath '/scanner'}}" title='scanner')
-        //     +i name='scan-stock'
         a.item(href='/events' class="{{isActivePath '/events'}}" title='events')
             +i name='calendar'
-            |events
+            span.mobile.hidden events
         a.item(href='/orders' class="{{isActivePath '/orders'}}" title='orders')
             +i name='invoice'
             // i.large.money.icon
@@ -146,29 +128,29 @@ template(name='nav')
         
                 
 
-// template(name='my_latest_activity')
-//     .ui.grey.header 
-//         i.grey.rss.icon
-//         |your activity
-//     .ui.list
-//         each my_latest_activity
-//             .item 
-//                 img.ui.avatar.image(src="{{c.url author.kiosk_photo width=200 height=200 gravity='face' crop='fill'}}")
-//                 |#{text} #{body}
-//                 small #{when}
+template(name='my_latest_activity')
+    .ui.grey.header 
+        i.grey.rss.icon
+        |your activity
+    .ui.list
+        each my_latest_activity
+            .item 
+                img.ui.avatar.image(src="{{c.url author.kiosk_photo width=200 height=200 gravity='face' crop='fill'}}")
+                |#{text} #{body}
+                small #{when}
 
 
-// template(name='latest_activity')
-//     .ui.grey.header 
-//         i.grey.rss.icon
-//         |all activity
-//     .ui.list
-//         each latest_activity
-//             .item 
-//                 img.ui.avatar.image(src="{{c.url author.kiosk_photo width=200 height=200 gravity='face' crop='fill'}}")
-//                 |#{text} #{body} 
-//                 .ui.label #{log_type}
-//                 small #{when}
+template(name='latest_activity')
+    .ui.grey.header 
+        i.grey.rss.icon
+        |all activity
+    .ui.list
+        each latest_activity
+            .item 
+                img.ui.avatar.image(src="{{c.url author.kiosk_photo width=200 height=200 gravity='face' crop='fill'}}")
+                |#{text} #{body} 
+                .ui.label #{log_type}
+                small #{when}
 
 
 template(name='footer')
@@ -320,42 +302,44 @@ template(name='right_sidebar')
 
 
 template(name='left_sidebar')
-    .ui.left.sidebar.vertical.menu.smallscroll
+    .ui.left.sidebar.vertical.menu
         // a.item.toggle_leftbar.no_blink(href="/" class="{{isActiveRoute '/'}}")
         //     img.ui.avatar.compact.image(src="{{c.url 'one_logo' height=200 width=200 gravity='face' crop='fill'}}")
         //     |One
         // a.item.set_member.toggle_leftbar.no_blink(href="/m/member" class="{{isActivePath 'm/member'}}" title='players')
         a.item.toggle_leftbar.mobile.only(href='/' class="{{isActivePath '/'}}" title='home')
-            // +i name='food'
+            +i name='creek'
             // i.home.icon
-            img.ui.small.centered.image(src="https://nudefoodsmarket.com/wp-content/uploads/2021/03/logo-smaller-300x87.jpg")
-            // span.mobile.hidden nude foods market
-        // .search.item(title='search')
-        //     .ui.icon.transparent.input
-        //         i.search.icon
-        //         input.search_global(type='text')
+            // img.ui.small.centered.image(src="https://nudefoodsmarket.com/wp-content/uploads/2021/03/logo-smaller-300x87.jpg")
+            | Riverside
+        .search.item(title='search')
+            .ui.icon.transparent.input
+                i.search.icon
+                input.search_global(type='text')
         // else 
         //     a.item.toggle_leftbar(href='/' class="{{isActivePath '/'}}" title='food')
         //         // +i name='home'
         //         img.ui.avatar.image(src="https://www.lefrenchcafeboulder.com/images/logo.svg")
         a.item.toggle_leftbar(href='/shop' class="{{isActivePath '/shop'}}" title='shop')
-            +i name='food-cart'
+            +i name='shop'
             | #{product_count} products
         a.item.toggle_leftbar(href='/ingredients' class="{{isActivePath '/ingredients'}}" title='shop')
             +i name='ingredients'
             | #{ingredient_count} ingredients
-        // a.item.toggle_leftbar(href='/sources' class="{{isActivePath '/sources'}}")
-        //     +i name='field-and-tractor'
-        //     | #{source_count} sources
-        // a.item.toggle_leftbar(href='/mishi' class="{{isActivePath '/mishi'}}")
-        //     +i name='money'
-        //     | mishi orders
+        a.item.toggle_leftbar(href='/events' class="{{isActivePath '/events'}}" title='events')
+            +i name='calendar'
+            |events
+        a.item.toggle_leftbar(href='/orders' class="{{isActivePath '/orders'}}" title='orders')
+            +i name='invoice'
+            // i.large.money.icon
+            | orders
+        a.item.toggle_leftbar(href='/requests' class="{{isActivePath '/requests'}}" title='requests')
+            +i name='request-service'
+            // i.large.money.icon
+            | requests
         a.item.toggle_leftbar(href='/transfers' class="{{isActivePath '/transfers'}}")
             +i name='donate'
             | point transfers
-        a.icon.item.toggle_leftbar(href='/labels' class="{{isActivePath '/labels'}}" title='labels')
-            +i name='tags'
-            |labels
         a.item.toggle_leftbar(href='/recipes' class="{{isActivePath '/recipes'}}")
             +i name='cookbook'
             |#{recipe_count} recipes
