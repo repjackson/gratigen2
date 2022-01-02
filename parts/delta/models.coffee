@@ -46,13 +46,16 @@ if Meteor.isServer
             slug:slug
 
     Meteor.publish 'model_fields_from_slug', (slug)->
+        console.log 'finding fields for model', slug
         model = Docs.findOne
             model:'model'
             slug:slug
-        Docs.find
-            model:'field'
-            parent_id:model._id
-
+        if model
+            Docs.find
+                model:'field'
+                parent_id:model._id
+        console.log 'no model found for ', slug
+    
     Meteor.publish 'model_fields_from_id', (model_id)->
         model = Docs.findOne model_id
         Docs.find

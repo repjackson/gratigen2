@@ -192,7 +192,7 @@ Meteor.methods
         # delta = Docs.findOne delta_id
 
     agg: (query, key, collection)->
-        # console.log 'running agg', query
+        console.log 'running agg', query
         limit=20
         options = { explain:false }
         pipe =  [
@@ -212,6 +212,10 @@ Meteor.methods
             # else
             res = {}
             if agg
-                agg.toArray()
+                # console.log 'have agg', agg
+                # agg.toArray()
+                agg.forEach (tag, i) ->
+                    console.log 'tag', tag
+
         else
             return null

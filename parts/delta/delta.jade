@@ -148,7 +148,7 @@ template(name='model_top')
             | loading #{current_model.title}...
     else
         unless key_value_is current_delta.model_filter 'model'
-            if is_admin
+            if is_dev
                 a.ui.icon.basic.compact.circular.button.go_home
                     i.big.home.icon
         a.ui.inline.large.header.reset(title="#{description}, #{views} views")
@@ -161,11 +161,11 @@ template(name='model_top')
                     // if is_admin
                     i.plus.large.green.circular.link.icon.add_model_doc(title="add #{slug}")
             else 
-                if is_admin
+                if is_dev
                     .ui.icon.basic.circular.button.add_model_doc(title="add #{slug}")
                         i.plus.large.green.icon
         //- +user_list_toggle key='bookmark_ids' add_icon='bookmark outline' remove_icon='bookmark' label="bookmark"
-        if is_admin
+        if is_dev
             i.cog.large.circular.link.icon.edit_model(title='edit model')
         if current_delta
             // if is_admin
