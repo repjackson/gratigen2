@@ -5,14 +5,14 @@ template(name='nav')
             .icon.item
                 i.big.loading.grey.refresh.icon.cancel
         else 
-            a.icon.item.toggle_leftbar.no_blink
-                // .ui.avatar.image.leftmenu
-                i.large.bars.grey.icon
-                // .ui.avatar.image
-                //     .mobile.hidden
-                //         +i name='menu--v1'
+            // a.icon.item.toggle_leftbar.no_blink
+            //     // .ui.avatar.image.leftmenu
+            //     i.large.bars.grey.icon
+            //     // .ui.avatar.image
+            //     //     .mobile.hidden
+            //     //         +i name='menu--v1'
                     
-                    img.ui.avatar.image.mobile.only(src="/android-chrome-96x96.png")
+            //         img.ui.avatar.image.mobile.only(src="/android-chrome-96x96.png")
         a.header.item.zoomer(href='/' class="{{isActivePath '/'}}" )
             +i name='creek'
             // i.large.home.icon
@@ -33,10 +33,10 @@ template(name='nav')
                 +i name='chat'
             // .icon.item 
             //     i.large.search.icon
+            a.icon.item(href="/m/model")
+                // i.large.inbox.icon
+                +i name='database'
             if currentUser
-                a.icon.item(href="/m/model")
-                    // i.large.inbox.icon
-                    +i name='database'
                 // a.icon.item(href="/cart" class="{{isActivePath '/cart'}}")
                 // if cart_items.count
                 a.icon.item.toggle_cartbar
@@ -69,14 +69,14 @@ template(name='nav')
                     else
                         i.user.icon
                     strong.mobile.hidden #{currentUser.name}
-                a.icon.item.toggle_rightbar.no_blink
-                    // .ui.avatar.image
-                    //     if currentUser.image_id
-                    //         img.ui.mini.inline.image(src="{{c.url currentUser.image_id width=200 height=200 gravity='face' crop='fill'}}")
-                    //     else
-                    //         i.user.large.icon
-                    // strong.mobile.hidden #{currentUser.name}
-                    i.bars.large.grey.icon
+                // a.icon.item.toggle_rightbar.no_blink
+                //     // .ui.avatar.image
+                //     //     if currentUser.image_id
+                //     //         img.ui.mini.inline.image(src="{{c.url currentUser.image_id width=200 height=200 gravity='face' crop='fill'}}")
+                //     //     else
+                //     //         i.user.large.icon
+                //     // strong.mobile.hidden #{currentUser.name}
+                //     i.bars.large.grey.icon
             unless subs_ready
                 .icon.item
                     i.yin.yang.large.loading.icon

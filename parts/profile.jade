@@ -1,65 +1,65 @@
 template(name='user_layout')
     // img.ui.fluid.image.checkin_banner(src="{{c.url 'cafe'}}")
     +nav
-    .ui.bottom.attached.pushable.segment
-        +topbar
-        +left_sidebar
-        +right_sidebar
-        +cartbar
-        +walletbar
-        #main_area.global_container.pusher.scrollin
-            with user_from_username_param
-                .ui.stackable.padded.grid
-                    .row
-                        //- img.ui.image.checkin_banner(src="{{c.url banner_image width=1000 height=1000 crop='crop'}}")
-                        .four.wide.column.scrolling
-                            a.item.mobile.hidden(href="/user/#{user_from_username_param.username}")
-                                img.ui.circular.image(src="{{c.url image_id height=300 width=300 gravity='face' crop='fill'}}")
-                            // .spacer
-                            // a(href="/user/#{username}")
-                            .ui.center.aligned.header
-                                // strong #{name}
-                                // strong #{user.first_name} #{user.last_name}
-                                | @#{user.username}        
-                            a.ui.center.aligned.inline.header.mobile.hidden(href="/user/#{user_from_username_param.username}/credit" title='credit')
-                                |#{user.points}p
-                            .ui.two.column.middle.aligned.grid.mobile.only
-                                // .column
-                                //     img.ui.small.inline.image.mobile.only(src="{{c.url image_id height=300 width=300 gravity='face' crop='fill'}}")
-                                .column
-                                    .ui.inline.header
-                                        strong #{user.name}
-                                        //- small @#{user.username}        
-                                    a.ui.inline.header(href="/user/#{user_from_username_param.username}/credit" title='credit')
-                                        +i name='coins'
-                                        |#{user.points}p
-                            if is_current_user
-                                a.ui.circular.button(href="/user/#{user_from_username_param.username}/edit" title='profile settings')
-                                    i.cog.icon
-                                    |edit profile
-                            else if is_admin
-                                a.ui.circular.button(href="/user/#{user_from_username_param.username}/edit" title='profile settings')
-                                    +i name='settings' cl='ui avatar image'
-                                    |edit profile
-                            // unless is_current_user
-                            //     +friend_button
-                            if is_current_user
-                                .ui.button.logout
-                                    i.sign.out.alternate.icon
-                                    |log out
-                            if admin
-                                .ui.header
-                                    i.shield.icon
-                                    |admin
-                            +array_view key='roles' label='roles' direct=true icon='shield'
-                            a.ui.button.logout_other_clients(href="#" title='logout other clients')
-                                i.globe.icon
-                                |log out other clients
-                        .twelve.wide.column.scrolling
-                            div.global_container
-                                .spacer
-                                +yield
-
+    // .ui.bottom.attached.pushable.segment
+    //     +topbar
+    //     +left_sidebar
+    //     +right_sidebar
+    //     +cartbar
+    //     +walletbar
+    #main_area.global_container.pusher.scrollin
+        with user_from_username_param
+            .ui.stackable.padded.grid
+                .row
+                    //- img.ui.image.checkin_banner(src="{{c.url banner_image width=1000 height=1000 crop='crop'}}")
+                    .four.wide.column.scrolling
+                        a.item(href="/user/#{user_from_username_param.username}")
+                            img.ui.circular.image(src="{{c.url image_id height=300 width=300 gravity='face' crop='fill'}}")
+                        // .spacer
+                        // a(href="/user/#{username}")
+                        .ui.center.aligned.header
+                            // strong #{name}
+                            // strong #{user.first_name} #{user.last_name}
+                            | @#{user.username}        
+                        a.ui.center.aligned.inline.header.mobile.hidden(href="/user/#{user_from_username_param.username}/credit" title='credit')
+                            |#{user.points}p
+                        .ui.two.column.middle.aligned.grid.mobile.only
+                            // .column
+                            //     img.ui.small.inline.image.mobile.only(src="{{c.url image_id height=300 width=300 gravity='face' crop='fill'}}")
+                            .column
+                                .ui.inline.header
+                                    strong #{user.name}
+                                    //- small @#{user.username}        
+                                a.ui.inline.header(href="/user/#{user_from_username_param.username}/credit" title='credit')
+                                    +i name='coins'
+                                    |#{user.points}p
+                        if is_current_user
+                            a.ui.circular.button(href="/user/#{user_from_username_param.username}/edit" title='profile settings')
+                                i.cog.icon
+                                |edit profile
+                        else if is_admin
+                            a.ui.circular.button(href="/user/#{user_from_username_param.username}/edit" title='profile settings')
+                                +i name='settings' cl='ui avatar image'
+                                |edit profile
+                        // unless is_current_user
+                        //     +friend_button
+                        if is_current_user
+                            .ui.button.logout
+                                i.sign.out.alternate.icon
+                                |log out
+                        if admin
+                            .ui.header
+                                i.shield.icon
+                                |admin
+                        +array_view key='roles' label='roles' direct=true icon='shield'
+                        a.ui.button.logout_other_clients(href="#" title='logout other clients')
+                            i.globe.icon
+                            |log out other clients
+                    .twelve.wide.column.scrolling
+                        div.global_container
+                            .spacer
+                            +yield
+    
 
 
 template(name='user_dashboard')
