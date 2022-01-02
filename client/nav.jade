@@ -89,6 +89,11 @@ template(name='nav')
                     +i name='internal'
                     |login
     .ui.small.attached.borderless.inverted.menu.hscroll
+        each model_docs
+            a.item.zoomer(href='/m/#{slug}' class="{{isActivePath '/delta'}}")
+                +i name=color_icon
+                span.mobile.hidden #{title}
+    .ui.small.attached.borderless.inverted.menu.hscroll
         a.item.zoomer(href='/shop' class="{{isActivePath '/shop'}}")
             +i name='shop'
             span.mobile.hidden shop

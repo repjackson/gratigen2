@@ -2,6 +2,8 @@ if Meteor.isClient
     Template.nav.onCreated ->
         @autorun => Meteor.subscribe 'me'
         # @autorun => Meteor.subscribe 'all_users'
+        @autorun => Meteor.subscribe 'models', ->
+        
         @autorun => Meteor.subscribe 'my_cart'
         @autorun => Meteor.subscribe 'my_unread_messages'
         @autorun => Meteor.subscribe 'global_stats'
@@ -149,6 +151,9 @@ if Meteor.isClient
         @autorun => Meteor.subscribe 'my_sent_messages'
     
     Template.nav.helpers
+        model_docs: ->
+            Docs.find 
+                model:'model'
         current_product_search: -> Session.get('product_query')
         unread_count: ->
             unread_count = Docs.find({
@@ -252,6 +257,9 @@ if Meteor.isClient
     Template.nav.helpers
 
 if Meteor.isServer
+    Meteor.publish 'models', ->
+        Docs.find 
+            model:'model'
     Meteor.publish 'my_cart', ->
         Docs.find 
             model:'cart_item'
