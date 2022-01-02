@@ -47,10 +47,10 @@ template(name='nav')
                         +i name='shopping-cart'
                     each cart_items
                         img.ui.avatar.image(src="{{c.url image_id width=200 height=200 gravity='face' crop='fill'}}")
-                a.item.toggle_topbar(title='alerts')
+                a.item.toggle_topbar.mobile.hidden(title='alerts')
                     // i.wallet.icon
-                    .ui.avatar.image.bell
-                        +i name='notification'
+                    // .ui.avatar.image.bell
+                    +i name='notification'
                 if is_admin
                     a.item(href="/admin" title='admin')
                         +i name='shield'
@@ -63,12 +63,12 @@ template(name='nav')
                 //     // i.cart.icon
                 a.item(href="/user/#{currentUser.username}/credit" class="{{isActiveRoute regex='user_credit'}}" title='your credits')
                     strong #{currentUser.points}p
-                a.item.mobile.hidden(href="/user/#{currentUser.username}" class=user_nav_button_class title=user_nav_button_title)
+                a.item(href="/user/#{currentUser.username}" class=user_nav_button_class title=user_nav_button_title)
                     if currentUser.image_id
                         img.ui.avatar.image(src="{{c.url currentUser.image_id width=200 height=200 gravity='face' crop='fill'}}")
                     else
                         i.user.icon
-                    strong.mobile.hidden #{currentUser.name}
+                    strong #{currentUser.name}
                 // a.icon.item.toggle_rightbar.no_blink
                 //     // .ui.avatar.image
                 //     //     if currentUser.image_id
