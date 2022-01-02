@@ -95,6 +95,12 @@ if Meteor.isClient
                 
     
     Template.nav.events
+        'click .reset': ->
+            # model_slug =  Router.current().params.model_slug
+            Session.set 'loading', true
+            Meteor.call 'set_facets', @slug, true, ->
+                Session.set 'loading', false
+    
         'click .clear_search': -> Session.set('product_query',null)
         'keyup .search_products': _.throttle((e,t)->
             # console.log Router.current().route.getName()

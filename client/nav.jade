@@ -90,7 +90,7 @@ template(name='nav')
                     |login
     .ui.small.attached.borderless.inverted.menu.hscroll
         each model_docs
-            a.item.zoomer(href='/m/#{slug}' class="{{isActivePath '/delta'}}")
+            a.item.zoomer.reset(href='/m/#{slug}' class="{{isActivePath '/delta'}}")
                 +i name=icon
                 span.mobile.hidden #{title}
         // .item man
