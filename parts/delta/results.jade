@@ -7,7 +7,8 @@ template(name='delta_result_card')
                 .content
                     if key_value_is 'model' 'model'
                         .ui.header
-                            i.icon(class=icon)
+                            // i.icon(class=icon)
+                            +ibig name=icon
                             |#{title}
                     else
                         each fields
@@ -27,8 +28,8 @@ template(name='delta_result_card')
                                 span(title='views')
                                     i.grey.eye.icon
                                     | #{views}
-                                .ui.teal.label 
-                                    |#{app}
+                                // .ui.teal.label 
+                                //     |#{app}
                         else
                             if can_edit
                                 a.ui.icon.button(href="/m/#{current_model.slug}/#{_id}/edit" title='edit')

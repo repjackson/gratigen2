@@ -999,8 +999,8 @@ h1.ui.header{
 }
 #main {
     /* margin-top:20px; */
-    min-height: 120vh;
-    height: 100% !important;
+    /*min-height: 120vh;*/
+    /*height: 100% !important;*/
     /* min-height: 500px; */
     /* bottom: 0; */
 }

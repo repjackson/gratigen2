@@ -173,13 +173,13 @@ template(name='model_top')
         if current_delta
             // if is_admin
             if is_dev
-                i.refresh.link.reset.grey.circular.icon(title='reload session')
-                i.code.link.icon.print_delta(title='print session doc')
+                i.refresh.link.reset.grey.circular.big.icon.zoomer(title='reload session')
+                // i.code.link.icon.print_delta(title='print session doc')
                 i.trash.delete_delta.link.icon(title='delete session')
         else
             .create_delta.ui.big.green.circular.button(title='new session')
                 i.plus.icon
-                |start your session
+                |create session
             
             
             

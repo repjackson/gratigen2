@@ -16,7 +16,7 @@ if Meteor.isClient
         template_exists: ->
             current_model = Router.current().params.model_slug
             if current_model
-                if Template["#{current_model}_item"]
+                if Template["#{current_model}_card"]
                     # console.log 'true'
                     return true
                 else
@@ -25,7 +25,7 @@ if Meteor.isClient
 
         model_template: ->
             current_model = Router.current().params.model_slug
-            "#{current_model}_item"
+            "#{current_model}_card"
 
         toggle_value_class: ->
             facet = Template.parentData()
