@@ -999,7 +999,7 @@ h1.ui.header{
 }
 #main {
     /* margin-top:20px; */
-    min-height: 100vh;
+    /*min-height: 100vh;*/
     /*height: 100% !important;*/
     /* min-height: 500px; */
     /* bottom: 0; */

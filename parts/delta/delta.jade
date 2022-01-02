@@ -24,7 +24,7 @@ template(name='delta')
                             input#search(type='text' autocomplete="off" value=current_delta.search_query)
                         unless single_doc
                             // - .ui.segment(class=loading_class)
-                            .ui.inline.small.grey.header(title='change sort direction')
+                            span.ui.inline.small.grey.header(title='change sort direction')
                                 |sort by
                             if sortable_fields.count
                                 .ui.simple.large.dropdown(title='sort by')
@@ -70,7 +70,7 @@ template(name='delta')
                             |&nbsp;
                             |&nbsp;
                             |of 
-                            .ui.small.inline.header(title='total results') #{current_delta.total}
+                            span.ui.small.inline.header(title='total results') #{current_delta.total}
                             |&nbsp;
                             |&nbsp;
                             // - with delta
