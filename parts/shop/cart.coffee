@@ -11,22 +11,12 @@ Router.route '/cart/:doc_id', (->
     @layout 'layout'
     @render 'cart_view'
     ), name:'cart_view'
-Router.route '/cart/:doc_id/edit', (->
-    @render 'cart_edit'
-    ), name:'cart_edit'
 Router.route '/cart/:doc_id/checkout', (->
     @render 'checkout'
     ), name:'checkout'
 
 
 if Meteor.isClient
-    Template.cart_edit.onCreated ->
-        @autorun => Meteor.subscribe 'doc', Router.current().params.doc_id, ->
-
-
-    Template.cart_edit.events 
-
-
     Template.cart.onCreated ->
         @autorun => Meteor.subscribe 'doc', Router.current().params.doc_id, ->
         @autorun => Meteor.subscribe 'cart_items', Router.current().params.doc_id, ->
@@ -44,7 +34,7 @@ if Meteor.isClient
     Template.cart_item.events
         'click .remove_item': (e,t)->
             if confirm 'remove item?'
-                $(e.currentTarget).closest('.item').transition('fly left', 1000)
+                $(e.currentTarget).closest('.grid').transition('fly left', 1000)
                 Meteor.setTimeout =>
                     Docs.remove @_id
                 , 1000

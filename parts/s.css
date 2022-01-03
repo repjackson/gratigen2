@@ -10,6 +10,9 @@
 .inline {
     display: inline !important;
 }
+.rounded {
+    border-radius: 10px !important;
+}
 
 .hscroll::-webkit-scrollbar {
   height: 1px;

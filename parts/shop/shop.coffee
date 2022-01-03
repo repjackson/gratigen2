@@ -276,7 +276,7 @@ if Meteor.isServer
                     product_price_usd:product.price_usd
                     product_price_points:product.price_points
                     product_title:product.title
-                    image_id:product.image_id
+                    product_image_id:product.image_id
                     order_id:order_id
             console.log new_cart_doc_id
             

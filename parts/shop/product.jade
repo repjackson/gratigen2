@@ -1,8 +1,8 @@
 template(name='product_view')
     with current_doc
-        .ui.stackable.padded.grid
+        .ui.stackable.padded.three.column.grid
             .row
-                .six.wide.column
+                .column
                     .ui.large.inline.header 
                         //- small viewing
                         | #{title}
@@ -23,7 +23,7 @@ template(name='product_view')
                     img.ui.rounded.fluid.image.zoomer(src="{{c.url image_id}}")
                     if image_id2
                         img.ui.rounded.image.zoomer(src="{{c.url image_id2}}")
-                .six.wide.column
+                .column
                     +html_view key='description' direct=true
                     // +text_view key='size_description' label='size description'  direct=true
                     a.ui.circular.button(href=product_link)
@@ -58,14 +58,14 @@ template(name='product_view')
                     +comments
                     
                     // +product_orders
-                .four.wide.column
+                .column
                     .ui.header #{price_points} points
                     .ui.header $#{price_usd}
                     .ui.big.fluid.green.button.add_to_cart
                         i.cart.plus.large.icon
                         |add to cart
                     +bookmark_button
-                .four.wide.column
+                .column
                     // .ui.large.button.generate_qrcode
                     //     i.large.qrcode.icon
                     //     |generate qr code
@@ -82,7 +82,7 @@ template(name='product_view')
                         .item #{last_inventory_boh_record} most recent BOH record
                         .item #{last_inventory_foh_record} most recent FOH record
                     i.refresh.large.link.icon.calc_stats(title='refresh_stats')
-                .four.wide.column
+                .column
                     +product_reviews
                 .five.wide.column
                     +product_subscriptions
@@ -128,23 +128,23 @@ template(name='product_inventory')
                         i.user.icon
                         |#{staff}
                     i.edit.link.icon.edit_inventory_item
-                    // if editing_this
-                    //     +number_edit key='amount' label='amount' direct=true
-                    //     +key_value_edit key='location' value='boh' label='boh' direct=true
-                    //     +key_value_edit key='location' value='foh' label='foh' direct=true
-                    //     // +text_edit key='location' label='location' icon='marker' direct=true
-                    //     +text_edit key='notes' label='notes' icon='pencil' direct=true
-                    //     // +text_edit key='staff' label='staff' icon='user' direct=true
-                    //     +image_edit key='image_id'
-                    //     +key_value_edit key='staff' value='matt' direct=true
-                    //     +key_value_edit key='staff' value='nena' direct=true
-                    //     +key_value_edit key='staff' value='rachel' direct=true
-                    //     +key_value_edit key='staff' value='jimmy' direct=true
-                    //     +key_value_edit key='staff' value='elena' direct=true
-                    //     +key_value_edit key='staff' value='eric' direct=true
-                    //     +key_value_edit key='staff' value='luke' direct=true
-                    //     +key_value_edit key='staff' value='mateo' direct=true
-                    //     i.checkmark.green.link.circular.large.icon.save_inventory_item
+                    if editing_this
+                        +number_edit key='amount' label='amount' direct=true
+                        +key_value_edit key='location' value='boh' label='boh' direct=true
+                        +key_value_edit key='location' value='foh' label='foh' direct=true
+                        // +text_edit key='location' label='location' icon='marker' direct=true
+                        +text_edit key='notes' label='notes' icon='pencil' direct=true
+                        // +text_edit key='staff' label='staff' icon='user' direct=true
+                        +image_edit key='image_id'
+                        +key_value_edit key='staff' value='matt' direct=true
+                        +key_value_edit key='staff' value='nena' direct=true
+                        +key_value_edit key='staff' value='rachel' direct=true
+                        +key_value_edit key='staff' value='jimmy' direct=true
+                        +key_value_edit key='staff' value='elena' direct=true
+                        +key_value_edit key='staff' value='eric' direct=true
+                        +key_value_edit key='staff' value='luke' direct=true
+                        +key_value_edit key='staff' value='mateo' direct=true
+                        i.checkmark.green.link.circular.large.icon.save_inventory_item
 
 template(name='product_reviews')
     .ui.inline.header 
@@ -256,24 +256,25 @@ template(name='order_button')
 
 template(name='product_edit')
     with current_doc
-        .ui.stackable.padded.grid
+        .ui.stackable.padded.three.column.grid
             .row
-                .four.wide.column
+                .column
                     .ui.inline.header
                         i.pencil.icon
                         | #{title}
                         small product
                     .ui.large.icon.fluid.green.button.save_product.fly_right(title='save product')
                         i.checkmark.large.icon   
-                    +text_edit key='title' label='title' icon='text' direct=true
+                    +text_edit key='title' label='title' icon='header' direct=true
                     +text_edit key='slug' label='slug' icon='slug' direct=true
                     +print_this
-                .four.wide.column
+                .column
                     +image_edit key='image_id' label='image' direct=true
                     +image_edit key='image_id2' label='alt image' direct=true
                     +link_edit key='product_link' label='old site link' direct=true
                     // div
-                    // +float_edit key='price_usd' label='$ price' direct=true
+                    +float_edit key='price_usd' label='$ price' direct=true
+                    +number_edit key='price_points' label='point price' icon='coins' direct=true
                 // .four.wide.column
                 //     .ui.inline.header 
                 //         +i name='category'
@@ -290,12 +291,12 @@ template(name='product_edit')
                 //     +key_value_edit key='shop_section' value='nuts_seeds' label='nuts & seeds' icon='chia-seeds'
                 //     +key_value_edit key='shop_section' value='rice_grains' label='rice & grains' icon='wheat'
                 //     // +key_value_edit key='shop_section' value='seeds' label='seeds' icon='seeds'
-                .four.wide.column
+                .column
                     +text_edit key='size_description' label='size description' icon='content' direct=true
-                    +float_edit key='size_price' label='size price' icon='glass-jar' direct=true
                     .ui.inline.header food
                     +boolean_edit key='is_food' label='is food' direct=true icon='food'
                     if is_food
+                        +ingredient_picker
                         +boolean_edit key='gluten_free' label='gluten free' direct=true icon='no-gluten'
                         +boolean_edit key='paleo' label='paleo' direct=true icon='caveman'
                         +boolean_edit key='vegetarian' label='vegetarian' direct=true icon='vegetarian-mark'
@@ -307,25 +308,17 @@ template(name='product_edit')
                         +boolean_edit key='rescued' label='rescued' direct=true icon='nothing-found'
                         +boolean_edit key='kosher' label='kosher' direct=true icon='judaism'
                         +boolean_edit key='organic' label='organic' direct=true icon='organic-food'
-                        +boolean_edit key='jar' label='jar container (requires deposit & return)' direct=true icon='mason-jar'
+                        // +boolean_edit key='jar' label='jar container (requires deposit & return)' direct=true icon='mason-jar'
                         div
                         +number_edit key='calories' label='calories' icon='food' direct=true
-                .eight.wide.column
+                .column
                     div
                     +html_edit key='description' label='description' direct=true
                     if can_delete
                         .ui.red.button.delete_product
                             i.remove.icon   
                             | delete
-                .four.wide.column
-                    // +link_edit key='amazon_referral_link' label='amazon referral link' icon='amazon' direct=true
-                    // +link_edit key='external_link' label='external link' icon='globe' direct=true
-                    // +array_edit key='ingredients' label='ingredients' icon='ingredients' direct=true
-                    +ingredient_picker
-                    // +array_edit key='location_tags' label='location tags' icon='marker' direct=true
-                    // +text_edit key='size_description' label='size description'  direct=true
-                    // +text_edit key='packaging' label='packaging' icon='package' direct=true
-                .four.wide.column
+                .column
                     .ui.header 
                         +i name='field-and-tractor'
                         |source

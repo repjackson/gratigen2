@@ -3,35 +3,16 @@ template(name='cart_card')
         .content
             .ui.header #{title} #{when}
 
-                
-template(name='cart_edit')
-    with current_doc
-        .ui.stackable.padded.grid
-            .row
-                .four.wide.column
-                    .ui.header 
-                        small editing cart
-                        strong #{title}
-                    a.ui.big.icon.green.button(href="/#{model}/#{_id}" title='save')
-                        i.checkmark.big.icon
-                    +remove_button
                     
                     
 template(name='cart')
     // with current_cart
-    .ui.stackable.padded.grid
-        .sixteen.wide.column
-            a.ui.header(href="/cart")
-                +i name='shopping-cart'
-                |cart
-            // a.ui.fluid.basic.icon.button(href="/shop")
-            //     // i.chevron.left.icon
-            //     +i name='food-cart'
     .ui.stackable.padded.three.column.grid
         .column
             .ui.header
-                i.cart.icon
-                |checkout
+                // i.cart.icon
+                +i name='shopping-cart'
+                |cart
             // .ui.large.list
             each cart_items
                 +cart_item
@@ -58,11 +39,12 @@ template(name='cart')
                 
 
 template(name='cart_item')
-    .item
-        img.ui.tiny.inline.rounded.image(src="{{c.url product_image_id width=400 height=300 crop='pad'}}")
-        .content
+    .ui.grid
+        .four.wide.column
+            img.ui.fluid.rounded.image(src="{{c.url product_image_id width=400 height=400 crop='pad'}}")
+        .twelve.wide.column
             a.header(href="/product/#{product_id}") 
-                |$#{product_price} #{product_title}
+                |$#{product_point_price} #{product_title}
             .description
                 small added #{when}
                 .ui.basic.icon.button.decrease_amount
@@ -76,9 +58,6 @@ template(name='cart_item')
                     +print_this
         
         
-template(name='checkout')
-    
-    
 template(name='location_section')
     .ui.basic.segment
         a.ui.header(href="/user/#{currentUser.username}/addresses")
