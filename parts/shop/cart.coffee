@@ -20,8 +20,6 @@ Router.route '/cart/:doc_id/checkout', (->
 
 
 if Meteor.isClient
-    Template.cart_view.onCreated ->
-        @autorun => Meteor.subscribe 'doc', Router.current().params.doc_id, ->
     Template.cart_edit.onCreated ->
         @autorun => Meteor.subscribe 'doc', Router.current().params.doc_id, ->
 
@@ -43,17 +41,30 @@ if Meteor.isClient
             res
         
         
+    Template.cart_item.events
+        'click .remove_item': (e,t)->
+            if confirm 'remove item?'
+                $(e.currentTarget).closest('.item').transition('fly left', 1000)
+                Meteor.setTimeout =>
+                    Docs.remove @_id
+                , 1000
     Template.cart.events
         'click .complete_order': ->
             Docs.update @_id,
                 $set:
                     status:'complete'
-        'click .increase_amount': ->
-            Docs.update @_id, 
-                $inc:amount:1
-        'click .decrease_amount': ->
-            Docs.update @_id, 
-                $inc:amount:-1
+        'click .increase_amount': (e,t)->
+            $(e.currentTarget).closest('.item').transition('bounce', 1000)
+            Meteor.setTimeout ->
+                Docs.update @_id, 
+                    $inc:amount:1
+            , 1000
+        'click .decrease_amount': (e,t)->
+            $(e.currentTarget).closest('.item').transition('bounce', 1000)
+            Meteor.setTimeout ->
+                Docs.update @_id, 
+                    $inc:amount:-1
+            , 1000
         
         
 if Meteor.isServer 
@@ -61,69 +72,6 @@ if Meteor.isServer
         Docs.find 
             model:'cart_item'
             cart_id:cart_id
-
-
-if Meteor.isClient
-    Router.route '/carts', (->
-        @render 'carts'
-        ), name:'carts'
-
-    Template.carts.onCreated ->
-        @autorun -> Meteor.subscribe 'cart_facets',
-            Session.get('product_search')
-            picked_products.array()
-            Session.get('picked_month')
-            Session.get('picked_weeknum')
-            Session.get('picked_weekday')
-        @autorun => @subscribe 'cart_total',
-            Session.get('product_search')
-            picked_products.array()
-            Session.get('picked_month')
-            Session.get('picked_weeknum')
-            Session.get('picked_weekday')
-            
-        # Session.get('order_status_filter')
-        # @autorun -> Meteor.subscribe 'model_docs', 'product', 20
-        # @autorun -> Meteor.subscribe 'model_docs', 'thing', 100
-
-    # Template.delta.onRendered ->
-    #     Meteor.call 'log_view', @_id, ->
-    Template.cart_view.events
-    Template.carts.events
-        'click .add_cart': ->
-            new_id = 
-                Docs.insert 
-                    model:'cart'
-            Router.go "/cart/#{new_id}/edit"
-            
-            
-        'keyup .search_product': ->
-            search = $('.search_product').val()
-            if search.length > 2
-                Session.set('product_search', search)
-            
-    Template.carts.helpers 
-        carts: ->
-            match = {model:'cart'}
-            if Session.get('order_status_filter')
-                match.status = Session.get('order_status_filter')
-            if Session.get('order_delivery_filter')
-                match.delivery_method = Session.get('order_sort_filter')
-            if Session.get('order_sort_filter')
-                match.delivery_method = Session.get('order_sort_filter')
-            Docs.find match,
-                sort: _timestamp:-1
-        
-        
-        cart_total: -> Counts.get('cart_total')        
-        current_search: ->
-            Session.get('product_search')
-
-    Template.carts.events
-        'click .clear_search': (e,t)-> Session.set('product_search',null)
-        'click .calc': (e,t)->
-            Meteor.call 'cart_meta', @_id, ->
-
 
 
 if Meteor.isServer 
