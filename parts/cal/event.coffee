@@ -4,13 +4,6 @@ if Meteor.isClient
         @render 'event_view'
         ), name:'event_view'
         
-    Router.route '/events', (->
-        @layout 'layout'
-        @render 'events'
-        ), name:'events'
-        
-        
-        
         
     # Router.route '/e/:doc_slug/', (->
     #     @layout 'layout'
@@ -64,65 +57,83 @@ if Meteor.isClient
             transaction_type:'ticket_purchase'
             event_id: Router.current().params.doc_id
 
+
+    Template.event_view.onCreated ->
+        @autorun => @subscribe 'model_docs', 'order'
+    Template.event_view.events
+        'click .buy_ticket': ->
+            Docs.insert 
+                model:'order'
+                ticket:true
+                event_id:@_id
+                ticket_price: @point_price
         
-    Template.events.onCreated ->
-        @autorun => Meteor.subscribe 'events',
-            Session.get('viewing_room_id')
-            Session.get('viewing_past')
-        @autorun => Meteor.subscribe 'model_docs', 'badge'
-        @autorun => Meteor.subscribe 'model_docs', 'room'
-        # @autorun => Meteor.subscribe 'model_docs', 'transaction'
+    Template.event_view.helpers
+        event_ticket_docs: ->
+            Docs.find
+                model:'order'
+                ticket:true
+                event_id:@_id
+                ticket_price: @point_price
         
-    Template.events.events
-        'click .toggle_past': ->
-            Session.set('viewing_past', !Session.get('viewing_past'))
-        'click .select_room': ->
-            if Session.equals('viewing_room_id', @_id)
-                Session.set('viewing_room_id', null)
-            else
-                Session.set('viewing_room_id', @_id)
-        'click .add_event': ->
-            new_id = 
-                Docs.insert 
-                    model:'event'
-                    published:false
-                    # purchased:false
-            Router.go "/event/#{new_id}/edit"
+    # Template.events.onCreated ->
+    #     @autorun => Meteor.subscribe 'events',
+    #         Session.get('viewing_room_id')
+    #         Session.get('viewing_past')
+    #     @autorun => Meteor.subscribe 'model_docs', 'badge'
+    #     @autorun => Meteor.subscribe 'model_docs', 'room'
+    #     # @autorun => Meteor.subscribe 'model_docs', 'transaction'
+        
+    # Template.events.events
+    #     'click .toggle_past': ->
+    #         Session.set('viewing_past', !Session.get('viewing_past'))
+    #     'click .select_room': ->
+    #         if Session.equals('viewing_room_id', @_id)
+    #             Session.set('viewing_room_id', null)
+    #         else
+    #             Session.set('viewing_room_id', @_id)
+    #     'click .add_event': ->
+    #         new_id = 
+    #             Docs.insert 
+    #                 model:'event'
+    #                 published:false
+    #                 # purchased:false
+    #         Router.go "/event/#{new_id}/edit"
             
             
-    Template.events.helpers
-        rooms: ->
-            Docs.find 
-                model:'room'
+    # Template.events.helpers
+    #     rooms: ->
+    #         Docs.find 
+    #             model:'room'
                 
-        room_button_class: -> 
-            if Session.equals('viewing_room_id', @_id) then 'blue' else 'basic'
-        viewing_past: -> Session.get('viewing_past')
-        event_docs: ->
-            # console.log moment().format()
-            if Session.get('viewing_past')
-                Docs.find {
-                    model:'event'
-                    published:true
-                    # date:$lt:moment().subtract(1,'days').format("YYYY-MM-DD")
-                }, 
-                    sort:start_datetime:-1
-            else
-                Docs.find {
-                    model:'event'
-                    published:true
-                    # date:$gt:moment().subtract(1,'days').format("YYYY-MM-DD")
-                }, 
-                    sort:date:1
+    #     room_button_class: -> 
+    #         if Session.equals('viewing_room_id', @_id) then 'blue' else 'basic'
+    #     viewing_past: -> Session.get('viewing_past')
+    #     event_docs: ->
+    #         # console.log moment().format()
+    #         if Session.get('viewing_past')
+    #             Docs.find {
+    #                 model:'event'
+    #                 published:true
+    #                 # date:$lt:moment().subtract(1,'days').format("YYYY-MM-DD")
+    #             }, 
+    #                 sort:start_datetime:-1
+    #         else
+    #             Docs.find {
+    #                 model:'event'
+    #                 published:true
+    #                 # date:$gt:moment().subtract(1,'days').format("YYYY-MM-DD")
+    #             }, 
+    #                 sort:date:1
     
     
-        can_add_event: ->
-            facilitator_badge = 
-                Docs.findOne    
-                    model:'badge'
-                    slug:'facilitator'
-            if facilitator_badge
-                Meteor.userId() in facilitator_badge.badger_ids
+    #     can_add_event: ->
+    #         facilitator_badge = 
+    #             Docs.findOne    
+    #                 model:'badge'
+    #                 slug:'facilitator'
+    #         if facilitator_badge
+    #             Meteor.userId() in facilitator_badge.badger_ids
             
     
     
