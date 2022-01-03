@@ -1,33 +1,33 @@
-# Template.youtube_edit.onRendered ->
-#     Meteor.setTimeout ->
-#         $('.ui.embed').embed();
-#     , 1000
+Template.youtube_edit.onRendered ->
+    Meteor.setTimeout ->
+        $('.ui.embed').embed();
+    , 1000
 
-# Template.youtube_view.onRendered ->
-#     Meteor.setTimeout ->
-#         $('.ui.embed').embed();
-#     , 1000
-
-
-# Template.youtube_edit.events
-#     'blur .youtube_id': (e,t)->
-#         parent = Template.parentData()
-#         val = t.$('.youtube_id').val()
-#         doc = Docs.findOne parent._id
-#         if doc
-#             Docs.update parent._id,
-#                 $set:"#{@key}":val
+Template.youtube_view.onRendered ->
+    Meteor.setTimeout ->
+        $('.ui.embed').embed();
+    , 1000
 
 
+Template.youtube_edit.events
+    'blur .youtube_id': (e,t)->
+        parent = Template.parentData()
+        val = t.$('.youtube_id').val()
+        doc = Docs.findOne parent._id
+        if doc
+            Docs.update parent._id,
+                $set:"#{@key}":val
 
-# Template.color_edit.events
-#     'blur .edit_color': (e,t)->
-#         val = t.$('.edit_color').val()
-#         parent = Template.parentData()
-#         doc = Docs.findOne parent._id
-#         if doc
-#             Docs.update parent._id,
-#                 $set:"#{@key}":val
+
+
+Template.color_edit.events
+    'blur .edit_color': (e,t)->
+        val = t.$('.edit_color').val()
+        parent = Template.parentData()
+        doc = Docs.findOne parent._id
+        if doc
+            Docs.update parent._id,
+                $set:"#{@key}":val
 
 
 
@@ -90,14 +90,14 @@ Template.html_edit.helpers
         
 
 
-# Template.color_icon_edit.events
-#     'blur .color_icon': (e,t)->
-#         val = t.$('.color_icon').val()
-#         parent = Template.parentData()
-#         doc = Docs.findOne parent._id
-#         if doc
-#             Docs.update parent._id,
-#                 $set:"#{@key}":val
+Template.color_icon_edit.events
+    'blur .color_icon': (e,t)->
+        val = t.$('.color_icon').val()
+        parent = Template.parentData()
+        doc = Docs.findOne parent._id
+        if doc
+            Docs.update parent._id,
+                $set:"#{@key}":val
 
 
 
@@ -556,8 +556,11 @@ Template.multi_doc_edit.events
 
 Template.multi_user_edit.onCreated ->
     @user_results = new ReactiveVar
+    @autorun => @subscribe 'all_users'
 Template.multi_user_edit.helpers
-    user_results: -> Template.instance().user_results.get()
+    user_results: -> 
+        console.log Template.instance().user_results.get()
+        Template.instance().user_results.get()
 Template.multi_user_edit.events
     'click .clear_results': (e,t)->
         t.user_results.set null
@@ -576,20 +579,20 @@ Template.multi_user_edit.events
         field = Template.currentData()
 
         # console.log @
-        # console.log Template.currentData()
-        # console.log Template.parentData()
+        console.log 'adding', @
+        console.log Template.parentData()
+        console.log Template.currentData()
         # console.log Template.parentData(1)
         # console.log Template.parentData(2)
         # console.log Template.parentData(3)
         # console.log Template.parentData(4)
 
 
-        val = t.$('.edit_text').val()
+        val = t.$('.multi_user_select_input').val()
         if field.direct
             parent = Template.parentData()
         else
             parent = Template.parentData(5)
-
         doc = Docs.findOne parent._id
         if doc
             Docs.update parent._id,
@@ -603,7 +606,7 @@ Template.multi_user_edit.events
                     "#{field.key}_usernames":@username
             
         t.user_results.set null
-        $('.single_user_select_input').val ''
+        $('.multi_user_select_input').val ''
         # Docs.update page_doc._id,
         #     $set: assignment_timestamp:Date.now()
 

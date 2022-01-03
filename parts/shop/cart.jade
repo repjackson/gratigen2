@@ -26,35 +26,6 @@ template(name='cart_card')
         .content
             .ui.header #{title} #{when}
 
-// template(name='checkout')
-//     with current_doc
-//         .ui.stackable.padded.grid
-//             .row
-//                 .three.wide.column 
-//                     .ui.header checkout
-//                     +print_this
-//                 .nine.wide.column
-//                     .ui.large.list
-//                         each cart_items
-//                             .item
-//                                 .content
-//                                     .header
-//                                         a.ui.inline.header.zoomer(href="/product/#{product_id}/") #{product_title} 
-//                                     .description
-//                                         img.ui.small.inline.image(src="{{c.url product_image_id width=400 height=400 gravity='face' crop='fill'}}")
-//                                         i.large.red.circular.remove.icon.remove_item
-//                                         .ui.circular.icon.button.increment
-//                                             i.large.plus.icon
-//                                         .ui.inline.header
-//                                             |#{amount}
-//                                         .ui.circular.icon.button.decrement
-//                                             i.large.minus.icon
-//                 .four.wide.column
-//                     .ui.header 
-//                         |$#{subtotal}
-//                     .ui.header #{item_count_total} total items
-//                     .ui.fluid.big.green.button.complete
-//                         |complete order
                 
 template(name='cart_view')
     with current_doc
@@ -84,6 +55,7 @@ template(name='cart_edit')
                     
                     
 template(name='cart')
+    // with current_cart
     .ui.stackable.padded.grid
         .sixteen.wide.column
             a.ui.header(href="/cart")
@@ -92,80 +64,59 @@ template(name='cart')
             // a.ui.fluid.basic.icon.button(href="/shop")
             //     // i.chevron.left.icon
             //     +i name='food-cart'
-            if cart_items.count
-                .ui.header subtotal: $#{my_cart_subtotal}
-                .ui.big.fluid.button.checkout_cart
-                    i.large.send.icon
-                    |checkout
-            each cart_items
-                +cart_item
-                    
+    .ui.stackable.padded.three.column.grid
+        .column
+            .ui.header
+                i.cart.icon
+                |checkout
+            .ui.large.list.scrolling
+                each cart_items
+                    +cart_item
+            .ui.header 
+                +i name='receipt'
+                |subtotal: $#{my_cart_subtotal}
+        .column
+            +delivery_section
+            +location_section
+        .column
+            +payment_section
+            // +boolean_edit key='receive_notifications' label='check this box to receive your vital reminder texts and emails (optional)' direct=true
+            // +boolean_edit key='has_read_tos' label=' I have read and agree to the website terms and conditions' direct=true
+            // if has_read_tos
+            //     .ui.big.fluid.green.button.submit_order
+            //         i.large.send.icon
+            //         |submit
+            // else 
+            .ui.big.fluid.green.disabled.button
+                i.large.send.icon
+                |submit (must agree to terms of service)
+                
                 
                 
 
 template(name='cart_item')
     .item
-        // .image
-        img.ui.tiny.inline.rounded.image(src="{{c.url image_id width=400 height=300 crop='pad'}}")
-        a.ui.inline.header(href="/product/#{product_id}")
-            |$#{product_price}
-            // | #{amount}
-            strong #{product_title}
-        small added #{when}
-        // .ui.basic.icon.button.decrease_amount
-        //     i.minus.icon
-        // .ui.basic.icon.button.increase_amount
-        //     i.plus.icon
-        .ui.basic.icon.button.remove_item
-            i.remove.red.icon
-        // if is_admin
-        //     +print_this
+        img.ui.tiny.inline.rounded.image(src="{{c.url product_image_id width=400 height=300 crop='pad'}}")
+        .content
+            a.header(href="/product/#{product_id}") 
+                |$#{product_price} #{product_title}
+            .description
+                small added #{when}
+                .ui.basic.icon.button.decrease_amount
+                    i.minus.icon
+                .ui.inline.header #{amount}
+                .ui.basic.icon.button.increase_amount
+                    i.plus.icon
+                .ui.basic.icon.button.remove_item
+                    i.remove.red.icon
+                if in_dev
+                    +print_this
+                .ui.basic.icon.button.remove_item
+                    i.remove.red.icon
         
         
         
 template(name='checkout')
-    with current_doc
-        .ui.stackable.padded.three.column.grid
-            .column
-                .ui.header
-                    i.cart.icon
-                    |checkout
-                .ui.large.list.scrolling
-                    each cart_items
-                        .item
-                            // .image
-                            img.ui.tiny.inline.rounded.image(src="{{c.url product_image_id width=400 height=400 crop='pad'}}")
-                            .content
-                                a.header(href="/product/#{product_id}") $#{product_price} #{product_title}
-                                .description
-                                    small added #{when}
-                                    .ui.basic.icon.button.decrease_amount
-                                        i.minus.icon
-                                    .ui.inline.header #{amount}
-                                    .ui.basic.icon.button.increase_amount
-                                        i.plus.icon
-                                    .ui.basic.icon.button.remove_item
-                                        i.remove.red.icon
-                                    // if is_admin
-                                    //     +print_this
-                .ui.header 
-                    +i name='receipt'
-                    |subtotal: $#{my_cart_subtotal}
-            .column
-                +delivery_section
-                +location_section
-            .column
-                +payment_section
-                +boolean_edit key='receive_notifications' label='check this box to receive your vital reminder texts and emails (optional)' direct=true
-                +boolean_edit key='has_read_tos' label=' I have read and agree to the website terms and conditions' direct=true
-                if has_read_tos
-                    .ui.big.fluid.green.button.submit_order
-                        i.large.send.icon
-                        |submit
-                else 
-                    .ui.big.fluid.green.disabled.button
-                        i.large.send.icon
-                        |submit (must agree to terms of service)
     
     
 template(name='location_section')

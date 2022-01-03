@@ -17,13 +17,13 @@ template(name='nav')
             +i name='creek'
             // i.large.home.icon
             span.mobile.hidden The Riverside
-        .search.item.zoomer.mobile.hidden(title='search')
-            .ui.icon.transparent.input
-                if current_product_search
-                    i.remove.large.red.link.icon.clear_search
-                else
-                    i.search.large.icon
-                input.search_products(type='text' autocomplete="off" value=current_product_search)
+        // .search.item.zoomer.mobile.hidden(title='search')
+        //     .ui.icon.transparent.input
+        //         if current_product_search
+        //             i.remove.large.red.link.icon.clear_search
+        //         else
+        //             i.search.large.icon
+        //         input.search_products(type='text' autocomplete="off" value=current_product_search)
         .right.menu
             a.icon.item(href="/inbox")
                 // i.large.inbox.icon
@@ -37,9 +37,9 @@ template(name='nav')
                 // i.large.inbox.icon
                 +i name='database'
             if currentUser
-                // a.icon.item(href="/cart" class="{{isActivePath '/cart'}}")
                 // if cart_items.count
-                a.icon.item.toggle_cartbar
+                // a.icon.item.toggle_cartbar
+                a.icon.item(href="/cart" class="{{isActivePath '/cart'}}")
                     // i.large.cart.icon
                     strong #{cart_items.count}
                     |$#{my_cart_subtotal}
@@ -93,47 +93,6 @@ template(name='nav')
             a.item.zoomer.reset(href='/m/#{slug}' class="{{isActivePath '/delta'}}")
                 +i name=icon
                 span.mobile.hidden #{title}
-        // .item man
-        // a.item.zoomer(href='/shop' class="{{isActivePath '/shop'}}")
-        //     +i name='shop'
-        //     span.mobile.hidden shop
-        // a.item(href='/users' class="{{isActivePath '/users'}}" title='users')
-        //     +i name='groups'
-        //     span.mobile.hidden users
-        // a.item(href='/events' class="{{isActivePath '/events'}}" title='events')
-        //     +i name='calendar'
-        //     span.mobile.hidden events
-        // a.item(href='/groups' class="{{isActivePath '/groups'}}" title='groups')
-        //     +i name='campfire'
-        //     span.mobile.hidden groups
-        // a.item(href='/photos' class="{{isActivePath '/photos'}}" title='photos')
-        //     +i name='image'
-        //     span.mobile.hidden photos
-        // a.item(href='/orders' class="{{isActivePath '/orders'}}" title='orders')
-        //     +i name='invoice'
-        //     // i.large.money.icon
-        //     span.mobile.hidden orders
-        // a.item(href='/requests' class="{{isActivePath '/requests'}}" title='requests')
-        //     +i name='request-service'
-        //     // i.large.money.icon
-        //     span.mobile.hidden requests
-        // a.item(href='/posts' class="{{isActivePath '/posts'}}" title='posts')
-        //     +i name='blog'
-        //     // i.large.blog.icon
-        //     span.mobile.hidden blog
-        // a.item(href='/trips' class="{{isActivePath '/trips'}}" title='trips')
-        //     +i name='car'
-        //     // i.large.car.icon
-        //     span.mobile.hidden trips
-        // a.item(href='/transfers' class="{{isActivePath '/transfers'}}" title='transfers')
-        //     // i.large.exchange.icon
-        //     +i name='donate'
-        //     span.mobile.hidden transfers
-        // a.item(href='/rentals' class="{{isActivePath '/rentals'}}" title='rentals')
-        //     // i.large.clock.icon
-        //     +i name='clock'
-        //     span.mobile.hidden rentals
-
         
                 
 
@@ -243,7 +202,7 @@ template(name='recent_alert')
     .item.alert
         .right.floated.content
             i.eye.link.icon.mark_read(title='mark read')
-        img.ui.avatar.image(src="{{c.url author.profile_image_id height=200 width=200 gravity='face' crop='fill'}}")
+        img.ui.avatar.image(src="{{c.url author.image_id height=200 width=200 gravity='face' crop='fill'}}")
         .content
             .header
                 |#{description} 
@@ -252,10 +211,6 @@ template(name='recent_alert')
             
             
             
-template(name='cartbar')
-    .ui.right.wide.sidebar.cartbar
-        +cart
-        
 template(name='walletbar')
     .ui.right.sidebar.walletbar
         // +user_credit

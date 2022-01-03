@@ -52,7 +52,7 @@ template(name='shift_view')
                         |#{shift_leader.name}
                     each recipients
                         a.ui.header(href="/user/#{username}")
-                            img.ui.avatar.image(src="{{c.url profile_image_id height=200 width=200 gravity='face' crop='fill'}}")
+                            img.ui.avatar.image(src="{{c.url image_id height=200 width=200 gravity='face' crop='fill'}}")
                             |#{username}
                     +textarea_view key='description' label='description' direct=true
                     div 
@@ -139,7 +139,7 @@ template(name='shift_edit')
                         |leader
                     with shift_leader
                         a.ui.big.button(href="/user/#{username}") 
-                            img.ui.avatar.image(src="{{c.url profile_image_id height=200 width=200 gravity='face' crop='fill'}}")
+                            img.ui.avatar.image(src="{{c.url image_id height=200 width=200 gravity='face' crop='fill'}}")
                             |#{name}
                         i.remove.link.icon.clear_leader
                     unless shift_leader
@@ -147,7 +147,7 @@ template(name='shift_edit')
                             .ui.small.header select steward as leader
                             each unselected_stewards
                                 .ui.basic.button.select_leader
-                                    img.ui.avatar.compact.image(src="{{c.url profile_image_id height=200 width=200 gravity='face' crop='fill'}}")
+                                    img.ui.avatar.compact.image(src="{{c.url image_id height=200 width=200 gravity='face' crop='fill'}}")
                                     |#{name}
                     +number_edit key='leader_bounty' label='leader bounty' direct=true
                     

@@ -14,14 +14,14 @@ template(name='message_view')
                         .ui.header 
                             i.chevron.up.icon
                             |sender
-                        img.ui.rounded.small.image(src="{{c.url _author.profile_image_id height=200 width=200 gravity='face' crop='fill'}}")
+                        img.ui.rounded.small.image(src="{{c.url _author.image_id height=200 width=200 gravity='face' crop='fill'}}")
                         .ui.header 
                             |#{_author.name}
                     a(href="/user/#{recipient.username}")
                         .ui.header
                             i.chevron.down.icon
                             |recipient
-                        img.ui.rounded.small.image(src="{{c.url recipient.profile_image_id height=200 width=200 gravity='face' crop='fill'}}")
+                        img.ui.rounded.small.image(src="{{c.url recipient.image_id height=200 width=200 gravity='face' crop='fill'}}")
                         .ui.header
                             |#{recipient.name}
                 .six.wide.column

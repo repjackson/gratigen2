@@ -9,14 +9,14 @@ template(name='message_edit')
                     .ui.segment
                         .ui.header sender
                         .ui.header
-                            img.ui.small.image(src="{{c.url _author.profile_image_id height=200 width=200 gravity='face' crop='fill'}}")
+                            img.ui.small.image(src="{{c.url _author.image_id height=200 width=200 gravity='face' crop='fill'}}")
                             |#{_author.name}
                     .ui.segment
                         .ui.header recipient
                         with recipient
                             i.large.remove.link.icon.remove_recipient
                             a.pointer(href="/user/#{name}")
-                                img.ui.tiny.inline.image(src="{{c.url profile_image_id height=400 width=400 gravity='face' crop='fill'}}")
+                                img.ui.tiny.inline.image(src="{{c.url image_id height=400 width=400 gravity='face' crop='fill'}}")
                                 .ui.inline.header #{name}
                                 .ui.small.grey.inline.header #{points}
                         unless recipient
@@ -30,7 +30,7 @@ template(name='message_edit')
                             // each members
                             //     .ui.compact.basic.button.add_recipient
                             //         // i.plus.icon
-                            //         img.ui.avatar.image(src="{{c.url profile_image_id height=200 width=200 gravity='face' crop='fill'}}")
+                            //         img.ui.avatar.image(src="{{c.url image_id height=200 width=200 gravity='face' crop='fill'}}")
                             //         |#{name}
                             //         small #{points}p
                                     

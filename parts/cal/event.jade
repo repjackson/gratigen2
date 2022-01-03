@@ -48,7 +48,7 @@ template(name='event_card')
                 |#{location}
             div 
             // small led by
-            img.ui.avatar.image(src="{{c.url fac.profile_image_id height=200 width=200 gravity='face' crop='fill'}}" class=currentUser.invert_class)
+            img.ui.avatar.image(src="{{c.url fac.image_id height=200 width=200 gravity='face' crop='fill'}}" class=currentUser.invert_class)
             strong #{fac.name}
         .content
             |#{event_tickets.count}
@@ -56,22 +56,22 @@ template(name='event_card')
                 i.checkmark.green.link.icon
             | #{going.count}
             each going
-                img.ui.avatar.image(src="{{c.url profile_image_id height=200 width=200 gravity='face' crop='fill'}}" class=currentUser.invert_class)
+                img.ui.avatar.image(src="{{c.url image_id height=200 width=200 gravity='face' crop='fill'}}" class=currentUser.invert_class)
             i.question.orange.link.icon.mark_maybe(title='mark yourself maybe')
             div
             | #{maybe_user_ids.length}
             each maybe_going
-                img.ui.avatar.image(src="{{c.url profile_image_id height=200 width=200 gravity='face' crop='fill'}}" class=currentUser.invert_class)
+                img.ui.avatar.image(src="{{c.url image_id height=200 width=200 gravity='face' crop='fill'}}" class=currentUser.invert_class)
             | #{not_user_ids.length}
             div
             i.ban.red.link.icon.mark_not(title='mark yourself not')
             each not_going
-                img.ui.avatar.image(src="{{c.url profile_image_id height=200 width=200 gravity='face' crop='fill'}}" class=currentUser.invert_class)
+                img.ui.avatar.image(src="{{c.url image_id height=200 width=200 gravity='face' crop='fill'}}" class=currentUser.invert_class)
             if doc_comments.count
                 .meta
                     each doc_comments 
                         i.grey.chat.outline.icon
-                        img.ui.avatar.image(src="{{c.url _author.profile_image_id height=200 width=200 gravity='face' crop='fill'}}" class=user_class)
+                        img.ui.avatar.image(src="{{c.url _author.image_id height=200 width=200 gravity='face' crop='fill'}}" class=user_class)
                         |#{body}
             if is_dev
                 +print_this

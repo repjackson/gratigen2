@@ -117,7 +117,7 @@ template(name='chat_message')
         // .ui.comments
     .comment
         a.avatar(href="/user/#{author.username}")
-            img.ui.avatar.image(src="{{c.url author.profile_image_id width=400 height=400 gravity='face' crop='fill'}}")
+            img.ui.avatar.image(src="{{c.url author.image_id width=400 height=400 gravity='face' crop='fill'}}")
         .content
             a.author(href="/user/#{author.username}") 
                 |#{author.username}
@@ -170,7 +170,7 @@ template(name='view_chat')
                 .ui.relaxed.list
                     each participants
                         .item
-                            img.ui.avatar.image(src="{{c.url profile_image_id width=400 height=400 gravity='face' crop='fill'}}")
+                            img.ui.avatar.image(src="{{c.url image_id width=400 height=400 gravity='face' crop='fill'}}")
                             .content
                                 .header
                                     a(href="/user/#{username}") #{username}
@@ -202,5 +202,5 @@ template(name='view_chat')
                 if can_edit
                     +boolean_edit key='private' label='private' direct=true
                 .ui.header started by 
-                    img.ui.avatar.image(src="{{c.url author.profile_image_id width=400 height=400 gravity='face' crop='fill'}}")
+                    img.ui.avatar.image(src="{{c.url author.image_id width=400 height=400 gravity='face' crop='fill'}}")
                     |#{_author.name} #{when}

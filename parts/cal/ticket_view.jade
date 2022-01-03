@@ -20,7 +20,7 @@ template(name='ticket_view')
                             i.user.outline.icon
                             |buyer
                         a.ui.inline.header(href="/user/#{_author.username}") 
-                            img.ui.avatar.image(src="{{c.url _author.profile_image_id height=200 width=200 gravity='face' crop='fill'}}")
+                            img.ui.avatar.image(src="{{c.url _author.image_id height=200 width=200 gravity='face' crop='fill'}}")
                             |#{_author.username}
                     .ui.segment
                         a.ui.inline.header(href="/event/#{event_id}/view")

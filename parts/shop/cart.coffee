@@ -3,6 +3,10 @@
 @picked_months = new ReactiveArray []
 
 
+Router.route '/cart', (->
+    @layout 'layout'
+    @render 'cart'
+    ), name:'cart'
 Router.route '/cart/:doc_id', (->
     @layout 'layout'
     @render 'cart_view'
@@ -25,10 +29,10 @@ if Meteor.isClient
     Template.cart_edit.events 
 
 
-    Template.checkout.onCreated ->
+    Template.cart.onCreated ->
         @autorun => Meteor.subscribe 'doc', Router.current().params.doc_id, ->
         @autorun => Meteor.subscribe 'cart_items', Router.current().params.doc_id, ->
-    Template.checkout.helpers 
+    Template.cart.helpers 
         cart_items: ->
             Docs.find
                 model:'cart_item'
@@ -39,7 +43,7 @@ if Meteor.isClient
             res
         
         
-    Template.checkout.events
+    Template.cart.events
         'click .complete_order': ->
             Docs.update @_id,
                 $set:

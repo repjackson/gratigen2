@@ -122,7 +122,7 @@ template(name='shift_template_edit')
                         |default leader
                     with default_shift_template_leader
                         a.ui.big.button(href="/user/#{username}") 
-                            img.ui.avatar.image(src="{{c.url profile_image_id height=200 width=200 gravity='face' crop='fill'}}")
+                            img.ui.avatar.image(src="{{c.url image_id height=200 width=200 gravity='face' crop='fill'}}")
                             |#{username}
                         i.remove.link.icon.clear_default_leader
                     unless default_shift_template_leader
@@ -130,7 +130,7 @@ template(name='shift_template_edit')
                             .ui.small.header select steward as default leader
                             each unselected_stewards
                                 .ui.basic.button.select_default_leader
-                                    img.ui.avatar.compact.image(src="{{c.url profile_image_id height=200 width=200 gravity='face' crop='fill'}}")
+                                    img.ui.avatar.compact.image(src="{{c.url image_id height=200 width=200 gravity='face' crop='fill'}}")
                                     |#{name}
                     +number_edit key='default_leader_bounty' label='default leader bounty' direct=true
                     

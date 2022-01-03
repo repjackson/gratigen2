@@ -46,13 +46,13 @@ template(name='home')
                     .content
                         .ui.header members
                         each members 
-                            if profile_image_id
+                            if image_id
                                 a(href="/user/#{username}" title="{{name}} {{points}}")
-                                    img.ui.tiny.pointer.inline.circular.spaced_image.zoom.image(src="{{c.url profile_image_id height=200 width=200 gravity='face' crop='fill'}}" class=user_class)
+                                    img.ui.tiny.pointer.inline.circular.spaced_image.zoom.image(src="{{c.url image_id height=200 width=200 gravity='face' crop='fill'}}" class=user_class)
                                 // if avatar_image_id
                                 // .ui.move.reveal.tiny.circular.spaced_image.image
                                 //     .visible.content
-                                //         img(src="{{c.url profile_image_id height=500 width=500 gravity='face' crop='fill'}}") 
+                                //         img(src="{{c.url image_id height=500 width=500 gravity='face' crop='fill'}}") 
                                 //     .hidden.content
                                 //         img(src="{{c.url avatar_image_id height=500 width=500 gravity='face' crop='fill'}}") 
                                 // else
@@ -95,8 +95,8 @@ template(name='home')
                                         .header
                                             |#{title}
                                         .description
-                                            // if _author.profile_image_id
-                                            //     img.ui.avatar.image(src="{{c.url _author.profile_image_id height=500 width=500 gravity='face' crop='fill'}}" class=user_class)
+                                            // if _author.image_id
+                                            //     img.ui.avatar.image(src="{{c.url _author.image_id height=500 width=500 gravity='face' crop='fill'}}" class=user_class)
                                             // | #{_author_username}
                                             // div
                                             .ui.inline.header $#{usd_price}
@@ -169,12 +169,12 @@ template(name='home')
                             a.ui.card(href="/debit/#{_id}/view")
                                 .content
                                     .description 
-                                        if _author.profile_image_id
-                                            img.ui.avatar.image(src="{{c.url _author.profile_image_id height=500 width=500 gravity='face' crop='fill'}}" class=user_class)
+                                        if _author.image_id
+                                            img.ui.avatar.image(src="{{c.url _author.image_id height=500 width=500 gravity='face' crop='fill'}}" class=user_class)
                                         | #{_author_username}
                                         .ui.inline.header >
-                                        if recipient.profile_image_id
-                                            img.ui.avatar.image(src="{{c.url recipient.profile_image_id height=500 width=500 gravity='face' crop='fill'}}" class=user_class)
+                                        if recipient.image_id
+                                            img.ui.avatar.image(src="{{c.url recipient.image_id height=500 width=500 gravity='face' crop='fill'}}" class=user_class)
                                         |#{recipient.username}
                                         .ui.inline.header #{amount}p
                                     .meta #{when}
@@ -220,9 +220,9 @@ template(name='home_request_card')
 
             .header
                 .ui.inline.header #{point_bounty}p: #{title}
-                if _author.profile_image_id
+                if _author.image_id
                     with _author
-                        img.ui.avatar.image(src="{{c.url profile_image_id height=500 width=500 gravity='face' crop='fill'}}" class=user_class title=shortname)
+                        img.ui.avatar.image(src="{{c.url image_id height=500 width=500 gravity='face' crop='fill'}}" class=user_class title=shortname)
                 | #{_author.name}
             |!{description}
             .meta #{when}
@@ -232,7 +232,7 @@ template(name='home_request_card')
                 .meta
                     each doc_comments 
                         i.grey.chat.outline.icon
-                        img.ui.avatar.image(src="{{c.url _author.profile_image_id height=200 width=200 gravity='face' crop='fill'}}" class=user_class)
+                        img.ui.avatar.image(src="{{c.url _author.image_id height=200 width=200 gravity='face' crop='fill'}}" class=user_class)
                         |#{body}
                         div
 
@@ -247,9 +247,9 @@ template(name='home_offer_card')
                 img.ui.raw.image(src="{{c.url image_id width=400 height=300 crop='fill'}}")    
             .header
                 .ui.inline.header #{title}
-                if _author.profile_image_id
+                if _author.image_id
                     with _author
-                        img.ui.avatar.image(src="{{c.url profile_image_id height=500 width=500 gravity='face' crop='fill'}}" class=user_class title=shortname)
+                        img.ui.avatar.image(src="{{c.url image_id height=500 width=500 gravity='face' crop='fill'}}" class=user_class title=shortname)
                 | #{_author.name}
             // |!{description}
             .meta #{when}
@@ -267,7 +267,7 @@ template(name='comments_view_small')
         .meta
             each doc_comments 
                 i.grey.chat.outline.icon
-                img.ui.avatar.image(src="{{c.url _author.profile_image_id height=200 width=200 gravity='face' crop='fill'}}" class=user_class)
+                img.ui.avatar.image(src="{{c.url _author.image_id height=200 width=200 gravity='face' crop='fill'}}" class=user_class)
                 |#{body}
                 div
 
@@ -290,9 +290,9 @@ template(name='home_event_card')
             .meta
                 if fac
                     |led by
-                    if fac.profile_image_id
+                    if fac.image_id
                         with fac
-                            img.ui.avatar.spaced.image(src="{{c.url profile_image_id height=500 width=500 gravity='face' crop='fill'}}" class=user_class title=shortname)
+                            img.ui.avatar.spaced.image(src="{{c.url image_id height=500 width=500 gravity='face' crop='fill'}}" class=user_class title=shortname)
                     | #{fac.name}
             // .meta #{when}
             .description 
@@ -304,15 +304,15 @@ template(name='home_event_card')
             |#{going.count}
             i.checkmark.green.large.icon
             each going
-                img.ui.avatar.image(src="{{c.url profile_image_id height=200 width=200 gravity='face' crop='fill'}}" class=user_class title=shortname)
+                img.ui.avatar.image(src="{{c.url image_id height=200 width=200 gravity='face' crop='fill'}}" class=user_class title=shortname)
             // i.question.orange.large.icon
             // | #{maybe_user_ids.length}
             // each maybe_going
-            //     img.ui.avatar.image(src="{{c.url profile_image_id height=200 width=200 gravity='face' crop='fill'}}" class=user_class title=shortname)
+            //     img.ui.avatar.image(src="{{c.url image_id height=200 width=200 gravity='face' crop='fill'}}" class=user_class title=shortname)
             // | #{not_user_ids.length}
             // i.remove.red.large.icon
             // each not_going
-            //     img.ui.avatar.image(src="{{c.url profile_image_id height=200 width=200 gravity='face' crop='fill'}}" class=user_class title=shortname)
+            //     img.ui.avatar.image(src="{{c.url image_id height=200 width=200 gravity='face' crop='fill'}}" class=user_class title=shortname)
             +comments_view_small
                                
                                
@@ -324,15 +324,15 @@ template(name='debit_card')
             img.ui.image(src="{{c.url image_id height=200 width=500 crop='fill'}}")
         .content
             .description 
-                if _author.profile_image_id
+                if _author.image_id
                     with _author
-                        img.ui.avatar.image(src="{{c.url profile_image_id height=500 width=500 gravity='face' crop='fill'}}" class=user_class)
+                        img.ui.avatar.image(src="{{c.url image_id height=500 width=500 gravity='face' crop='fill'}}" class=user_class)
                 | #{_author.shortname}
                 a.ui.inline.header(href="/debit/#{_id}/view") #{amount}p
                 .ui.inline.header >
-                if recipient.profile_image_id
+                if recipient.image_id
                     with recipient
-                        img.ui.avatar.image(src="{{c.url profile_image_id height=500 width=500 gravity='face' crop='fill'}}" class=user_class)
+                        img.ui.avatar.image(src="{{c.url image_id height=500 width=500 gravity='face' crop='fill'}}" class=user_class)
                 |#{recipient.shortname}
             .meta #{when}
             .description.f11
@@ -357,13 +357,13 @@ template(name='home_shift_card')
         .content
             .header
                 .ui.inline.header
-                // if _author.profile_image_id
-                //     img.ui.avatar.image(src="{{c.url _author.profile_image_id height=500 width=500 gravity='face' crop='fill'}}" class=user_class)
+                // if _author.image_id
+                //     img.ui.avatar.image(src="{{c.url _author.image_id height=500 width=500 gravity='face' crop='fill'}}" class=user_class)
                 // | #{_author_username}
                 .item from {{from_now start_datetime}} > {{from_now end_datetime}}
                 if shift_contributors 
                     each shift_contributors
-                        img.ui.avatar.image(src="{{c.url profile_image_id height=500 width=500 gravity='face' crop='fill'}}" class=user_class)
+                        img.ui.avatar.image(src="{{c.url image_id height=500 width=500 gravity='face' crop='fill'}}" class=user_class)
                         |#{username}
             .meta #{when}
             .description 
