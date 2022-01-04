@@ -201,17 +201,19 @@ template(name='user_credit')
                     +i name='money'
                     |{{user_from_username_param.points}}
                     |points
-                .ui.big.button.send_points
+                .ui.big.compact.button.send_points
+                    +i name='donate'
                     |send points
                 a.ui.big.button(href="/transfers")
-                    i.exchange.icon
+                    +i name='exchange'
+                    // i.exchange.icon
                     |transfers
                 // .ui.inline.header 
                 //     // i.shield.icon
                 //     +i name='shield'
                 //     |admin
-                // .ui.big.icon.button.add_credit(title='add credit')
-                //     |+1
+                .ui.big.icon.button.add_credit(title='add credit')
+                    |+1
                 // // +number_edit key='credit' label='edit credit' min='0' step='1' max='1000' direct=true
                 // .ui.big.icon.button.remove_credit(title='remove credit')
                 //     |-1
