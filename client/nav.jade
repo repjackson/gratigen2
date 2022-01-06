@@ -14,9 +14,9 @@ template(name='nav')
                     
             //         img.ui.avatar.image.mobile.only(src="/android-chrome-96x96.png")
         a.header.item.zoomer(href='/' class="{{isActivePath '/'}}" )
-            +i name='creek'
+            +i name='yin-yang'
             // i.large.home.icon
-            span.mobile.hidden The Riverside
+            // span.mobile.hidden riverside
         // .search.item.zoomer.mobile.hidden(title='search')
         //     .ui.icon.transparent.input
         //         if current_product_search
@@ -46,7 +46,7 @@ template(name='nav')
                     .ui.avatar.image.cart
                         +i name='shopping-cart'
                     each cart_items
-                        img.ui.avatar.image(src="{{c.url image_id width=200 height=200 gravity='face' crop='fill'}}")
+                        img.ui.avatar.image(src="{{c.url product_image_id width=200 height=200 gravity='face' crop='fill'}}")
                 a.item.toggle_topbar.mobile.hidden(title='alerts')
                     // i.wallet.icon
                     // .ui.avatar.image.bell

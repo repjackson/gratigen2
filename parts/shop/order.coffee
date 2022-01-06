@@ -6,28 +6,6 @@ if Meteor.isClient
                         
                 
 if Meteor.isClient
-    Template.orders.onCreated ->
-        @autorun -> Meteor.subscribe 'orders',
-            Session.get('order_status_filter')
-        # @autorun -> Meteor.subscribe 'model_docs', 'product', 20
-        @autorun -> Meteor.subscribe 'model_docs', 'thing', 100
-
-    # Template.delta.onRendered ->
-    #     Meteor.call 'log_view', @_id, ->
-
-    Template.orders.helpers
-        orders: ->
-            match = {model:'order'}
-            if Session.get('order_status_filter')
-                match.status = Session.get('order_status_filter')
-            if Session.get('order_delivery_filter')
-                match.delivery_method = Session.get('order_sort_filter')
-            if Session.get('order_sort_filter')
-                match.delivery_method = Session.get('order_sort_filter')
-            Docs.find match,
-                sort: _timestamp:-1
-
-
     Router.route '/order/:doc_id', (->
         @layout 'layout'
         @render 'order'

@@ -4,6 +4,11 @@ if Meteor.isClient
         delta = Docs.findOne model:'delta'
         # console.log 'value', value
         delta["#{key}"] is value
+    Template.registerHelper 'key_value_is', (key, value) ->
+        # console.log 'key', key
+        # delta = Docs.findOne model:'delta'
+        # console.log 'value', value
+        @["#{key}"] is value
     Template.registerHelper 'fixed', (input) ->
         if input
             input.toFixed(2)
@@ -64,7 +69,7 @@ if Meteor.isClient
         if model
             Docs.find {
                 model:'field'
-                parent_id:model._id
+                # parent_id:model._id
                 # edit_roles:$in:Meteor.user().roles
             }, sort:rank:1
 
@@ -539,3 +544,351 @@ if Meteor.isServer
             Docs.find
                 _author_id:null
                 model:'delta'
+
+
+
+if Meteor.isClient
+    Template.model_view.onCreated ->
+        @autorun -> Meteor.subscribe 'model_from_slug', Router.current().params.model_slug
+        @autorun -> Meteor.subscribe 'model_fields_from_slug', Router.current().params.model_slug
+        @autorun -> Meteor.subscribe 'doc', Router.current().params.doc_id
+
+
+
+if Meteor.isClient
+    Template.model_doc_view.onCreated ->
+        @autorun -> Meteor.subscribe 'model_from_slug', Router.current().params.model_slug
+        @autorun -> Meteor.subscribe 'model_fields_from_slug', Router.current().params.model_slug
+        # console.log Router.current().params.doc_id
+        @autorun -> Meteor.subscribe 'doc', Router.current().params.doc_id
+        @autorun -> Meteor.subscribe 'upvoters', Router.current().params.doc_id
+        @autorun -> Meteor.subscribe 'downvoters', Router.current().params.doc_id
+        @autorun -> Meteor.subscribe 'model_docs', 'field_type'
+
+    Template.model_doc_view.helpers
+        # current_model: ->
+
+            # Router.current().params.model_slug
+        template_exists: ->
+            # false
+            current_model = Router.current().params.model_slug
+            console.log "#{current_model}_view"
+            if Template["#{current_model}_view"]
+                # console.log 'true'
+                return true
+            else
+                # console.log 'false'
+                return false
+        model_template: ->
+            current_model = Router.current().params.model_slug
+            console.log "#{current_model}_view"
+            "#{current_model}_view"
+
+
+
+    Template.model_doc_view.events
+        'click .back_to_model': (e,t)->
+            Session.set 'loading', true
+            current_model = Router.current().params.model_slug
+            Meteor.call 'set_facets', current_model, ->
+                Session.set 'loading', false
+            $(e.currentTarget).closest('.grid').transition('fade left', 250)
+            Meteor.setTimeout ->
+                Router.go "/m/#{current_model}"
+            , 100
+
+
+
+
+if Meteor.isClient
+    Template.model_view.onCreated ->
+        @autorun -> Meteor.subscribe 'model', Router.current().params.model_slug
+        @autorun -> Meteor.subscribe 'model_fields_from_slug', Router.current().params.model_slug
+        @autorun -> Meteor.subscribe 'docs', picked_tags.array(), Router.current().params.model_slug
+
+    Template.model_view.helpers
+        current_model: ->
+            Router.current().params.model_slug
+        model: ->
+            Docs.findOne
+                model:'model'
+                slug: Router.current().params.model_slug
+
+        model_docs: ->
+            model = Docs.findOne
+                model:'model'
+                slug: Router.current().params.model_slug
+
+            Docs.find
+                model:model.slug
+
+        model_doc: ->
+            model = Docs.findOne
+                model:'model'
+                slug: Router.current().params.model_slug
+            "#{model.slug}_view"
+
+        fields: ->
+            Docs.find { model:'field' }, sort:rank:1
+                # parent_id: Router.current().params.doc_id
+
+    Template.model_view.events
+        'click .add_child': ->
+            model = Docs.findOne slug:Router.current().params.model_slug
+            console.log model
+            # new_id = Docs.insert
+            #     model: Router.current().params.model_slug
+            # Router.go "/edit/#{new_id}"
+
+
+if Meteor.isServer
+    Meteor.publish 'model', (slug)->
+        Docs.find
+            model:'model'
+            slug:slug
+
+    Meteor.publish 'model_fields_from_slug', (slug)->
+        console.log 'finding fields for model', slug
+        model = Docs.findOne
+            model:'model'
+            slug:slug
+        if model
+            Docs.find
+                model:'field'
+                parent_id:model._id
+        console.log 'no model found for ', slug
+    
+    Meteor.publish 'model_fields_from_id', (model_id)->
+        model = Docs.findOne model_id
+        Docs.find
+            model:'field'
+            parent_id:model._id
+
+
+
+
+if Meteor.isServer
+    Meteor.methods
+        set_facets: (model_slug, force)->
+            if Meteor.userId()
+                delta = Docs.findOne
+                    model:'delta'
+                    _author_id:Meteor.userId()
+            else
+                delta = Docs.findOne
+                    model:'delta'
+                    _author_id:null
+            # console.log 'delta doc', delta
+            model = Docs.findOne
+                model:'model'
+                slug:model_slug
+    
+            # if model_slug is delta.model_filter
+            #     return
+            # else
+            fields =
+                Docs.find
+                    model:'field'
+                    parent_id:model._id
+    
+            Docs.update model._id,
+                $inc: views: 1
+    
+            # console.log 'fields', fields.fetch()
+    
+            Docs.update delta._id,
+                $set:model_filter:model_slug
+    
+            # Docs.update delta._id,
+            #     $set:facets:[
+            #         {
+            #             key:'_timestamp_tags'
+            #             filters:[]
+            #             res:[]
+            #         }
+            #     ]
+            Docs.update delta._id,
+                $set:facets:[]
+            for field in fields.fetch()
+                if field.faceted is true
+                    # console.log field
+                    # if Meteor.user()
+                    # console.log _.intersection(Meteor.user().roles,field.view_roles)
+                    # if _.intersection(Meteor.user().roles,field.view_roles).length > 0
+                    Docs.update delta._id,
+                        $addToSet:
+                            facets: {
+                                title:field.title
+                                icon:field.icon
+                                key:field.key
+                                rank:field.rank
+                                field_type:field.field_type
+                                filters:[]
+                                res:[]
+                            }
+    
+            field_ids = _.pluck(fields.fetch(), '_id')
+    
+            Docs.update delta._id,
+                $set:
+                    viewable_fields: field_ids
+            Meteor.call 'fum', delta._id
+    
+    
+        fum: (delta_id)->
+            delta = Docs.findOne delta_id
+    
+            model = Docs.findOne
+                model:'model'
+                slug:delta.model_filter
+    
+            # console.log 'running fum,', delta, model
+            built_query = {}
+            if delta.search_query
+                if model.collection and model.collection is 'users'
+                    built_query.username = {$regex:"#{delta.search_query}", $options: 'i'}
+                else
+                    built_query.title = {$regex:"#{delta.search_query}", $options: 'i'}
+    
+            fields =
+                Docs.find
+                    model:'field'
+                    parent_id:model._id
+            if model.collection and model.collection is 'users'
+                unless delta.model_filter is 'user'
+                    # built_query.roles = $in:[delta.model_filter]
+                    built_query.disabled = $ne:true
+            else
+                # unless delta.model_filter is 'post'
+                built_query.model = delta.model_filter
+            # unless Meteor.user() and 'admin' in Meteor.user().roles
+            #     built_query.app = 'stand'
+    
+            # if delta.model_filter is 'model'
+            #     unless 'dev' in Meteor.user().roles
+            #         built_query.view_roles = $in:Meteor.user().roles
+    
+            # if not delta.facets
+            #     # console.log 'no facets'
+            #     Docs.update delta_id,
+            #         $set:
+            #             facets: [{
+            #                 key:'_keys'
+            #                 filters:[]
+            #                 res:[]
+            #             }
+            #             # {
+            #             #     key:'_timestamp_tags'
+            #             #     filters:[]
+            #             #     res:[]
+            #             # }
+            #             ]
+            #
+            #     delta.facets = [
+            #         key:'_keys'
+            #         filters:[]
+            #         res:[]
+            #     ]
+            #
+    
+    
+            # for facet in delta.facets
+            #     if facet.filters.length > 0
+            #         built_query["#{facet.key}"] = $all: facet.filters
+    
+            if model.collection and model.collection is 'users'
+                total = Meteor.users.find(built_query).count()
+            else
+                total = Docs.find(built_query).count()
+            # console.log 'built query', built_query
+            # response
+            # for facet in delta.facets
+            #     values = []
+            #     local_return = []
+    
+            #     agg_res = Meteor.call 'agg', built_query, facet.key, model.collection
+            #     # agg_res = Meteor.call 'agg', built_query, facet.key
+    
+            #     if agg_res
+            #         Docs.update { _id:delta._id, 'facets.key':facet.key},
+            #             { $set: 'facets.$.res': agg_res }
+            if delta.sort_key
+                # console.log 'found sort key', delta.sort_key
+                sort_by = delta.sort_key
+            else
+                sort_by = 'views'
+    
+            if delta.sort_direction
+                sort_direction = delta.sort_direction
+            else
+                sort_direction = -1
+            if delta.limit
+                limit = delta.limit
+            else
+                limit = 10
+            modifier =
+                {
+                    fields:_id:1
+                    limit:limit
+                    sort:"#{sort_by}":sort_direction
+                }
+    
+            # results_cursor =
+            #     Docs.find( built_query, modifier )
+    
+            if model and model.collection and model.collection is 'users'
+                results_cursor = Meteor.users.find(built_query, modifier)
+                # else
+                #     results_cursor = global["#{model.collection}"].find(built_query, modifier)
+            else
+                results_cursor = Docs.find built_query, modifier
+    
+    
+            # if total is 1
+            #     result_ids = results_cursor.fetch()
+            # else
+            #     result_ids = []
+            result_ids = results_cursor.fetch()
+            # console.log result_ids
+    
+            Docs.update {_id:delta._id},
+                {$set:
+                    total: total
+                    result_ids:result_ids
+                }, ->
+            return true
+    
+    
+            # delta = Docs.findOne delta_id
+    
+        agg: (query, key, collection)->
+            console.log 'running agg', query
+            limit=20
+            options = { explain:false }
+            # options = { explain:true }
+            pipe =  [
+                { $match: query }
+                { $project: "#{key}": 1 }
+                { $unwind: "$#{key}" }
+                { $group: _id: "$#{key}", count: $sum: 1 }
+                { $sort: count: -1, _id: 1 }
+                { $limit: limit }
+                { $project: _id: 0, name: '$_id', count: 1 }
+                # { $out : "results" }
+            ]
+            if pipe
+                if collection and collection is 'users'
+                    agg = Meteor.users.rawCollection().aggregate(pipe,options)
+                else
+                    agg = global['Docs'].rawCollection().aggregate(pipe,options)
+                # else
+                # res = {}
+                # if agg
+                    # console.log 'have agg', agg
+                    # agg.toArray()
+                    # agg.forEach (tag, i) ->
+                    #     console.log 'tag', tag
+    
+            else
+                return null
+    

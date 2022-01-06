@@ -374,11 +374,11 @@ Template.kvs.events
     'click .set_value': (e,t)->
         parent = Template.parentData()
         # $(e.currentTarget).closest('.button').transition('pulse', 100)
-
-        doc = Docs.findOne parent._id
-        if doc
-            Docs.update parent._id,
-                $set:"#{@key}":@value
+        if parent
+            doc = Docs.findOne parent._id
+            if doc
+                Docs.update parent._id,
+                    $set:"#{@key}":@value
 
 
 

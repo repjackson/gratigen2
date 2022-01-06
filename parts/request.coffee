@@ -5,24 +5,6 @@ if Meteor.isClient
         Meteor.users.findOne @completed_by_user_id
     
     
-    Router.route '/requests', (->
-        @layout 'layout'
-        @render 'requests'
-        ), name:'requests'
-    # Template.requests.events
-    #     'click .add_request': ->
-    #         new_id = 
-    #             Docs.insert 
-    #                 model:'request'
-    #         Router.go "/m/request/#{new_id}/edit"
-            
-    Template.requests.helpers
-        requests: ->
-            Docs.find 
-                model:'request'
-                complete:$ne:true
-                published:true
-
     Template.request_card.onCreated ->
         @autorun => Meteor.subscribe 'doc_comments', @data._id
 
