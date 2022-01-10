@@ -372,3 +372,14 @@ template(name='home_shift_card')
                 .ui.tiny.basic.label #{this}
                         
     // +footer
+    
+    
+template(name='footer')
+    .ui.segment 
+        .ui.header footer 
+        each user_docs 
+            .ui.header #{username}
+        .ui.header 
+            |docs 
+        each doc_docs
+            .ui.header #{title} #{model}
