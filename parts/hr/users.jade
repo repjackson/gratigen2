@@ -16,7 +16,7 @@ template(name='users')
             .scrolling
                 // if skv_is 'view_users' 'grid'
                 .ui.stackable.three.cards
-                    each users
+                    each user_docs
                         +user_card
                 // else if session_is 'view_users' 'list'
                 // else

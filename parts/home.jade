@@ -377,9 +377,11 @@ template(name='home_shift_card')
 template(name='footer')
     .ui.segment 
         .ui.header footer 
-        each user_docs 
-            .ui.header #{username}
+        .ui.list
+            each user_docs 
+                .item #{username}
         .ui.header 
             |docs 
-        each doc_docs
-            .ui.header #{title} #{model}
+        .ui.list
+            each doc_docs
+                .item #{title} #{model}
