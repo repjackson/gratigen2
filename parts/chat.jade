@@ -42,22 +42,22 @@ template(name='chat_messages_pane')
             input.add_message(type='text' placeholder='add message...')
                 
 template(name='chat_list')
-    div
-    .ui.inline.header channels
-    .ui.icon.basic.button#create_chat(title='new channel')
-        i.plus.icon
-
-    .ui.segments
-        each chat_list_items
-            +chat_list_item
-    .ui.inline.header direct messages
-    //- .ui.icon.basic.button#create_private_chat(title='new dm')
-    //-     i.plus.icon
-
-    .ui.segments
-        each private_chats
-            +private_chat_item
-            
+    div.scrolling
+        .ui.inline.header channels
+        .ui.icon.basic.button#create_chat(title='new channel')
+            i.plus.icon
+    
+        .ui.segments
+            each chat_list_items
+                +chat_list_item
+        .ui.inline.header direct messages
+        //- .ui.icon.basic.button#create_private_chat(title='new dm')
+        //-     i.plus.icon
+    
+        .ui.segments
+            each private_chats
+                +private_chat_item
+                
             
 template(name='chat_list_item')
     .ui.smoothed.pointer.segment.chat_list_item(href='#' class=chat_list_item_class)

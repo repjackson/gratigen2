@@ -892,3 +892,435 @@ if Meteor.isServer
             else
                 return null
     
+    
+if Meteor.isClient
+    Template.delta_result_card.onRendered ->
+        # Meteor.setTimeout ->
+        #     $('.progress').popup()
+        # , 2000
+    Template.delta_result_card.onCreated ->
+        @autorun => Meteor.subscribe 'doc', @data._id
+        @autorun => Meteor.subscribe 'user_from_id', @data._id
+
+    Template.delta_result_card.helpers
+        template_exists: ->
+            current_model = Router.current().params.model_slug
+            if current_model
+                if Template["#{current_model}_card"]
+                    return true
+                else
+                    return false
+
+        model_template: ->
+            current_model = Router.current().params.model_slug
+            "#{current_model}_card"
+
+        toggle_value_class: ->
+            facet = Template.parentData()
+            delta = Docs.findOne model:'delta'
+            if Session.equals 'loading', true
+                 'disabled'
+            else if facet.filters.length > 0 and @name in facet.filters
+                'active'
+            else ''
+
+        result: ->
+            if Docs.findOne @_id
+                # console.log 'doc'
+                result = Docs.findOne @_id
+                if result.private is true
+                    if result._author_id is Meteor.userId()
+                        result
+                else
+                    result
+            else if Meteor.users.findOne @_id
+                # console.log 'user'
+                Meteor.users.findOne @_id
+
+    Template.delta_result_card.events
+        'click .result': (e,t)->
+            # console.log @
+            model_slug =  Router.current().params.model_slug
+            # $(e.currentTarget).closest('.result').transition('fade')
+            if Meteor.user()
+                Docs.update @_id,
+                    $inc: views: 1
+                    $addToSet:viewer_usernames:Meteor.user().username
+            # else
+            #     Docs.update @_id,
+            #         $inc: views: 1
+            delta = Docs.findOne model:'delta'
+            Docs.update delta._id,
+                $set:search_query:null
+
+            if model_slug is 'model'
+                Session.set 'loading', true
+                Meteor.call 'set_facets', @slug, ->
+                    Session.set 'loading', false
+
+            if @model is 'model'
+                Router.go "/m/#{@slug}"
+            else
+                Router.go "/m/#{model_slug}/#{@_id}/view"
+
+        'click .set_model': ->
+            Meteor.call 'set_delta_facets', @slug, Meteor.userId()
+
+        'click .route_model': ->
+            Session.set 'loading', true
+            Meteor.call 'set_facets', @slug, ->
+                Session.set 'loading', false
+            # delta = Docs.findOne model:'delta'
+            # Docs.update delta._id,
+            #     $set:model_filter:@slug
+            #
+            # Meteor.call 'fum', delta._id, (err,res)->
+    
+    
+    
+if Meteor.isClient
+    Template.delta_list_result.onRendered ->
+        # Meteor.setTimeout ->
+        #     $('.progress').popup()
+        # , 2000
+    Template.delta_list_result.onCreated ->
+        @autorun => Meteor.subscribe 'doc', @data._id
+        @autorun => Meteor.subscribe 'user_from_id', @data._id
+
+    Template.delta_list_result.helpers
+        visible_fields: ->
+            delta = Docs.findOne model:'delta'
+            if delta.visible_fields
+                delta.visible_fields
+
+        template_exists: ->
+            current_model = Router.current().params.model_slug
+            if current_model
+                if Template["#{current_model}_card"]
+                    # console.log 'true'
+                    return true
+                else
+                    # console.log 'false'
+                    return false
+
+        model_template: ->
+            current_model = Router.current().params.model_slug
+            "#{current_model}_card"
+
+        toggle_value_class: ->
+            facet = Template.parentData()
+            delta = Docs.findOne model:'delta'
+            if Session.equals 'loading', true
+                 'disabled'
+            else if facet.filters.length > 0 and @name in facet.filters
+                'active'
+            else ''
+
+        result: ->
+            if Docs.findOne @_id
+                # console.log 'doc'
+                result = Docs.findOne @_id
+                if result.private is true
+                    if result._author_id is Meteor.userId()
+                        result
+                else
+                    result
+            else if Meteor.users.findOne @_id
+                # console.log 'user'
+                Meteor.users.findOne @_id
+
+    Template.delta_list_result.events
+        'click .result': (e,t)->
+            # console.log @
+            model_slug =  Router.current().params.model_slug
+            # $(e.currentTarget).closest('.result').transition('fade')
+            if Meteor.user()
+                Docs.update @_id,
+                    $inc: views: 1
+                    $addToSet:viewer_usernames:Meteor.user().username
+            # else
+            #     Docs.update @_id,
+            #         $inc: views: 1
+            delta = Docs.findOne model:'delta'
+            Docs.update delta._id,
+                $set:search_query:null
+
+            if model_slug is 'model'
+                Session.set 'loading', true
+                Meteor.call 'set_facets', @slug, ->
+                    Session.set 'loading', false
+
+            if @model is 'model'
+                Router.go "/m/#{@slug}"
+            else
+                Router.go "/m/#{model_slug}/#{@_id}/view"
+
+        'click .set_model': ->
+            Meteor.call 'set_delta_facets', @slug, Meteor.userId()
+
+        'click .route_model': ->
+            Session.set 'loading', true
+            Meteor.call 'set_facets', @slug, ->
+                Session.set 'loading', false
+            # delta = Docs.findOne model:'delta'
+            # Docs.update delta._id,
+            #     $set:model_filter:@slug
+            #
+            # Meteor.call 'fum', delta._id, (err,res)->
+if Meteor.isClient
+    Router.route '/m/:model_slug/:doc_id/view', (->
+        @render 'model_doc_view'
+        ), name:'doc_view'
+
+    Router.route '/m/:model_slug/:doc_id/edit', (->
+        @render 'model_doc_edit'
+        ), name:'doc_edit'
+
+
+    Template.model_doc_edit.onCreated ->
+        @autorun -> Meteor.subscribe 'me'
+        @autorun -> Meteor.subscribe 'doc', Router.current().params.doc_id
+        @autorun -> Meteor.subscribe 'model_fields_from_slug', Router.current().params.model_slug
+        @autorun -> Meteor.subscribe 'model_from_slug', Router.current().params.model_slug
+        @autorun -> Meteor.subscribe 'model_docs', 'field_type'
+
+    Template.model_doc_edit.helpers
+        template_exists: ->
+            current_model = Docs.findOne(Router.current().params.doc_id).model
+            unless current_model.model is 'model'
+                if Template["#{current_model}_edit"]
+                    return true
+                else
+                    return false
+            else
+                return false
+            # false
+            # false
+            # # current_model = Docs.findOne(slug:Router.current().params.model_slug).model
+            # current_model = Router.current().params.model_slug
+            # if Template["#{current_model}_doc_edit"]
+            #     # console.log 'true'
+            #     return true
+            # else
+            #     # console.log 'false'
+            #     return false
+
+        model_template: ->
+            # current_model = Docs.findOne(slug:Router.current().params.model_slug).model
+            current_model = Router.current().params.model_slug
+            "#{current_model}_edit"
+
+
+    Template.model_doc_edit.events
+        'click #delete_doc': ->
+            if confirm 'Confirm delete doc'
+                Docs.remove @_id
+                Router.go "/m/#{@model}"
+
+if Meteor.isClient
+    Template.delta_result_table_row.onRendered ->
+        # Meteor.setTimeout ->
+        #     $('table').tablesort()
+        # , 2000
+
+
+    Template.delta_result_table_row.onCreated ->
+        @autorun => Meteor.subscribe 'doc', @data._id
+        @autorun => Meteor.subscribe 'user_from_id', @data._id
+
+    Template.delta_result_table_row.helpers
+        visible_fields: ->
+            delta = Docs.findOne model:'delta'
+            if delta.visible_fields
+                delta.visible_fields
+
+
+        template_exists: ->
+            current_model = Router.current().params.model_slug
+            if current_model
+                if Template["#{current_model}_card"]
+                    # console.log 'true'
+                    return true
+                else
+                    # console.log 'false'
+                    return false
+
+        model_template: ->
+            current_model = Router.current().params.model_slug
+            "#{current_model}_card"
+
+        toggle_value_class: ->
+            facet = Template.parentData()
+            delta = Docs.findOne model:'delta'
+            if Session.equals 'loading', true
+                 'disabled'
+            else if facet.filters.length > 0 and @name in facet.filters
+                'active'
+            else ''
+
+
+        result: ->
+            console.log @
+            if Docs.findOne @_id
+                # console.log 'doc'
+                result = Docs.findOne @_id
+                if result.private is true
+                    if result._author_id is Meteor.userId()
+                        result
+                else
+                    result
+            else if Meteor.users.findOne @_id
+                # console.log 'user'
+                Meteor.users.findOne @_id
+
+    Template.dr_table_cell.helpers
+        result_value: ->
+            field = @
+            # console.log Template.currentData()
+            parent = Template.parentData()
+            if Docs.findOne parent._id
+                # console.log 'doc'
+                result = Docs.findOne parent._id
+                # if result.private is true
+                #     if result._author_id is Meteor.userId()
+                #         result
+                # else
+                #     result
+                result["#{field.key}"]
+
+
+    Template.delta_result_table_row.events
+        'click .goto_doc': ->
+            # console.log @
+            found = Docs.findOne @_id
+            console.log found
+            Router.go "/m/#{found.model}/#{found._id}/view"
+
+        'click .result': (e,t)->
+            # console.log @
+            model_slug =  Router.current().params.model_slug
+            $(e.currentTarget).closest('.result').transition('fade')
+            if Meteor.user()
+                Docs.update @_id,
+                    $inc: views: 1
+                    $addToSet:viewer_usernames:Meteor.user().username
+            # else
+            #     Docs.update @_id,
+            #         $inc: views: 1
+            delta = Docs.findOne model:'delta'
+            Docs.update delta._id,
+                $set:search_query:null
+
+            if model_slug is 'model'
+                Session.set 'loading', true
+                Meteor.call 'set_facets', @slug, ->
+                    Session.set 'loading', false
+
+            if @model is 'model'
+                Router.go "/m/#{@slug}"
+            else
+                Router.go "/m/#{model_slug}/#{@_id}/view"
+
+        'click .set_model': ->
+            Meteor.call 'set_delta_facets', @slug, Meteor.userId()
+
+        'click .route_model': ->
+            Session.set 'loading', true
+            Meteor.call 'set_facets', @slug, ->
+                Session.set 'loading', false
+            # delta = Docs.findOne model:'delta'
+            # Docs.update delta._id,
+            #     $set:model_filter:@slug
+            #
+            # Meteor.call 'fum', delta._id, (err,res)->
+
+
+if Meteor.isClient
+    Router.route '/model/edit/:doc_id/', (->
+        @layout 'model_edit_layout'
+        @render 'model_edit_dashboard'
+        ), name:'model_edit_dashboard'
+    Router.route '/model/edit/:doc_id/fields', (->
+        @layout 'model_edit_layout'
+        @render 'model_edit_fields'
+        ), name:'model_edit_fields'
+    Router.route '/model/edit/:doc_id/modules', (->
+        @layout 'model_edit_layout'
+        @render 'model_edit_modules'
+        ), name:'model_edit_modules'
+    Router.route '/model/edit/:doc_id/permissions', (->
+        @layout 'model_edit_layout'
+        @render 'model_edit_permissions'
+        ), name:'model_edit_permissions'
+
+
+    Template.model_edit_layout.onCreated ->
+        @autorun -> Meteor.subscribe 'child_docs', Router.current().params.doc_id
+        @autorun -> Meteor.subscribe 'doc', Router.current().params.doc_id
+        @autorun -> Meteor.subscribe 'model_fields_from_id', Router.current().params.doc_id
+        @autorun -> Meteor.subscribe 'model_from_slug', Router.current().params.model_slug
+        @autorun -> Meteor.subscribe 'model_docs', 'field_type'
+
+    Template.field_edit.onRendered ->
+
+
+    Template.field_edit.helpers
+        viewing_content: ->
+            Session.equals('expand_field', @_id)
+
+    Template.field_edit.events
+        'click .field_edit': (e,t)->
+            $('.segment').removeClass('raised')
+
+            $(e.currentTarget).closest('.segment').toggleClass('raised')
+
+            if Session.equals('expand_field', @_id)
+                Session.set('expand_field', null)
+            else
+                Session.set('expand_field', @_id)
+
+
+
+
+    Template.model_edit_fields.helpers
+        fields: ->
+            Docs.find {
+                model:'field'
+                parent_id: Router.current().params.doc_id
+            }, sort:rank:1
+
+    Template.model_edit_layout.events
+        'click #delete_model': (e,t)->
+            if confirm 'delete model?'
+                Docs.remove Router.current().params.doc_id, ->
+                    Router.go "/"
+
+        'click .add_field': ->
+            Docs.insert
+                model:'field'
+                parent_id: Router.current().params.doc_id
+                view_roles: ['dev', 'admin', 'user', 'public']
+                edit_roles: ['dev', 'admin', 'user']
+
+    Template.field_edit.helpers
+        is_ref: ->
+            ref_field_types =
+                Docs.find(
+                    model:'field_type'
+                    slug: $in: ['single_doc', 'multi_doc','children']
+                ).fetch()
+            ids = _.pluck(ref_field_types, '_id')
+            # console.log ids
+            @field_type_id in ids
+
+        is_user_ref: ->
+            @field_type in ['single_user', 'multi_user']
+
+
+
+    # Template.model_edit.events
+    #     'click #delete_model': ->
+    #         if confirm 'Confirm delete doc'
+    #             Docs.remove @_id
+    #             Router.go "/m/model"
+    

@@ -8,7 +8,7 @@ template(name='cart_card')
 template(name='cart')
     // with current_cart
     .ui.stackable.padded.three.column.grid
-        .column
+        .column.scrolling
             .ui.header
                 // i.cart.icon
                 +i name='shopping-cart'
@@ -47,15 +47,15 @@ template(name='cart_item')
                 |$#{product_point_price} #{product_title}
             .description
                 small added #{when}
-                .ui.basic.icon.button.decrease_amount
+                .ui.basic.icon.small.compact.button.decrease_amount
                     i.minus.icon
                 .ui.inline.header #{amount}
-                .ui.basic.icon.button.increase_amount
+                .ui.basic.icon.small.compact.button.increase_amount
                     i.plus.icon
-                .ui.basic.icon.button.remove_item
+                .ui.basic.icon.small.compact.button.remove_item
                     i.remove.red.icon
-                if in_dev
-                    +print_this
+                // if in_dev
+                //     +print_this
         
         
 template(name='location_section')
