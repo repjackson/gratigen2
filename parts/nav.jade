@@ -1,6 +1,6 @@
 template(name='nav')
     // https://fomantic-ui.com/elements/icon.html#/icon
-    #topnav.topnav.ui.attached.borderless.inverted.menu.hscroll
+    #topnav.topnav.ui.attached.borderless.inverted.menu.hscroll(style="background-color:{{currentUser.theme_color}};")
         if is_loading
             .icon.item
                 i.big.loading.grey.refresh.icon.cancel
@@ -91,7 +91,7 @@ template(name='nav')
                     // i.sign.in.large.icon
                     +i name='internal'
                     |login
-    .ui.attached.inverted.small.borderless.menu.hscroll
+    .ui.attached.inverted.small.borderless.menu.hscroll(style="background-color:{{currentUser.theme_color}};")
         a.item.zoomer(href="/resources" class="{{isActiveRoute 'resources'}}")
             // i.large.inbox.icon
             +i name='clock'

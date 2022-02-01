@@ -87,7 +87,6 @@ template(name='user_edit_info')
                     +emails_edit
                     .ui.hidden.divider
                     +phone_edit key='phone' label='phone' icon='phone' direct=true
-            .four.wide.column
                 +array_edit key='allergens' label='allergens' icon='no-milk' direct=true
                 +array_edit key='food_dislikes' label='food dislikes' icon='disgusting' direct=true
                 if is_admin
@@ -99,9 +98,9 @@ template(name='user_edit_info')
                 else if in_dev
                     +array_edit key='roles' icon='shield' direct=true
                     +boolean_edit key='admin' direct=true
+                +color_edit key='theme_color' direct=true
+                    
                 
-                    
-                    
 template(name='user_settings')
     .ui.segment
         .ui.header 

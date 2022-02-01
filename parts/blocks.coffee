@@ -586,11 +586,11 @@ if Meteor.isServer
 
 if Meteor.isClient
     Template.search_input.events
-        'keyup .search_input': (e,t)->
+        'keyup .search_input': _.throttle((e,t)->
             search_value = $(e.currentTarget).closest('.search_input').val().trim()
-            if search_value.length > 1
-                console.log 'searching', search_value
-                Session.set('search_value', search_value)
+            # if search_value.length > 1
+            console.log 'searching', search_value
+            Session.set('search_value', search_value)
             if e.which is 27
         	    if Session.get('search_value')
                     $('body').toast(
@@ -602,6 +602,24 @@ if Meteor.isClient
                         position: 'top right'
                     )
         	        Session.set('search_value', null)
+        , 400)       
+        	  
+        'click .clear_query': (e,t)->
+    	    if Session.get('search_value')
+                $('body').toast(
+                    showIcon: 'cancel'
+                    message: 'search cleared'
+                    # showProgress: 'bottom'
+                    class: 'success'
+                    displayTime: 'auto'
+                    position: 'top right'
+                )
+                $(e.currentTarget).closest('.input').transition('jiggle', 500)
+                
+                
+    	        Session.set('search_value', null)
+            
+
 
     Template.search_input.helpers
         current_query: -> Session.get('search_value')

@@ -3,7 +3,7 @@ if Meteor.isClient
         @layout 'user_edit_layout'
         @render 'user_edit_info'
         ), name:'user_edit'
-    Router.route '/user/:username/edit/info', (->
+    Router.route '/user/:username/edit/account', (->
         @layout 'user_edit_layout'
         @render 'user_edit_info'
         ), name:'user_edit_info'
