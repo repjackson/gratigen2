@@ -2,7 +2,7 @@ template(name='groups')
     .ui.stackable.padded.grid
         .sixteen.wide.column
             .ui.inline.header 
-                +i name='groups'
+                +i name='campfire'
                 |groups
             if currentUser
                 a.ui.icon.basic.circular.button.add_group(title='cook')
@@ -42,7 +42,7 @@ template(name='groups')
                 |&nbsp;
                 |&nbsp;
         .sixteen.wide.column
-            .ui.stackable.cards.scrollin
+            .ui.stackable.cards.scrolling
                 each group_docs
                     +group_card
 

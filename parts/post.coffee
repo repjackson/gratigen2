@@ -1,4 +1,8 @@
 if Meteor.isClient
+    Router.route '/posts', (->
+        @layout 'layout'
+        @render 'posts'
+        ), name:'posts'
     Router.route '/post/:doc_id/edit', (->
         @layout 'layout'
         @render 'post_edit'
@@ -12,10 +16,47 @@ if Meteor.isClient
         @render 'post_view'
         ), name:'post_view_long'
     
-    Template.registerHelper 'claimer', () ->
-        Meteor.users.findOne @claimed_user_id
-    Template.registerHelper 'completer', () ->
-        Meteor.users.findOne @completed_by_user_id
+    
+    Template.posts.onCreated ->
+        @autorun => @subscribe 'post_docs',
+            picked_tags.array()
+            Session.get('post_title_filter')
+
+        @autorun => @subscribe 'post_facets',
+            picked_tags.array()
+            Session.get('post_title_filter')
+
+    
+    
+    Template.posts.events
+        'click .add_post': ->
+            new_id = 
+                Docs.insert 
+                    model:'post'
+            Router.go "/post/#{new_id}/edit"
+            
+            
+            
+    Template.posts.helpers
+        picked_tags: -> picked_tags.array()
+    
+        post_docs: ->
+            Docs.find {
+                model:'post'
+                private:$ne:true
+            }, sort:_timestamp:-1    
+        tag_results: ->
+            Results.find {
+                model:'tag'
+            }, sort:_timestamp:-1
+
+    Template.user_posts.onCreated ->
+        @autorun => Meteor.subscribe 'user_posts', Router.current().params.username, ->
+    Template.user_posts.helpers
+        post_docs: ->
+            Docs.find {
+                model:'post'
+            }, sort:_timestamp:-1    
     
     Template.post_view.onCreated ->
         @autorun => Meteor.subscribe 'doc_by_id', Router.current().params.doc_id, ->
@@ -40,29 +81,29 @@ if Meteor.isClient
                     post_ids:[@_id]
             Router.go "/recipe/#{new_id}/edit"
 
-    Template.favorite_icon_toggle.helpers
-        icon_class: ->
-            if @favorite_ids and Meteor.userId() in @favorite_ids
-                'red'
-            else
-                'outline'
-    Template.favorite_icon_toggle.events
-        'click .toggle_fav': ->
-            if @favorite_ids and Meteor.userId() in @favorite_ids
-                Docs.update @_id, 
-                    $pull:favorite_ids:Meteor.userId()
-            else
-                $('body').toast(
-                    showIcon: 'heart'
-                    message: "marked favorite"
-                    showProgress: 'bottom'
-                    class: 'success'
-                    # displayTime: 'auto',
-                    position: "bottom right"
-                )
+    # Template.favorite_icon_toggle.helpers
+    #     icon_class: ->
+    #         if @favorite_ids and Meteor.userId() in @favorite_ids
+    #             'red'
+    #         else
+    #             'outline'
+    # Template.favorite_icon_toggle.events
+    #     'click .toggle_fav': ->
+    #         if @favorite_ids and Meteor.userId() in @favorite_ids
+    #             Docs.update @_id, 
+    #                 $pull:favorite_ids:Meteor.userId()
+    #         else
+    #             $('body').toast(
+    #                 showIcon: 'heart'
+    #                 message: "marked favorite"
+    #                 showProgress: 'bottom'
+    #                 class: 'success'
+    #                 # displayTime: 'auto',
+    #                 position: "bottom right"
+    #             )
 
-                Docs.update @_id, 
-                    $addToSet:favorite_ids:Meteor.userId()
+    #             Docs.update @_id, 
+    #                 $addToSet:favorite_ids:Meteor.userId()
     
     
     Template.post_edit.events
@@ -86,7 +127,7 @@ if Meteor.isClient
                         showConfirmButton: false,
                         timer: 1500
                     )
-                    Router.go "/post"
+                    Router.go "/posts"
             )
 
         'click .publish': ->
@@ -134,59 +175,15 @@ if Meteor.isClient
             )
             
 if Meteor.isServer
-    Meteor.publish 'post_results', (
-        )->
-        # console.log picked_ingredients
-        # if doc_limit
-        #     limit = doc_limit
-        # else
-        limit = 42
-        # if doc_sort_key
-        #     sort_key = doc_sort_key
-        # if doc_sort_direction
-        #     sort_direction = parseInt(doc_sort_direction)
-        self = @
-        match = {model:'post'}
-        # if picked_ingredients.length > 0
-        #     match.ingredients = $all: picked_ingredients
-        #     # sort = 'price_per_serving'
-        # if picked_sections.length > 0
-        #     match.menu_section = $all: picked_sections
-            # sort = 'price_per_serving'
-        # else
-            # match.tags = $nin: ['wikipedia']
-        sort = '_timestamp'
-        match.published = true
-            # match.source = $ne:'wikipedia'
-        # if view_vegan
-        #     match.vegan = true
-        # if view_gf
-        #     match.gluten_free = true
-        # if post_query and post_query.length > 1
-        #     console.log 'searching post_query', post_query
-        #     match.title = {$regex:"#{post_query}", $options: 'i'}
-        #     # match.tags_string = {$regex:"#{query}", $options: 'i'}
-
-        # match.tags = $all: picked_ingredients
-        # if filter then match.model = filter
-        # keys = _.keys(prematch)
-        # for key in keys
-        #     key_array = prematch["#{key}"]
-        #     if key_array and key_array.length > 0
-        #         match["#{key}"] = $all: key_array
-            # console.log 'current facet filter array', current_facet_filter_array
-
-        # console.log 'post match', match
-        # console.log 'sort key', sort_key
-        # console.log 'sort direction', sort_direction
-        Docs.find match,
-            # sort:"#{sort_key}":sort_direction
-            # sort:_timestamp:-1
-            limit: 42
-            
-            
+    Meteor.publish 'user_posts', (username)->
+        user = Meteor.users.findOne username:username
+        
+        Docs.find 
+            model:'post'
+            _author_id:user._id
+    
     Meteor.publish 'post_count', (
-        picked_ingredients
+        picked_tags
         picked_sections
         post_query
         view_vegan
@@ -194,11 +191,11 @@ if Meteor.isServer
         )->
         # @unblock()
     
-        # console.log picked_ingredients
+        # console.log picked_tags
         self = @
         match = {model:'post'}
-        if picked_ingredients.length > 0
-            match.ingredients = $all: picked_ingredients
+        if picked_tags.length > 0
+            match.ingredients = $all: picked_tags
             # sort = 'price_per_serving'
         if picked_sections.length > 0
             match.menu_section = $all: picked_sections
@@ -216,113 +213,6 @@ if Meteor.isServer
             match.title = {$regex:"#{post_query}", $options: 'i'}
         Counts.publish this, 'post_counter', Docs.find(match)
         return undefined
-
-    Meteor.publish 'post_facets', (
-        picked_ingredients
-        picked_sections
-        post_query
-        view_vegan
-        view_gf
-        doc_limit
-        doc_sort_key
-        doc_sort_direction
-        view_delivery
-        view_pickup
-        view_open
-        )->
-        # console.log 'dummy', dummy
-        # console.log 'query', query
-        console.log 'picked ingredients', picked_ingredients
-
-        self = @
-        match = {}
-        match.model = 'post'
-        if view_vegan
-            match.vegan = true
-        if view_gf
-            match.gluten_free = true
-        if picked_ingredients.length > 0 then match.ingredients = $all: picked_ingredients
-        if picked_sections.length > 0 then match.menu_section = $all: picked_sections
-            # match.$regex:"#{post_query}", $options: 'i'}
-        if post_query and post_query.length > 1
-            console.log 'searching post_query', post_query
-            match.title = {$regex:"#{post_query}", $options: 'i'}
-            # match.tags_string = {$regex:"#{query}", $options: 'i'}
-        #
-        #     Terms.find {
-        #         title: {$regex:"#{query}", $options: 'i'}
-        #     },
-        #         sort:
-        #             count: -1
-        #         limit: 42
-            # tag_cloud = Docs.aggregate [
-            #     { $match: match }
-            #     { $project: "tags": 1 }
-            #     { $unwind: "$tags" }
-            #     { $group: _id: "$tags", count: $sum: 1 }
-            #     { $match: _id: $nin: picked_ingredients }
-            #     { $match: _id: {$regex:"#{query}", $options: 'i'} }
-            #     { $sort: count: -1, _id: 1 }
-            #     { $limit: 42 }
-            #     { $project: _id: 0, name: '$_id', count: 1 }
-            #     ]
-
-        # else
-        # unless query and query.length > 2
-        # if picked_ingredients.length > 0 then match.tags = $all: picked_ingredients
-        # # match.tags = $all: picked_ingredients
-        # # console.log 'match for tags', match
-        section_cloud = Docs.aggregate [
-            { $match: match }
-            { $project: "menu_section": 1 }
-            { $group: _id: "$menu_section", count: $sum: 1 }
-            { $match: _id: $nin: picked_sections }
-            # { $match: _id: {$regex:"#{post_query}", $options: 'i'} }
-            { $sort: count: -1, _id: 1 }
-            { $limit: 20 }
-            { $project: _id: 0, name: '$_id', count: 1 }
-        ], {
-            allowDiskUse: true
-        }
-        
-        section_cloud.forEach (section, i) =>
-            # console.log 'queried section ', section
-            # console.log 'key', key
-            self.added 'results', Random.id(),
-                title: section.name
-                count: section.count
-                model:'section'
-                # category:key
-                # index: i
-
-
-        ingredient_cloud = Docs.aggregate [
-            { $match: match }
-            { $project: "ingredients": 1 }
-            { $unwind: "$ingredients" }
-            { $match: _id: $nin: picked_ingredients }
-            { $group: _id: "$ingredients", count: $sum: 1 }
-            { $sort: count: -1, _id: 1 }
-            { $limit: 20 }
-            { $project: _id: 0, title: '$_id', count: 1 }
-        ], {
-            allowDiskUse: true
-        }
-
-        ingredient_cloud.forEach (ingredient, i) =>
-            # console.log 'ingredient result ', ingredient
-            self.added 'results', Random.id(),
-                title: ingredient.title
-                count: ingredient.count
-                model:'ingredient'
-                # category:key
-                # index: i
-
-
-        self.ready()
-
-
-
 
 
 if Meteor.isClient
@@ -368,3 +258,173 @@ if Meteor.isClient
                 model:'food'
             }, sort:title:1
             
+
+if Meteor.isServer    
+    Meteor.publish 'post_facets', (
+        picked_tags=[]
+        title_filter
+        picked_authors=[]
+        picked_tasks=[]
+        picked_locations=[]
+        picked_timestamp_tags=[]
+        )->
+        # console.log 'dummy', dummy
+        # console.log 'query', query
+        # console.log 'picked staff', picked_authors
+    
+        self = @
+        match = {}
+        # match = {app:'pes'}
+        match.model = 'post'
+        # match.group_id = Meteor.user().current_group_id
+        
+        if title_filter and title_filter.length > 1
+            match.title = {$regex:title_filter, $options:'i'}
+        
+        # if view_vegan
+        #     match.vegan = true
+        # if view_gf
+        #     match.gluten_free = true
+        # if view_local
+        #     match.local = true
+        if picked_authors.length > 0 then match._author_username = $in:picked_authors
+        if picked_tags.length > 0 then match.tags = $all:picked_tags 
+        if picked_locations.length > 0 then match.location_title = $in:picked_locations 
+        if picked_timestamp_tags.length > 0 then match._timestamp_tags = $in:picked_timestamp_tags 
+        # match.$regex:"#{product_query}", $options: 'i'}
+        # if product_query and product_query.length > 1
+        author_cloud = Docs.aggregate [
+            { $match: match }
+            { $project: "_author_username": 1 }
+            { $group: _id: "$_author_username", count: $sum: 1 }
+            { $match: _id: $nin: picked_authors }
+            # { $match: _id: {$regex:"#{product_query}", $options: 'i'} }
+            { $sort: count: -1, _id: 1 }
+            { $limit: 10 }
+            { $project: _id: 0, title: '$_id', count: 1 }
+        ], {
+            allowDiskUse: true
+        }
+        
+        author_cloud.forEach (author, i) =>
+            # console.log 'queried author ', author
+            # console.log 'key', key
+            self.added 'results', Random.id(),
+                title: author.title
+                count: author.count
+                model:'author'
+                # category:key
+                # index: i
+    
+        tag_cloud = Docs.aggregate [
+            { $match: match }
+            { $project: "tags": 1 }
+            { $unwind: "$tags" }
+            { $group: _id: "$tags", count: $sum: 1 }
+            { $match: _id: $nin: picked_tags }
+            # { $match: _id: {$regex:"#{product_query}", $options: 'i'} }
+            { $sort: count: -1, _id: 1 }
+            { $limit: 20 }
+            { $project: _id: 0, title: '$_id', count: 1 }
+        ], {
+            allowDiskUse: true
+        }
+        
+        tag_cloud.forEach (tag, i) =>
+            # console.log 'queried tag ', tag
+            # console.log 'key', key
+            self.added 'results', Random.id(),
+                title: tag.title
+                count: tag.count
+                model:'tag'
+                # category:key
+                # index: i
+    
+    
+        location_cloud = Docs.aggregate [
+            { $match: match }
+            { $project: "location_title": 1 }
+            # { $unwind: "$locations" }
+            { $match: _id: $nin: picked_locations }
+            { $group: _id: "$location_title", count: $sum: 1 }
+            { $sort: count: -1, _id: 1 }
+            { $limit: 10 }
+            { $project: _id: 0, title: '$_id', count: 1 }
+        ], {
+            allowDiskUse: true
+        }
+    
+        location_cloud.forEach (location, i) =>
+            # console.log 'location result ', location
+            self.added 'results', Random.id(),
+                title: location.title
+                count: location.count
+                model:'location'
+                # category:key
+                # index: i
+    
+        timestamp_tag_cloud = Docs.aggregate [
+            { $match: match }
+            { $project: "_timestamp_tags": 1 }
+            { $unwind: "$_timestamp_tags" }
+            { $match: _id: $nin: picked_timestamp_tags }
+            { $group: _id: "$_timestamp_tags", count: $sum: 1 }
+            { $sort: count: -1, _id: 1 }
+            { $limit: 10 }
+            { $project: _id: 0, title: '$_id', count: 1 }
+        ], {
+            allowDiskUse: true
+        }
+    
+        timestamp_tag_cloud.forEach (timestamp_tag, i) =>
+            # console.log 'timestamp_tag result ', timestamp_tag
+            self.added 'results', Random.id(),
+                title: timestamp_tag.title
+                count: timestamp_tag.count
+                model:'timestamp_tag'
+                # category:key
+                # index: i
+    
+    
+    
+    
+        self.ready()
+        
+    Meteor.publish 'post_docs', (
+        picked_tags
+        # title_filter
+        # picked_authors=[]
+        # picked_tasks=[]
+        # picked_locations=[]
+        # picked_timestamp_tags=[]
+        # product_query
+        # view_vegan
+        # view_gf
+        # doc_limit
+        # doc_sort_key
+        # doc_sort_direction
+        )->
+    
+        self = @
+        match = {}
+        # match = {app:'pes'}
+        match.model = 'post'
+        # match.group_id = Meteor.user().current_group_id
+        # if title_filter and title_filter.length > 1
+        #     match.title = {$regex:title_filter, $options:'i'}
+        
+        # if view_vegan
+        #     match.vegan = true
+        # if view_gf
+        #     match.gluten_free = true
+        # if view_local
+        #     match.local = true
+        # if picked_authors.length > 0 then match._author_username = $in:picked_authors
+        # if picked_tags.length > 0 then match.tags = $all:picked_tags 
+        # if picked_locations.length > 0 then match.location_title = $in:picked_locations 
+        # if picked_timestamp_tags.length > 0 then match._timestamp_tags = $in:picked_timestamp_tags 
+        console.log match
+        Docs.find match, 
+            limit:20
+            sort:
+                _timestamp:-1

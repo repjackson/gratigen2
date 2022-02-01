@@ -1,29 +1,29 @@
-template(name='posts')
+template(name='roles')
     .ui.stackable.padded.grid 
         .four.wide.column
             .ui.inline.header 
                 +i name='blog'
-                |posts
+                |roles
                 // if currentUser
-                .ui.icon.button.add_post
+                .ui.icon.button.add_role
                     i.plus.large.icon
             each picked_tags
-                a.ui.blue.button.unpick_post_tag
+                a.ui.blue.button.unpick_role_tag
                     |#{this}
             each tag_results
                 // if title
-                a.ui.compact.button.pick_post_tag
+                a.ui.compact.button.pick_role_tag
                     |#{title} 
                     // small.ui.grey.text #{count}
                     
         .twelve.wide.column
             .ui.centered.stackable.cards
-                each post_docs 
-                    +post_card
+                each role_docs 
+                    +role_card
                     
                     
-template(name='post_card')
-    a.ui.card.fly_right(href="/post/#{_id}")
+template(name='role_card')
+    a.ui.card.fly_right(href="/role/#{_id}")
         if youtube_id 
             +youtube_view key='youtube_id' direct=true
         if image_id 
@@ -47,7 +47,7 @@ template(name='post_card')
             +author_info
 
 
-template(name='set_post_sort_key')
+template(name='set_role_sort_key')
     .item.set_sort
         if color
             .ui.label(class=color) #{label}
@@ -60,33 +60,33 @@ template(name='set_post_sort_key')
         
         
                 
-template(name='user_posts')
+template(name='user_roles')
     .ui.inline.header 
         +i name='blog'
-        |user posts
+        |user roles
     if is_current_user
-        .ui.basic.icon.button.add_post
+        .ui.basic.icon.button.add_role
             i.large.plus.icon
     .ui.padded.stackable.one.column.grid
         .column
             .ui.stackable.cards.scrolling
-                each post_docs 
+                each role_docs 
                     .ui.card
                         .content
-                            a(href="/post/#{_id}") 
+                            a(href="/role/#{_id}") 
                                 img.ui.image(src="{{c.url image_id width=400 height=300 crop='pad'}}")
     
                             .smallscroll 
                                 |!{content}
                             // |created #{when}
                             small {{when}}
-                            a.ui.icon.button(href='/post/#{_id}')
+                            a.ui.icon.button(href='/role/#{_id}')
                                 i.large.chevron.right.icon
                             
         
         
 
-template(name='set_view_mode_post')
+template(name='set_view_mode_role')
     .item.set_view
         i.icon(class=icon)
         |#{title}
@@ -98,9 +98,9 @@ template(name='set_view_mode_post')
 
 
         
-template(name='post_item')
-    .ui.fluid.segment.view_post.pointer
-        a.ui.header(href="/post/#{_id}") #{title}
+template(name='role_item')
+    .ui.fluid.segment.view_role.pointer
+        a.ui.header(href="/role/#{_id}") #{title}
         div
         .ui.small.grey.inline.header #{when}
         | #{content}
@@ -108,22 +108,22 @@ template(name='post_item')
             .ui.basic.small.label #{this}
         
 
-template(name='post_view')
+template(name='role_view')
     with current_doc
         .ui.stackable.grid
             .row 
                 .four.wide.column
                     .ui.basic.segment
                         .ui.header #{title}
-                        a.ui.circular.button.fly_left(href="/posts")
+                        a.ui.circular.button.fly_left(href="/roles")
                             i.chevron.left.big.icon
                             i.newspaper.big.icon
-                            |posts
+                            |roles
                         // div
                         // .ui.inline.grey.header {{from_now start_datetime}}
                         
                         if can_edit
-                            a.ui.circular.icon.button.edit_post(href="/post/#{_id}/edit" title='edit')
+                            a.ui.circular.icon.button.edit_role(href="/role/#{_id}/edit" title='edit')
                                 i.big.link.pencil.icon
                         .ui.segment
                             .ui.header 
@@ -139,10 +139,13 @@ template(name='post_view')
                         each viewers
                             .ui.label #{username}
                         +array_view key='tags' label='tags' direct=true
+                        +array_view key='badge_titles' label='badges' direct=true
                         +voting_full
                         .ui.header #{when}
                         //- +array_view key='location_tags' label='location_tags' direct=true
                         +comments
+                        
+
                 .twelve.wide.column.scrolling
                     img.ui.image(src="{{c.url image_id }}" class=currentUser.invert_class)
                     // a.ui.header(href="/user/#{target.username}")
@@ -162,21 +165,29 @@ template(name='post_view')
                     
                     
                     
-template(name='post_edit')
+template(name='role_edit')
     with current_doc
         .ui.stackable.padded.grid
             .row 
-                .ten.wide.column
+                .eight.wide.column
                     .ui.inline.header 
                         +icolor name='news' cl='ui image inline pointer'
-                        |edit post
-                    a.ui.icon.green.big.button(href="/post/#{_id}" title='save')
+                        |edit role
+                    a.ui.icon.green.big.button(href="/role/#{_id}" title='save')
                         i.checkmark.big.icon
                     +text_edit key='title' label='title' direct=true
                     +html_edit key='content' label='content' direct=true
                     +youtube_edit key='youtube_id' label='youtube id' direct=true
-                .six.wide.column
-                    i.large.link.red.remove.icon.delete_post
+                .eight.wide.column
+                    .ui.header required badges
+                    +badge_picker
+                    +task_picker
+                    +model_picker model='event' icon='calendar'
+                    
+                    i.large.link.red.remove.icon.delete_role
+                    .ui.header 
+                        small owner - each id should be stored in user account or as nft in crypto wallet.
+                        
                     .ui.header 
                         small author
                         |#{_author.username}
@@ -202,3 +213,5 @@ template(name='post_edit')
                     if private 
                         +multi_user_edit key='access_user_ids' label='user picker' direct=true
                     +group_picker
+                    +array_edit key='skills' label='skills' icon='wrench' direct=true
+                    +model_picker model='skill' icon='wrench'
