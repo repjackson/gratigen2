@@ -7,10 +7,18 @@ if Meteor.isClient
         @layout 'user_layout'
         @render 'cart'
         ), name:'user_cart'
+    Router.route '/user/:username/about', (->
+        @layout 'user_layout'
+        @render 'user_about'
+        ), name:'user_about'
     Router.route '/user/:username/credit', (->
         @layout 'user_layout'
         @render 'user_credit'
         ), name:'user_credit'
+    Router.route '/user/:username/credits', (->
+        @layout 'user_layout'
+        @render 'user_credits'
+        ), name:'user_credits'
     Router.route '/user/:username/orders', (->
         @layout 'user_layout'
         @render 'user_orders'

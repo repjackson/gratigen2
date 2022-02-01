@@ -1,6 +1,6 @@
 template(name='groups')
     .ui.stackable.padded.grid
-        .sixteen.wide.column
+        .four.wide.column
             .ui.inline.header 
                 +i name='campfire'
                 |groups
@@ -39,7 +39,7 @@ template(name='groups')
                         i.sort.amount.up.icon
                 |&nbsp;
                 |&nbsp;
-        .sixteen.wide.column
+        .twelve.wide.column.scrolling
             .ui.stackable.cards.scrolling
                 each group_docs
                     +group_card

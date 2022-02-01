@@ -84,7 +84,7 @@ template(name='event_edit')
     with current_doc
         .ui.stackable.padded.grid
             .centered.row 
-                .five.wide.column
+                .five.wide.column.scrolling
                     a.ui.icon.green.big.button.fly_right(href="/event/#{_id}" title='save')
                         i.checkmark.big.icon
                     .ui.inline.header 
@@ -170,11 +170,10 @@ template(name='event_view')
                         a.edit_event(href="/event/#{_id}/edit" title='edit')
                             i.large.blue.link.pencil.circular.icon
             .row 
-                .four.wide.column.scrollin
+                .four.wide.column.scrolling
                     if location 
                         i.large.marker.icon(title='location')
                         |#{location}
-                    .spacer
                     // a(href="/m/room/#{event_room._id}")
                     //     img.ui.small.circular.inline.image.pointer.zoom(src="{{c.url event_room.image_id }}" class=currentUser.invert_class)
                     //     .ui.inline.header.pointer.zoom
@@ -218,18 +217,20 @@ template(name='event_view')
                     if currentUser
                         +voting_full
                     +array_view key='location_tags' label='location tags' icon='marker' direct=true
-                .eight.wide.column.scrollin
+                .eight.wide.column.scrolling
                     a(href="{{c.url image_id }}")
                         img.ui.fluid.rounded.image(src="{{c.url image_id }}" class=currentUser.invert_class)
                     // a.ui.header(href="/user/#{target.username}")
                     //     |#{target.username}
                     // .scrolling
                     |!{description}
+                    if watson
+                        +watson_view
                     // div 
                     // .spacer
                     // .spacer
                     +comments
-                .four.wide.column
+                .four.wide.column.scrolling
                     .ui.inline.large.header 
                         |RSVP
                     if tickets_left

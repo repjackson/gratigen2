@@ -2,7 +2,7 @@ if Meteor.isClient
     Template.nav.onCreated ->
         @autorun => Meteor.subscribe 'me'
         # @autorun => Meteor.subscribe 'all_users'
-        @autorun => Meteor.subscribe 'models', ->
+        # @autorun => Meteor.subscribe 'models', ->
         
         @autorun => Meteor.subscribe 'my_cart'
         @autorun => Meteor.subscribe 'my_unread_messages'
@@ -269,3 +269,4 @@ if Meteor.isServer
     Meteor.publish 'my_cart', ->
         Docs.find 
             model:'cart_item'
+            _author_id: Meteor.userId()

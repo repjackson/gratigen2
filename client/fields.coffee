@@ -644,7 +644,7 @@ Template.single_user_edit.events
         search_value = $(e.currentTarget).closest('.single_user_select_input').val().trim()
         if search_value.length > 1
             console.log 'searching', search_value
-            Meteor.call 'lookup_user', search_value, @role_filter, (err,res)=>
+            Meteor.call 'lookup_user', search_value, (err,res)=>
                 if err then console.error err
                 else
                     t.user_results.set res
