@@ -1,10 +1,25 @@
 if Meteor.isClient
-    Router.route '/user/:username/edit', -> @render 'user_edit'
+    Router.route '/user/:username/edit', (->
+        @layout 'user_edit_layout'
+        @render 'user_edit_info'
+        ), name:'user_edit'
+    Router.route '/user/:username/edit/info', (->
+        @layout 'user_edit_layout'
+        @render 'user_edit_info'
+        ), name:'user_edit_info'
+    Router.route '/user/:username/edit/alerts', (->
+        @layout 'user_edit_layout'
+        @render 'user_edit_alerts'
+        ), name:'user_edit_alerts'
+    Router.route '/user/:username/edit/finance', (->
+        @layout 'user_edit_layout'
+        @render 'user_edit_finance'
+        ), name:'user_edit_finance'
 
-    Template.user_edit.onCreated ->
+    Template.user_edit_info.onCreated ->
         @autorun -> Meteor.subscribe 'user_from_username', Router.current().params.username
 
-    Template.user_edit.onRendered ->
+    Template.user_edit_info.onRendered ->
         Meteor.setTimeout ->
             $('.button').popup()
         , 2000
@@ -78,7 +93,7 @@ if Meteor.isClient
                                 toastr.success 'Your verification code does not match.'
 
 
-    Template.user_edit.events
+    Template.user_edit_info.events
         'click .remove_user': ->
             if confirm "confirm delete #{@username}?  cannot be undone."
                 Meteor.users.remove @_id

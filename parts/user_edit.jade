@@ -1,51 +1,105 @@
-template(name='user_edit')
-    with user_from_username_param          
-        //- img.ui.fluid.image.checkin_banner(src="{{c.url banner_image_id width=1000 height=500 crop='crop'}}")    
-        .ui.stackable.padded.grid
-            .row
-                .four.wide.column.scrolling
-                    .ui.center.aligned.large.inline.grey.header
-                        | #{user_from_username_param.first_name} #{user_from_username_param.last_name}
-                    //- +i name='pencil'
-                    .ui.small.inline.header @#{user_from_username_param.username}
-                    a.ui.green.icon.large.fluid.button(href="/user/#{user_from_username_param.username}/") 
-                        i.checkmark.big.icon
+template(name='user_edit_layout')
+    +nav
+    .ui.bottom.attached.pushable.segment
+        // +left_sidebar
+        // +right_sidebar
+        #main_area.global_container.pusher(class=currentUser.invert_class)
+            with current_user          
+                .ui.stackable.padded.grid
+                    .row
+                        .four.wide.column
+                            .ui.center.aligned.large.inline.grey.header
+                                if display_name
+                                    .ui.header #{display_name}
+                                | #{user_from_username_param.first_name} #{user_from_username_param.last_name}
+                            //- +i name='pencil'
+                            .ui.small.inline.header @#{user_from_username_param.username}
+                            a.ui.green.icon.large.fluid.button(href="/user/#{user_from_username_param.username}/") 
+                                i.checkmark.big.icon
+                            .ui.hidden.divider
+                        
+                            .ui.center.aligned.large.inline.header(style="color:#{current_user.theme_color};")
+                                i.big.cog.icon(style="color:#{current_user.theme_color};")
+                                | #{current_user.name}
+                            .ui.small.inline.header @#{current_user.username}
+                            img.ui.centered.medium.rounded.image(src="{{c.url profile_image_id height=400 width=400 gravity='face' crop='fill'}}")
+                                
+                            // a.ui.big.green.circular.icon.button(href="/user/#{current_user.username}/") 
+                            //     i.checkmark.big.icon
+                            //     // strong save
+                            a.ui.large.icon.circular.button(href="/user/#{current_user.username}/edit/account" class="{{isActiveRoute 'user_edit_account'}}" title='account') 
+                                // i.cog.large.icon 
+                                +i name='settings'
+                                // |account
+                            a.ui.large.icon.circular.button(href="/user/#{current_user.username}/edit/info" class="{{isActiveRoute 'user_edit_info'}}" title='info') 
+                                +i name='info'
+                                // i.info.large.icon 
+                                // |info
+                            a.ui.large.icon.circular.button(href="/user/#{current_user.username}/edit/alerts" class="{{isActiveRoute 'user_edit_alerts'}}") 
+                                +i name='alert'
+                                // i.bell.large./icon 
+                                // |alerts
+                            a.ui.large.icon.circular.button(href="/user/#{current_user.username}/edit/genekeys" class="{{isActiveRoute 'user_edit_genekeys'}}") 
+                                +i name='dna-helix'
+                                // i.dna.large.icon 
+                                // |genekeys
+                            a.ui.large.icon.circular.button(href="/user/#{current_user.username}/edit/privacy" class="{{isActiveRoute 'user_edit_privacy'}}") 
+                                +i name='private'
+                                // i.lock.privacy.large.icon 
+                                // | privacy
+                            a.ui.large.basic.icon.circular.button(href="/user/#{current_user.username}/edit/badges" class="{{isActiveRoute 'user_edit_badges'}}" title='badges') 
+                                // i.certificate.large.icon
+                                +i name='badge'
+                                // |badges
+                            a.ui.large.icon.circular.button(href="/user/#{current_user.username}/edit/membership" class="{{isActiveRoute 'user_edit_membership'}}" title='membership') 
+                                +i name='shield'
+                                // i.shield.large.icon
+                                // | membership
+                        .twelve.wide.column
+                            +yield
+
+
+
+template(name='user_edit_info')
+    //- img.ui.fluid.image.checkin_banner(src="{{c.url banner_image_id width=1000 height=500 crop='crop'}}")    
+    .ui.stackable.padded.grid
+        .row
+            .eight.wide.column.scrolling
+                +image_edit key='image_id' icon='picture' title='profile image' direct=true
+                if is_current_user
+                    +password_edit
+                    //- +phone_editor
+                    +username_edit
+                if is_admin
+                    with user_from_username_param
+                        .ui.orange.button.remove_user 
+                            i.remove.icon
+                            |delete user
+            .eight.wide.column.scrolling
+                .ui.form
+                    +text_edit key='display_name' label='display name' direct=true
+                    +text_edit key='first_name' label='first name' direct=true
+                    +text_edit key='last_name' label='last name' direct=true
+                    div
+                    .ui.header 
+                        i.envelope.outline.icon
+                        |emails
+                    +emails_edit
                     .ui.hidden.divider
-                    +image_edit key='image_id' icon='picture' title='profile image' direct=true
-                    if is_current_user
-                        +password_edit
-                        //- +phone_editor
-                        +username_edit
-                    if is_admin
-                        with user_from_username_param
-                            .ui.orange.button.remove_user 
-                                i.remove.icon
-                                |delete user
-                .eight.wide.column.scrolling
-                    .ui.form
-                        +text_edit key='display_name' label='display name' direct=true
-                        +text_edit key='first_name' label='first name' direct=true
-                        +text_edit key='last_name' label='last name' direct=true
-                        div
-                        .ui.header 
-                            i.envelope.outline.icon
-                            |emails
-                        +emails_edit
-                        .ui.hidden.divider
-                        +phone_edit key='phone' label='phone' icon='phone' direct=true
-                .four.wide.column
-                    +array_edit key='allergens' label='allergens' icon='no-milk' direct=true
-                    +array_edit key='food_dislikes' label='food dislikes' icon='disgusting' direct=true
-                    if is_admin
-                        .ui.header
-                            i.shield.icon
-                            |admin
-                        +boolean_edit key='admin' icon='shield' direct=true
-                        +array_edit key='roles' icon='shield' direct=true
-                    else if in_dev
-                        +array_edit key='roles' icon='shield' direct=true
-                        +boolean_edit key='admin' direct=true
-                    
+                    +phone_edit key='phone' label='phone' icon='phone' direct=true
+            .four.wide.column
+                +array_edit key='allergens' label='allergens' icon='no-milk' direct=true
+                +array_edit key='food_dislikes' label='food dislikes' icon='disgusting' direct=true
+                if is_admin
+                    .ui.header
+                        i.shield.icon
+                        |admin
+                    +boolean_edit key='admin' icon='shield' direct=true
+                    +array_edit key='roles' icon='shield' direct=true
+                else if in_dev
+                    +array_edit key='roles' icon='shield' direct=true
+                    +boolean_edit key='admin' direct=true
+                
                     
                     
 template(name='user_settings')
@@ -158,3 +212,160 @@ template(name='emails_edit')
         #add_email.ui.submit.icon.button 
             i.plus.icon
             //- |email
+            
+            
+template(name='user_edit_finance')  
+    .ui.stackable.grid      
+        //- .centered.row
+        //-     .sixteen.wide.column
+        //-         .ui.center.aligned.header user credit
+        .three.column.row
+            .column
+                .ui.segment
+                    .ui.header
+                        +icolor name='deposit'
+                        |sent credit
+                    .ui.button.send_credit
+                        |send credit
+                    .ui.header
+                        |sent credits
+                    .ui.list
+                        each sent_credits
+                            a.item(href="/transaction/#{_id}/view")
+            .column
+                .ui.segment
+                    .ui.header
+                        +icolor name='withdrawal'
+                    .ui.button.request_credit
+                        | credit
+                    .ui.header
+                        |received credits
+                    .ui.selection.animated.list
+                        each received_credits
+                            a.item(href="/transaction/#{_id}/view")
+            .column
+                .ui.segment
+                    .ui.header
+                        +icolor name='change'
+                        |your balance
+                    .ui.small.inline.header current credit
+                    .ui.green.inline.header #{current_user.credit}c
+                    .ui.button.top_up
+                        |add credit
+                    +session_boolean_toggle key='adding_credit' label='add credit' icon='plus'
+                    if session_is 'adding_credit' true
+                        |add amount
+                        .ui.input
+                            input.add_amount(type='number')
+                        .ui.horizontal.divider or
+                        .ui.button.add_five_credits
+                            |5
+                        .ui.button.add_ten_credit
+                            |10
+                        .ui.button.add_twenty_credit
+                            |20
+                        .ui.button.add_fifty_credit
+                            |50
+                        .ui.button.add_hundred_credit
+                            |100
+                
+        .three.column.row
+            .column
+                .ui.segment
+                .ui.segment
+                    .ui.header 
+                        strong $#{udd.total_credit_amount}
+                        small total weekly income
+                    .ui.header
+                        strong #{udd.credit_count}
+                        small sales
+            .column
+                .ui.segment
+                    .ui.header
+                        strong $#{udd.total_debit_amount}
+                        small total weekly expenses
+                    .ui.header
+                        strong #{udd.debit_count}
+                        small debits
+            .column
+                .ui.segment
+                    .ui.header
+                        |growth from last week
+        .two.column.row
+            .column
+                .ui.segment
+                    .ui.header 
+                        |weekly credits
+                    //- .ui.bulleted.list
+                    //-     each user_credits
+                    //-         .item 
+                    //-             |#{amount}
+                    //-             if icon
+                    //-                 +i name=icon
+                    //-             strong #{text}
+                    //-             small #{when}
+                    .ui.feed.mediumscroll
+                        each user_credits
+                            .event 
+                                .label
+                                    if is_credit
+                                        i.grey.chevron.up.icon
+                                    if is_debit
+                                        i.grey.chevron.down.icon
+                                    else if icon
+                                        i.grey.icon(class=icon)
+                                .content
+                                    .summary
+                                        a.user(href="/user/#{target_user.username}")
+                                            |#{target_user.name}
+                                        |#{text}
+                                        .date #{when}
+                                    .meta
+                                        +voting_small
+                                        //- a.like
+                                        //-     i.like.icon 
+                                        //-     |4 likes
+                                        a.remove
+                                            i.grey.undo.icon
+                                        //- if is_dev
+                                        //-     +remove_button
+            .column
+                .ui.segment
+                    .ui.header 
+                        i.chevron.down.icon
+                        |weekly debits
+                    .ui.feed.mediumscroll
+                        each user_debits
+                            .event 
+                                .label
+                                    if is_credit
+                                        i.chevron.up.icon
+                                    if is_debit
+                                        i.chevron.down.icon
+                                    else if icon
+                                        i.icon(class=icon)
+                                .content
+                                    .summary
+                                        a.user(href="/user/#{target_user.username}")
+                                            |#{target_user.name}
+                                        |#{text}
+                                        .date #{when}
+                                    .meta
+                                        +voting_small
+                                        //- a.like
+                                        //-     i.like.icon 
+                                        //-     |4 likes
+                                        a.remove
+                                            i.grey.undo.icon
+                                        //- if is_dev
+                                        //-     +remove_button
+                        //- +range_edit                
+            .column
+                
+            .column
+                if is_admin
+                    .ui.segment
+                        .ui.header
+                            i.shield.icon
+                            |admin 
+                        +number_edit key='credit' label='edit credit' direct=true            
