@@ -43,8 +43,6 @@ template(name='groups')
             .ui.stackable.cards.scrolling
                 each group_docs
                     +group_card
-
-
 template(name='group_card')
     .ui.card
         if image_id
@@ -67,13 +65,6 @@ template(name='group_card')
                 a.ui.circular.basic.icon.button(href="/group/#{_id}/edit")
                     i.pencil.blue.icon
             +print_this
-                    
-
-
-// template(name='group_view')
-
-                    
-                
 template(name='group_history')
     +ismall name='rss'
     .ui.inline.header
@@ -81,7 +72,6 @@ template(name='group_history')
     .ui.list
         each group_events
             .item #{text} #{when}
-            
 template(name='group_subscription')
     //- +ismall name='renew-subscription'
     //- .ui.inline.header
@@ -90,7 +80,6 @@ template(name='group_subscription')
     .ui.list
         each subscribers
             .item #{text} #{when}
-            
 template(name='group_reservations')
     .ui.header
         +ismall name='invoice'
@@ -133,18 +122,17 @@ template(name='group_view')
         .ui.stackable.padded.grid
             .row
                 .six.wide.column
-                    .ui.header 
+                    a.ui.fluid.basic.button.fly_up(href="/groups")
+                        i.left.chevron.icon
+                        +i name='wrench' cl='ui inline avatar image'
+                        |groups
+                    .ui.header
                         if icon
                             +i name=icon
                         |#{title}
-                    a.ui.circular.basic.button(href="/groups")
-                        i.left.chevron.icon
-                        i.big.user.circle.icon
-                        // +i name='groups' cl='ui mini inline image'
-                        |groups
                     if can_edit
-                        a.ui.circular.basic.icon.button(href="/group/#{_id}/edit")
-                            i.setting.large.icon
+                        a.ui.circular.icon.button(href="/group/#{_id}/edit")
+                            +i name='settings'
                     +image_view key='image_id' icon='image' label='image'
                     +array_view key='tags' icon='tags'
                     .spacer
@@ -162,9 +150,12 @@ template(name='group_view')
                     if in_dev 
                         +print_this
                     +multi_user_view key='member_ids' label='members' direct=true
-                        
+                    .ui.header view group
+                    +voting_full
+                    if in_dev 
+                        +print_this
+
                 .ten.wide.column
-                    +html_view key='description' icon='content' label='description'
                     .ui.inline.header 
                         +i name='crown' cl='ui avatar image'
                         |leader: 
@@ -199,31 +190,11 @@ template(name='group_view')
                         .item #{dish_count} dishes
                         .item #{total_credit_exchanged} credits exchanged
                     +comments
-            .row
-                .four.wide.column 
-                    a.ui.fluid.basic.button(href="/groups")
-                        i.left.chevron.icon
-                        +i name='wrench' cl='ui inline avatar image'
-                        |groups
-                    .ui.header view group
-                    if can_edit
-                        a.ui.big.icon.button(href="/group/#{_id}/edit")
-                            i.pencil.large.icon
-                    +image_view key='image_id' label='image' direct=true
-                    +voting_full
-                    +viewing
-                    +multi_user_view key='member_ids'
-                    if in_dev 
-                        +print_this
-                .eight.wide.column
                     .ui.header #{title} 
                     +textarea_view key='description' icon='content' label='description' direct=true
                     +array_view key='location_tags' label='location tags' icon='marker' direct=true
                     +array_view key='tags' label='tags' icon='tags' direct=true
                     +text_view key='contact_info' label='contact info' icon='info' direct=true
-                    div
-                    +comments
-                .four.wide.column 
                     div
                     +group_history
                     //- +group_subscription

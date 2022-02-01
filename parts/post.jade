@@ -21,7 +21,6 @@ template(name='posts')
                 each post_docs 
                     +post_card
                     
-                    
 template(name='post_card')
     a.ui.card.fly_right(href="/post/#{_id}")
         if youtube_id 
@@ -46,7 +45,6 @@ template(name='post_card')
             // +comments_view_small
             +author_info
 
-
 template(name='set_post_sort_key')
     .item.set_sort
         if color
@@ -57,8 +55,6 @@ template(name='set_post_sort_key')
             else if icon
                 i.icon(class=icon)
             |#{label}
-        
-        
                 
 template(name='user_posts')
     .ui.inline.header 
@@ -83,9 +79,6 @@ template(name='user_posts')
                             a.ui.icon.button(href='/post/#{_id}')
                                 i.large.chevron.right.icon
                             
-        
-        
-
 template(name='set_view_mode_post')
     .item.set_view
         i.icon(class=icon)
@@ -96,8 +89,6 @@ template(name='set_view_mode_post')
     .ui.compact.small.basic.button.set_limit #{amount}
 
 
-
-        
 template(name='post_item')
     .ui.fluid.segment.view_post.pointer
         a.ui.header(href="/post/#{_id}") #{title}
@@ -117,14 +108,14 @@ template(name='post_view')
                         .ui.header #{title}
                         a.ui.circular.button.fly_left(href="/posts")
                             i.chevron.left.big.icon
-                            i.newspaper.big.icon
+                            +i name='blog'
                             |posts
                         // div
                         // .ui.inline.grey.header {{from_now start_datetime}}
                         
                         if can_edit
-                            a.ui.circular.icon.button.edit_post(href="/post/#{_id}/edit" title='edit')
-                                i.big.link.pencil.icon
+                            a.ui.circular.icon.button.edit_post.fly_up(href="/post/#{_id}/edit" title='edit')
+                                i.big.link.pencil.blue.icon
                         .ui.segment
                             .ui.header 
                                 small author
@@ -170,7 +161,7 @@ template(name='post_edit')
                     .ui.inline.header 
                         +icolor name='news' cl='ui image inline pointer'
                         |edit post
-                    a.ui.icon.green.big.button(href="/post/#{_id}" title='save')
+                    a.ui.icon.green.big.button.fly_down(href="/post/#{_id}" title='save')
                         i.checkmark.big.icon
                     +text_edit key='title' label='title' direct=true
                     +html_edit key='content' label='content' direct=true
