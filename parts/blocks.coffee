@@ -69,9 +69,10 @@ if Meteor.isClient
                 parent = Docs.findOne Router.current().params.doc_id
             else
                 parent = Docs.findOne Template.parentData()._id
-            Docs.find
-                parent_id:parent._id
-                model:'comment'
+            if parent
+                Docs.find
+                    parent_id:parent._id
+                    model:'comment'
     Template.comments.events
         'keyup .add_comment': (e,t)->
             if e.which is 13
@@ -521,3 +522,76 @@ if Meteor.isClient
     
     
     
+if Meteor.isClient
+    Template.model_picker.onCreated ->
+        @autorun => @subscribe 'model_search_results', Session.get('model_search'), ->
+        @autorun => @subscribe 'model_docs', @data.model, ->
+    Template.model_picker.helpers
+        model_results: ->
+            Docs.find 
+                model:Template.currentData().model
+                # title: {$regex:"#{Session.get('model_search')}",$options:'i'}
+                
+        picked_model: ->
+            parent_doc = Docs.findOne Router.current().params.doc_id
+            # _id:parent_doc["#{Template.currentData().model}_id"]
+            # console.log Template.currentData().model
+            Docs.findOne
+                # model:Template.currentData().model
+                _id:parent_doc["#{Template.currentData().model}_id"]
+        model_search_value: ->
+            Session.get('model_search')
+        
+    Template.model_picker.events
+        'click .clear_search': (e,t)->
+            Session.set('model_search', null)
+            t.$('.model_search').val('')
+
+            
+        'click .remove_model': (e,t)->
+            if confirm "remove #{@title} model?"
+                Docs.update Router.current().params.doc_id,
+                    $unset:
+                        "#{Template.currentData().model}_id":@_id
+                        "#{Template.currentData().model}_title":@title
+        'click .pick_model': (e,t)->
+            Docs.update Router.current().params.doc_id,
+                $set:
+                    "#{Template.currentData().model}_id":@_id
+                    "#{Template.currentData().model}_title":@title
+            Session.set('model_search',null)
+            t.$('.model_search').val('')
+                    
+        'keyup .model_search': (e,t)->
+            # if e.which is '13'
+            val = t.$('.model_search').val()
+            console.log val
+            Session.set('model_search', val)
+
+        'click .create_model': ->
+            new_id = 
+                Docs.insert 
+                    model:'model'
+                    title:Session.get('model_search')
+            Router.go "/model/#{new_id}/edit"
+
+
+if Meteor.isServer 
+    Meteor.publish 'model_search_results', (model_title_queary)->
+        Docs.find 
+            model:'model'
+            title: {$regex:"#{model_title_queary}",$options:'i'}
+        
+        
+
+if Meteor.isClient
+    Template.search_input.events
+        'keyup .search_input': (e,t)->
+            search_value = $(e.currentTarget).closest('.search_input').val().trim()
+            if search_value.length > 1
+                console.log 'searching', search_value
+                Session.set('search_value', search_value)
+
+    Template.search_input.helpers
+        search_input_class: ->
+            if Session.get('search_value') then 'large active circular' else 'small'

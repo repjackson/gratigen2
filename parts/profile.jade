@@ -56,6 +56,59 @@ template(name='user_layout')
                             i.globe.icon
                             |log out other clients
                     .twelve.wide.column.scrolling
+                        a.ui.compact.circular.button(href="/user/#{username}/" class="{{isActiveRoute 'user_dashboard'}}" title="#{user.username} dashboard")
+                            // i.dashboard.icon
+                            +i name='dashboard'
+                            // span.mobile.hidden dashboard
+                        a.ui.compact.circular.button(href="/user/#{username}/about" class="{{isActiveRoute 'user_about'}}" title="#{user.username} info")
+                            // i.info.icon
+                            +i name='info'
+                            // span.mobile.hidden about
+                        a.ui.compact.circular.button(href="/user/#{username}/credits" class="{{isActiveRoute 'user_credits'}}" title="#{user.username} credits")
+                            // i.chevron.down.icon
+                            +i name='chevron-down'
+                            // span.mobile.hidden pts received
+                        a.ui.compact.circular.button(href="/user/#{username}/debits" class="{{isActiveRoute 'user_sent'}}" title="#{user.username} sent")
+                            // i.gift.icon
+                            +i name='gift'
+                            // span.mobile.hidden pts sent
+                        a.ui.compact.circular.button(href="/user/#{username}/credit" class="{{isActiveRoute 'user_credit'}}" title="#{user.username} credit")
+                            // i.dollar.icon
+                            +i name='money'
+                            // span.mobile.hidden credit
+                        a.ui.compact.circular.button(href="/user/#{username}/events" class="{{isActiveRoute 'user_events'}}" title="#{user.username} events")
+                            // i.calendar.icon
+                            +i name='calendar'
+                            // span.mobile.hidden events
+                        a.ui.compact.circular.button(href="/user/#{username}/requests" class="{{isActiveRoute 'user_requests'}}" title="#{user.username} requests")
+                            // i.concierge.bell.icon
+                            +i name='service-bell'
+                            // span.mobile.hidden requests
+                        a.ui.compact.circular.button(href="/user/#{username}/offers" class="{{isActiveRoute 'user_offers'}}" title="#{user.username} offers")
+                            // i.hand.holding.heart.icon
+                            +i name='hand-holding-heart'
+                            // span.mobile.hidden offers
+                        a.ui.compact.circular.button(href="/user/#{username}/food" class="{{isActiveRoute 'user_food'}}" title="#{user.username} food")
+                            // i.hand.holding.heart.icon
+                            +i name='food'
+                            // span.mobile.hidden food
+                        a.ui.compact.circular.button(href="/user/#{username}/messages" class="{{isActiveRoute 'user_messages'}}" title="#{user.username} messages")
+                            // i.chat.icon
+                            +i name='chat'
+                            // span.mobile.hidden chat
+                        a.ui.compact.circular.button(href="/user/#{username}/badges" class="{{isActiveRoute 'user_badges'}}" title="#{user.username} badges")
+                            // i.certificate.icon
+                            +i name='prize'
+                            // span.mobile.hidden badges
+                        a.ui.compact.circular.button(href="/user/#{username}/delivery" class="{{isActiveRoute 'user_delivery'}}" title="#{user.username} badges")
+                            // i.certificate.icon
+                            +i name='car'
+                            // span.mobile.hidden delivery
+                        a.ui.compact.circular.button(href="/user/#{username}/genekeys" class="{{isActiveRoute 'user_genekeys'}}" title="#{user.username} genekeys")
+                            // i.large.dna.icon
+                            +i name='dna-helix'
+                            // span genekeys
+                    
                         div.global_container
                             .spacer
                             +yield
@@ -201,10 +254,10 @@ template(name='user_credit')
                     +i name='money'
                     |{{user_from_username_param.points}}
                     |points
-                .ui.big.compact.button.send_points
+                .ui.compact.button.send_points.fly_right
                     +i name='donate'
                     |send points
-                a.ui.big.button(href="/transfers")
+                a.ui.compact.button.fly_left(href="/transfers")
                     +i name='exchange'
                     // i.exchange.icon
                     |transfers
@@ -212,10 +265,10 @@ template(name='user_credit')
                 //     // i.shield.icon
                 //     +i name='shield'
                 //     |admin
-                .ui.big.icon.button.add_credit(title='add credit')
+                .ui.icon.button.add_credit(title='add credit')
                     |+1
                 // // +number_edit key='credit' label='edit credit' min='0' step='1' max='1000' direct=true
-                // .ui.big.icon.button.remove_credit(title='remove credit')
+                // .ui.icon.button.remove_credit(title='remove credit')
                 //     |-1
                 +topup_button amount=10
                 +topup_button amount=20

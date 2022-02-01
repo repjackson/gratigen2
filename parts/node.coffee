@@ -1,166 +1,116 @@
 if Meteor.isClient
-    Router.route '/requests', (->
+    Router.route '/nodes', (->
         @layout 'layout'
-        @render 'requests'
-        ), name:'requests'
+        @render 'nodes'
+        ), name:'nodes'
+    Router.route '/node/:doc_id/edit', (->
+        @layout 'layout'
+        @render 'node_edit'
+        ), name:'node_edit'
+    Router.route '/node/:doc_id', (->
+        @layout 'layout'
+        @render 'node_view'
+        ), name:'node_view'
+    Router.route '/node/:doc_id/view', (->
+        @layout 'layout'
+        @render 'node_view'
+        ), name:'node_view_long'
     
-    Template.requests.onCreated ->
-        @autorun => @subscribe 'request_docs',
+    
+    Template.nodes.onCreated ->
+        @autorun => @subscribe 'node_docs',
             picked_tags.array()
-            Session.get('request_title_filter')
+            Session.get('node_title_filter')
 
-        @autorun => @subscribe 'request_facets',
+        @autorun => @subscribe 'node_facets',
             picked_tags.array()
-            Session.get('request_title_filter')
+            Session.get('node_title_filter')
 
-    Template.requests.events
-        'click .add_request': ->
-            new_id = Docs.insert 
-                model:'request'
-            Router.go "/request/#{new_id}/edit"    
-        'click .pick_request_tag': -> picked_tags.push @title
-        'click .unpick_request_tag': -> picked_tags.remove @valueOf()
-
-                
+    
+    
+    Template.nodes.events
+        'click .add_node': ->
+            new_id = 
+                Docs.insert 
+                    model:'node'
+            Router.go "/node/#{new_id}/edit"
             
-    Template.requests.helpers
+            
+            
+    Template.nodes.helpers
         picked_tags: -> picked_tags.array()
     
-        request_docs: ->
-            Docs.find 
-                model:'request'
-                # group_id: Meteor.user().current_group_id
-                
-        request_tag_results: ->
+        node_docs: ->
+            Docs.find {
+                model:'node'
+                private:$ne:true
+            }, sort:_timestamp:-1    
+        tag_results: ->
             Results.find {
-                model:'request_tag'
+                model:'tag'
             }, sort:_timestamp:-1
-  
-                
+
+    Template.user_nodes.onCreated ->
+        @autorun => Meteor.subscribe 'user_nodes', Router.current().params.username, ->
+    Template.user_nodes.helpers
+        node_docs: ->
+            Docs.find {
+                model:'node'
+            }, sort:_timestamp:-1    
     
-    Template.registerHelper 'claimer', () ->
-        Meteor.users.findOne @claimed_user_id
-    Template.registerHelper 'completer', () ->
-        Meteor.users.findOne @completed_by_user_id
-    
-    
-    Template.request_card.onCreated ->
-        @autorun => Meteor.subscribe 'doc_comments', @data._id
-
-    Template.request_card.events
-        'click .request_card': ->
-            Router.go "/request/#{@_id}"
-            Docs.update @_id,
-                $inc: views:1
-
-
-    Router.route '/request/:doc_id', (->
-        @layout 'layout'
-        @render 'request_view'
-        ), name:'request_view'
-
-   
-    Template.request_view.onRendered ->
-
-    Template.request_view.onCreated ->
+    Template.node_view.onCreated ->
         @autorun => Meteor.subscribe 'doc_by_id', Router.current().params.doc_id, ->
-
-    Template.request_view.events
-        'click .claim': ->
-            Docs.update Router.current().params.doc_id,
-                $set:
-                    claimed_user_id: Meteor.userId()
-                    status:'claimed'
-            
-                            
-        'click .unclaim': ->
-            Docs.update Router.current().params.doc_id,
-                $unset:
-                    claimed_user_id: 1
-                $set:
-                    status:'unclaimed'
-            
-                            
-        'click .mark_complete': ->
-            Docs.update Router.current().params.doc_id,
-                $set:
-                    complete: true
-                    completed_by_user_id:@claimed_user_id
-                    status:'complete'
-                    completed_timestamp:Date.now()
-            Meteor.users.update @claimed_user_id,
-                $inc:points:@point_bounty
-                            
-        'click .mark_incomplete': ->
-            Docs.update Router.current().params.doc_id,
-                $set:
-                    complete: false
-                    completed_by_user_id: null
-                    status:'claimed'
-                    completed_timestamp:null
-            Meteor.users.update @claimed_user_id,
-                $inc:points:-@point_bounty
-                            
-
-    Template.request_view.helpers
-        can_claim: ->
-            if @claimed_user_id
-                false
-            else 
-                if @_author_id is Meteor.userId()
-                    false
-                else
-                    true
+    Template.node_edit.onCreated ->
+        @autorun => Meteor.subscribe 'doc_by_id', Router.current().params.doc_id, ->
+    Template.node_card.onCreated ->
+        @autorun => Meteor.subscribe 'doc_comments', @data._id, ->
 
 
+    Template.node_card.events
+        'click .view_node': ->
+            Router.go "/node/#{@_id}"
+    Template.node_item.events
+        'click .view_node': ->
+            Router.go "/node/#{@_id}"
 
-# if Meteor.isServer
-#     Meteor.methods
-        # send_request: (request_id)->
-        #     request = Docs.findOne request_id
-        #     target = Meteor.users.findOne request.recipient_id
-        #     gifter = Meteor.users.findOne request._author_id
-        #
-        #     console.log 'sending request', request
-        #     Meteor.users.update target._id,
-        #         $inc:
-        #             points: request.amount
-        #     Meteor.users.update gifter._id,
-        #         $inc:
-        #             points: -request.amount
-        #     Docs.update request_id,
-        #         $set:
-        #             publishted:true
-        #             submitted_timestamp:Date.now()
-        #
-        #
-        #
-        #     Docs.update Router.current().params.doc_id,
-        #         $set:
-        #             submitted:true
+    Template.node_view.events
+        'click .add_node_recipe': ->
+            new_id = 
+                Docs.insert 
+                    model:'recipe'
+                    node_ids:[@_id]
+            Router.go "/recipe/#{new_id}/edit"
 
+    # Template.favorite_icon_toggle.helpers
+    #     icon_class: ->
+    #         if @favorite_ids and Meteor.userId() in @favorite_ids
+    #             'red'
+    #         else
+    #             'outline'
+    # Template.favorite_icon_toggle.events
+    #     'click .toggle_fav': ->
+    #         if @favorite_ids and Meteor.userId() in @favorite_ids
+    #             Docs.update @_id, 
+    #                 $pull:favorite_ids:Meteor.userId()
+    #         else
+    #             $('body').toast(
+    #                 showIcon: 'heart'
+    #                 message: "marked favorite"
+    #                 showProgress: 'bottom'
+    #                 class: 'success'
+    #                 # displayTime: 'auto',
+    #                 position: "bottom right"
+    #             )
 
-if Meteor.isClient
-    Router.route '/request/:doc_id/edit', (->
-        @layout 'layout'
-        @render 'request_edit'
-        ), name:'request_edit'
-
-
-
-    Template.request_edit.onCreated ->
-        @autorun => Meteor.subscribe 'doc_by_id', Router.current().params.doc_id
-        # @autorun => Meteor.subscribe 'doc', Router.current().params.doc_id
-        # @autorun => Meteor.subscribe 'model_docs', 'menu_section'
+    #             Docs.update @_id, 
+    #                 $addToSet:favorite_ids:Meteor.userId()
     
-    Template.request_edit.onRendered ->
-
-
-    Template.request_edit.events
-        'click .delete_request': ->
+    
+    Template.node_edit.events
+        'click .delete_node': ->
             Swal.fire({
-                title: "delete request?"
-                text: "point bounty will be returned to your account"
+                title: "delete node?"
+                text: "cannot be undone"
                 icon: 'question'
                 confirmButtonText: 'delete'
                 confirmButtonColor: 'red'
@@ -173,16 +123,16 @@ if Meteor.isClient
                     Swal.fire(
                         position: 'top-end',
                         icon: 'success',
-                        title: 'request removed',
+                        title: 'node removed',
                         showConfirmButton: false,
                         timer: 1500
                     )
-                    Router.go "/m/request"
+                    Router.go "/nodes"
             )
 
         'click .publish': ->
             Swal.fire({
-                title: "publish request?"
+                title: "publish node?"
                 text: "point bounty will be held from your account"
                 icon: 'question'
                 confirmButtonText: 'publish'
@@ -192,11 +142,11 @@ if Meteor.isClient
                 reverseButtons: true
             }).then((result)=>
                 if result.value
-                    Meteor.call 'publish_request', @_id, =>
+                    Meteor.call 'publish_node', @_id, =>
                         Swal.fire(
                             position: 'bottom-end',
                             icon: 'success',
-                            title: 'request published',
+                            title: 'node published',
                             showConfirmButton: false,
                             timer: 1000
                         )
@@ -204,7 +154,7 @@ if Meteor.isClient
 
         'click .unpublish': ->
             Swal.fire({
-                title: "unpublish request?"
+                title: "unpublish node?"
                 text: "point bounty will be returned to your account"
                 icon: 'question'
                 confirmButtonText: 'unpublish'
@@ -214,59 +164,107 @@ if Meteor.isClient
                 reverseButtons: true
             }).then((result)=>
                 if result.value
-                    Meteor.call 'unpublish_request', @_id, =>
+                    Meteor.call 'unpublish_node', @_id, =>
                         Swal.fire(
                             position: 'bottom-end',
                             icon: 'success',
-                            title: 'request unpublished',
+                            title: 'node unpublished',
                             showConfirmButton: false,
                             timer: 1000
                         )
             )
-
-
-    Template.request_edit.helpers
-    Template.request_edit.events
-
+            
 if Meteor.isServer
-    Meteor.methods
-        publish_request: (request_id)->
-            request = Docs.findOne request_id
-            # target = Meteor.users.findOne request.recipient_id
-            author = Meteor.users.findOne request._author_id
+    Meteor.publish 'user_nodes', (username)->
+        user = Meteor.users.findOne username:username
+        
+        Docs.find 
+            model:'node'
+            _author_id:user._id
+    
+    Meteor.publish 'node_count', (
+        picked_tags
+        picked_sections
+        node_query
+        view_vegan
+        view_gf
+        )->
+        # @unblock()
+    
+        # console.log picked_tags
+        self = @
+        match = {model:'node'}
+        if picked_tags.length > 0
+            match.ingredients = $all: picked_tags
+            # sort = 'price_per_serving'
+        if picked_sections.length > 0
+            match.menu_section = $all: picked_sections
+            # sort = 'price_per_serving'
+        # else
+            # match.tags = $nin: ['wikipedia']
+        sort = '_timestamp'
+            # match.source = $ne:'wikipedia'
+        if view_vegan
+            match.vegan = true
+        if view_gf
+            match.gluten_free = true
+        if node_query and node_query.length > 1
+            console.log 'searching node_query', node_query
+            match.title = {$regex:"#{node_query}", $options: 'i'}
+        Counts.publish this, 'node_counter', Docs.find(match)
+        return undefined
 
-            console.log 'publishing request', request
-            Meteor.users.update author._id,
-                $inc:
-                    points: -request.point_bounty
-            Docs.update request_id,
-                $set:
-                    published:true
-                    published_timestamp:Date.now()
-                    
-                    
-        unpublish_request: (request_id)->
-            request = Docs.findOne request_id
-            # target = Meteor.users.findOne request.recipient_id
-            author = Meteor.users.findOne request._author_id
 
-            console.log 'unpublishing request', request
-            Meteor.users.update author._id,
-                $inc:
-                    points: request.point_bounty
-            Docs.update request_id,
-                $set:
-                    published:false
-                    published_timestamp:null
-                    
-                    
-                    
-if Meteor.isServer 
-    Meteor.publish 'request_facets', (
+if Meteor.isClient
+    Template.node_card.onCreated ->
+        # @autorun => Meteor.subscribe 'model_docs', 'food'
+    Template.node_card.events
+        'click .quickbuy': ->
+            console.log @
+            Session.set('quickbuying_id', @_id)
+            # $('.ui.dimmable')
+            #     .dimmer('show')
+            # $('.special.cards .image').dimmer({
+            #   on: 'hover'
+            # });
+            # $('.card')
+            #   .dimmer('toggle')
+            $('.ui.modal')
+              .modal('show')
+
+        'click .goto_food': (e,t)->
+            # $(e.currentTarget).closest('.card').transition('zoom',420)
+            # $('.global_container').transition('scale', 500)
+            Router.go("/food/#{@_id}")
+            # Meteor.setTimeout =>
+            # , 100
+
+        # 'click .view_card': ->
+        #     $('.container_')
+
+    Template.node_card.helpers
+        node_card_class: ->
+            # if Session.get('quickbuying_id')
+            #     if Session.equals('quickbuying_id', @_id)
+            #         'raised'
+            #     else
+            #         'active medium dimmer'
+        is_quickbuying: ->
+            Session.equals('quickbuying_id', @_id)
+
+        food: ->
+            # console.log Meteor.user().roles
+            Docs.find {
+                model:'food'
+            }, sort:title:1
+            
+
+if Meteor.isServer    
+    Meteor.publish 'node_facets', (
         picked_tags=[]
         title_filter
         picked_authors=[]
-        picked_requests=[]
+        picked_tasks=[]
         picked_locations=[]
         picked_timestamp_tags=[]
         )->
@@ -277,9 +275,9 @@ if Meteor.isServer
         self = @
         match = {}
         # match = {app:'pes'}
+        match.model = 'node'
         # match.group_id = Meteor.user().current_group_id
         
-        match.model = 'request'
         if title_filter and title_filter.length > 1
             match.title = {$regex:title_filter, $options:'i'}
         
@@ -338,7 +336,7 @@ if Meteor.isServer
             self.added 'results', Random.id(),
                 title: tag.title
                 count: tag.count
-                model:'request_tag'
+                model:'tag'
                 # category:key
                 # index: i
     
@@ -392,13 +390,13 @@ if Meteor.isServer
     
         self.ready()
         
-    Meteor.publish 'request_docs', (
+    Meteor.publish 'node_docs', (
         picked_tags
-        title_filter
-        picked_authors=[]
-        picked_requests=[]
-        picked_locations=[]
-        picked_timestamp_tags=[]
+        # title_filter
+        # picked_authors=[]
+        # picked_tasks=[]
+        # picked_locations=[]
+        # picked_timestamp_tags=[]
         # product_query
         # view_vegan
         # view_gf
@@ -410,11 +408,10 @@ if Meteor.isServer
         self = @
         match = {}
         # match = {app:'pes'}
-        match.model = 'request'
+        match.model = 'node'
         # match.group_id = Meteor.user().current_group_id
-        
-        if title_filter and title_filter.length > 1
-            match.title = {$regex:title_filter, $options:'i'}
+        # if title_filter and title_filter.length > 1
+        #     match.title = {$regex:title_filter, $options:'i'}
         
         # if view_vegan
         #     match.vegan = true
@@ -422,10 +419,10 @@ if Meteor.isServer
         #     match.gluten_free = true
         # if view_local
         #     match.local = true
-        if picked_authors.length > 0 then match._author_username = $in:picked_authors
-        if picked_tags.length > 0 then match.tags = $all:picked_tags 
-        if picked_locations.length > 0 then match.location_title = $in:picked_locations 
-        if picked_timestamp_tags.length > 0 then match._timestamp_tags = $in:picked_timestamp_tags 
+        # if picked_authors.length > 0 then match._author_username = $in:picked_authors
+        # if picked_tags.length > 0 then match.tags = $all:picked_tags 
+        # if picked_locations.length > 0 then match.location_title = $in:picked_locations 
+        # if picked_timestamp_tags.length > 0 then match._timestamp_tags = $in:picked_timestamp_tags 
         console.log match
         Docs.find match, 
             limit:20

@@ -1,5 +1,85 @@
+template(name='requests')
+    .ui.stackable.padded.grid
+        .four.wide.column
+            .ui.inline.header 
+                // i.requests.icon
+                +i name='service-bell'
+                |requests
+            div
+            if currentUser
+                i.plus.large.link.circular.icon.add_request
+            .ui.inline.small.header 
+                i.user.friends.icon
+                |authors
+            each picked_authors
+                a.ui.blue.label.unpick_author
+                    |#{this}
+            each author_results
+                if title
+                    a.ui.basic.circular.small.link.label.pick_author
+                        |#{title} 
+                        small.ui.grey.text #{count}
+            div
+            .ui.small.inline.header
+                i.tags.icon
+                |tags
+            each picked_request_tags
+                a.ui.blue.label.unpick_request
+                    |#{this}
+            each request_tag_results
+                if title
+                    a.ui.basic.circular.small.link.label.pick_request
+                        |#{title} 
+                        small.ui.grey.text #{count}
+            div
+            // .ui.small.inline.header
+            //     i.fire.icon
+            //     |groups
+            // each picked_request_groups
+            //     a.ui.blue.label.unpick_group
+            //         |#{this}
+            // each request_group_results
+            //     if title
+            //         a.ui.basic.circular.small.link.label.pick_group
+            //             |#{title} 
+            //             small.ui.grey.text #{count}
+        .twelve.wide.column
+            span.sorting_row
+                // +search_input model='request' field='title'
+                // +session_set key='view_users' value='grid' icon='th' 
+                // +session_set key='view_users' value='list' icon='list'
+                // +session_set key='sort_users_direction' value='-1' icon='chevron down'
+                // +session_set key='sort_users_direction' value='1' icon='chevron up'
+                // +session_set key='sort_users_key' value='points' icon='coins'
+                // +session_set key='sort_users_key' value='created_date' icon='clock'
+                // +session_set key='view_limit' value=1
+                +session_set key='view_limit' value=10
+                +session_set key='view_limit' value=20
+                +session_set key='view_limit' value=50
+
+                
+                i.large.sort.icon
+                // +set_sort_key key='comment_count' label='comment count' icon='chat'
+                // +set_sort_key key='views' label='views' icon='eye'
+                // +set_sort_key key='points' label='points' icon='line chart'
+                .ui.compact.icon.button.set_sort_direction(title='toggle sort direction')
+                    if sorting_up
+                        i.sort.amount.down.icon
+                    else
+                        i.sort.amount.up.icon
+                |&nbsp;
+                |&nbsp;
+                .spacer 
+        
+            span.ui.doubling.cards.scrolling
+                each request_docs
+                    +request_card
+                    
+
+
+
 template(name='request_card')
-    .card.pointer.request_card
+    .card.pointer.request_card.zoomer
         .image
             if youtube_id
                 +youtube_view key='youtube_id' direct=true
@@ -12,7 +92,7 @@ template(name='request_card')
                     i.green.checkmark.icon
             |!{description}
         .content
-            +comments_view_small
+            +comments
         .content
             |by 
             if _author.image_id
@@ -27,34 +107,6 @@ template(name='request_card')
                     |{{from_now completed_timestamp}}
         
 
-template(name='request_item')
-    .ui.fluid.horizontal.card.pointer.request_card
-        if youtube_id
-            .image
-                +youtube_view key='youtube_id' direct=true
-        else if image_id
-            .image
-                img.ui.raw.image(src="{{c.url image_id width=400 height=600 crop='fill'}}" class=currentUser.invert_class)    
-        .content
-            .ui.header
-                |#{title}
-                if complete
-                    i.green.checkmark.icon
-            |!{description}
-            +comments_view_small
-        .content
-            |by 
-            if _author.image_id
-                img.ui.avatar.compact.image(src="{{c.url _author.image_id height=200 width=200 gravity='face' crop='fill'}}")
-            |#{_author.name}
-            .ui.big.basic.label
-                |#{point_bounty}pts
-            .ui.small.inline.header status:#{status}
-            if complete
-                .ui.basic.label 
-                    |completed by #{completer.name}
-                    |{{from_now completed_timestamp}}
-        
 
 
 template(name='request_view')
@@ -95,6 +147,9 @@ template(name='request_view')
                         .ui.fluid.green.big.button.claim
                             i.grab.large.icon
                             |claim
+                    if can_edit
+                        a.ui.button(href="/request/#{_id}/edit")
+                            i.large.pencil.icon
                     if claimer
                         .ui.header claimed by
                         a.ui.header(href="/user/#{claimer.name}")
@@ -105,16 +160,16 @@ template(name='request_view')
                                 .ui.button.unclaim
                                     i.undo.icon
                                     |unclaim
-                        if can_edit
-                            div
-                            unless complete
-                                .ui.big.basic.button.mark_complete
-                                    i.checkmark.green.icon
-                                    |mark complete
-                            else 
-                                .ui.big.basic.button.mark_incomplete
-                                    i.undo.orange.icon
-                                    |mark incomplete
+                            if can_edit
+                                div
+                                unless complete
+                                    .ui.big.basic.button.mark_complete
+                                        i.checkmark.green.icon
+                                        |mark complete
+                                else 
+                                    .ui.big.basic.button.mark_incomplete
+                                        i.undo.orange.icon
+                                        |mark incomplete
                         if complete
                             .ui.segment
                                 .ui.header completed by #{completer.name} {{from_now completed_timestamp}}
@@ -123,8 +178,8 @@ template(name='request_view')
 template(name='request_edit')
     with current_doc
         .ui.stackable.padded.grid
-            .row 
-                .sixteen.wide.column
+            .two.column.row 
+                .column
                     .ui.header 
                         small author
                         |#{_author.username}
@@ -137,24 +192,28 @@ template(name='request_edit')
                         +youtube_edit key='youtube_id' label='youtube id' direct=true
                     +html_edit key='description' label='description' direct=true
                     +image_edit key='image_id' label='image' direct=true
+                .column
                     div 
                     +array_edit key='tags' label='tags' icon='tags' direct=true
                     +array_edit key='location_tags' label='location tags' icon='marker' direct=true
                     .ui.header your points: #{currentUser.points}
-                    +number_edit key='point_bounty' label='point bounty' icon='hashtag' min='0' direct=true
+                    +number_edit key='point_offer' label='point offer' icon='hashtag' min='0' direct=true
                     div
-                    .ui.small.header.thin publishing request holds points from your balance and dispenses them when request is marked complete
-                    .ui.inline.header status:
-                    if published
-                        .ui.green.inline.header published
-                    else
-                        .ui.orange.inline.header unpublished
-                    if published
-                        .ui.fluid.orange.basic.large.button.unpublish
-                            i.undo.icon
-                            |unpublish
-                    else
-                        .ui.fluid.teal.big.button.publish
-                            i.checkmark.icon
-                            |publish
+                    // .ui.small.header.thin publishing request holds points from your balance and dispenses them when request is marked complete
+                    // .ui.inline.header status:
+                    // if published
+                    //     .ui.green.inline.header published
+                    // else
+                    //     .ui.orange.inline.header unpublished
+                    a.ui.green.fluid.large.button(href="/request/#{_id}")
+                        i.checkmark.big.icon
+                        |save 
+                    // if published
+                    //     .ui.fluid.orange.basic.large.button.unpublish
+                    //         i.undo.icon
+                    //         |unpublish
+                    // else
+                    //     .ui.fluid.teal.big.button.publish
+                    //         i.checkmark.icon
+                    //         |publish
                             

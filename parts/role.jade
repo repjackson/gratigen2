@@ -178,10 +178,9 @@ template(name='role_edit')
                     +text_edit key='title' label='title' direct=true
                     +html_edit key='content' label='content' direct=true
                     +youtube_edit key='youtube_id' label='youtube id' direct=true
-                .eight.wide.column
-                    .ui.header required badges
-                    +badge_picker
-                    +task_picker
+                .eight.wide.column.scrolling
+                    +model_picker model='badge' icon='badge'
+                    +model_picker model='task' icon='taskss'
                     +model_picker model='event' icon='calendar'
                     
                     i.large.link.red.remove.icon.delete_role
@@ -212,6 +211,6 @@ template(name='role_edit')
                     +boolean_edit key='private' label='private' 
                     if private 
                         +multi_user_edit key='access_user_ids' label='user picker' direct=true
-                    ++model_picker model='group'
+                    +model_picker model='group'
                     +array_edit key='skills' label='skills' icon='wrench' direct=true
                     +model_picker model='skill' icon='wrench'

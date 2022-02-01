@@ -12,6 +12,11 @@ template(name='session_key_value_edit')
         |#{label}
 
 
+template(name='search_input')
+    .ui.input(class=search_input_class)
+        input.search_input(type='text' placeholder='search....')
+
+
 template(name='sort_direction_button')
 
 template(name='limit_menu')
@@ -512,8 +517,9 @@ template(name='print_this')
 
 template(name='model_picker')
     .ui.segment
-        .ui.header 
-            +i name=icon
+        .ui.inline.header 
+            if icon
+                +i name=icon
             | #{model} picker
         // if is_admin
         unless picked_model
@@ -534,15 +540,14 @@ template(name='model_picker')
                 |add #{model_search_value}
         
         if picked_model
-            .ui.header 
+            .ui.inline.grey.header 
                 // |#{picked_models.length}
-                |picked model
-            .ui.list
-                with picked_model
-                    .ui.item
-                        img.ui.avatar.image(src="{{c.url image_id width=300 height=300 gravity='face' crop='fill'}}")
-                        |#{title}
-                        i.remove.link.circular.red.icon.zoomer.remove_model
+                |picked #{model}:
+            with picked_model
+                .ui.inline.header
+                    img.ui.avatar.image(src="{{c.url image_id width=300 height=300 gravity='face' crop='fill'}}")
+                    |#{title}
+                    i.remove.link.circular.red.icon.zoomer.remove_model
                     
 
 

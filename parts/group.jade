@@ -23,7 +23,7 @@ template(name='groups')
             span.sorting_row
                 .ui.icon.input
                     i.search.icon
-                    input.tag_search(type='text' placeholder='search...')
+                    input.search(type='text' placeholder='search...')
                 |sort by
                 .ui.compact.small.menu
                     .ui.simple.dropdown.item
@@ -50,10 +50,10 @@ template(name='groups')
 template(name='group_card')
     .ui.card
         if image_id
-            a(href="/group/#{_id}")
+            a.fly_right(href="/group/#{_id}")
                 img.ui.image(src="{{c.url image_id width=400 height=400}}")
         .content
-            a.ui.header(href="/group/#{_id}")
+            a.ui.header.fly_right(href="/group/#{_id}")
                 |#{title}
             |#{member_ids.length} members
             .smallscroll
