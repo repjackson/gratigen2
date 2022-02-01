@@ -108,18 +108,15 @@ Meteor.publish 'all_users', ()->
         limit:20
     
     
-Meteor.publish 'model_docs', (model,limit)->
-    if limit
-        Docs.find {
-            model: model
-            # app:'nf'
-        }, 
+Meteor.publish 'model_docs', (model,search_input)->
+    match = {}
+    limit = 20
+    match.model = model
+    if search_input
+        match.title = {$regex:"#{search_input}", $options: 'i'}
+        Docs.find match, 
             limit:limit
-    else
-        Docs.find {
-            # app:'nf'
-            model: model
-        }, sort:_timestamp:-1
+            sort:_timestamp:-1
 Meteor.publish 'me', ->
     Meteor.users.find({_id:@userId},{
         # fields:

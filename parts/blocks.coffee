@@ -593,5 +593,15 @@ if Meteor.isClient
                 Session.set('search_value', search_value)
 
     Template.search_input.helpers
+        current_query: -> Session.get('search_value')
         search_input_class: ->
             if Session.get('search_value') then 'large active circular' else 'small'
+
+    Template.add_model_button.events        
+        'click .add_model_doc': ->
+            new_id = 
+                Docs.insert 
+                    model:@model
+                    published:false
+                    # purchased:false
+            Router.go "/#{@model}/#{new_id}/edit"

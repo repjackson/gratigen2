@@ -7,7 +7,7 @@ Router.route '/group/:doc_id', (->
 
 if Meteor.isClient
     Template.groups_small.onCreated ->
-        @autorun => Meteor.subscribe 'model_docs', 'group', 
+        @autorun => Meteor.subscribe 'model_docs', 'group', Session.get('search_value'), ->
     Template.groups_small.helpers
         group_docs: ->
             Docs.find   
@@ -99,15 +99,16 @@ if Meteor.isClient
             Session.get('view_delivery')
             Session.get('view_pickup')
             Session.get('view_open')
+        @autorun => Meteor.subscribe 'model_docs', 'group', Session.get('search_value'), ->
 
-        @autorun => @subscribe 'group_results',
-            picked_tags.array()
-            Session.get('limit')
-            Session.get('sort_key')
-            Session.get('sort_direction')
-            Session.get('view_delivery')
-            Session.get('view_pickup')
-            Session.get('view_open')
+        # @autorun => @subscribe 'group_results',
+        #     picked_tags.array()
+        #     Session.get('limit')
+        #     Session.get('sort_key')
+        #     Session.get('sort_direction')
+        #     Session.get('view_delivery')
+        #     Session.get('view_pickup')
+        #     Session.get('view_open')
 
 
     Template.groups.events

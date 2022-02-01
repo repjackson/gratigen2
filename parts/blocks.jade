@@ -14,7 +14,7 @@ template(name='session_key_value_edit')
 
 template(name='search_input')
     .ui.input(class=search_input_class)
-        input.search_input(type='text' placeholder='search....')
+        input.search_input(type='text' placeholder='search....' value=current_query)
 
 
 template(name='sort_direction_button')
@@ -483,7 +483,7 @@ template(name='view_user_button')
         |View
 
 template(name='add_model_button')
-    .ui.icon.button.add(title="add #{model}")
+    .ui.icon.button.add_model_doc(title="add #{model}")
         i.plus.icon
         |#{model}
 

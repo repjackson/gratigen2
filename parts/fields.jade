@@ -88,6 +88,8 @@ template(name='html_edit')
             textarea#sample.sun-editor-editable
                 |#{field_value}
     // +call_watson mode='html' key='content'
+    +call_watson mode='html' key=key
+
     //- div
     //- //- +tone mode='html'
     if watson

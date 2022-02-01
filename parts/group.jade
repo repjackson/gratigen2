@@ -21,9 +21,7 @@ template(name='groups')
                 button.ui.circular.compact.small.basic.button.tag_result(tabindex="0" class=result_class title=count) #{title}
                     //- small #{count}
             span.sorting_row
-                .ui.icon.input
-                    i.search.icon
-                    input.search(type='text' placeholder='search...')
+                +search_input
                 |sort by
                 .ui.compact.small.menu
                     .ui.simple.dropdown.item
