@@ -82,7 +82,7 @@ if Meteor.isClient
                 ticket_price: @point_price
         
     Template.events.onCreated ->
-        @autorun => Meteor.subscribe 'model_docs', 'event', ->
+        @autorun => Meteor.subscribe 'model_docs', 'event', Session.get('search_value'), ->
         
     Template.events.events
         'click .toggle_past': ->

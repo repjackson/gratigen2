@@ -591,6 +591,17 @@ if Meteor.isClient
             if search_value.length > 1
                 console.log 'searching', search_value
                 Session.set('search_value', search_value)
+            if e.which is 27
+        	    if Session.get('search_value')
+                    $('body').toast(
+                        showIcon: 'cancel'
+                        message: 'search cleared'
+                        # showProgress: 'bottom'
+                        class: 'success'
+                        displayTime: 'auto'
+                        position: 'top right'
+                    )
+        	        Session.set('search_value', null)
 
     Template.search_input.helpers
         current_query: -> Session.get('search_value')

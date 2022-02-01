@@ -13,8 +13,8 @@ template(name='events')
                     else
                         i.circle.outline.large.icon
                     |past
-                .spacer
-                .ui.stackable.cards
+                +search_input
+                .ui.stackable.centered.cards
                     each event_docs
                         +event_card
 

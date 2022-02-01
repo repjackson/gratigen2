@@ -114,9 +114,9 @@ Meteor.publish 'model_docs', (model,search_input)->
     match.model = model
     if search_input
         match.title = {$regex:"#{search_input}", $options: 'i'}
-        Docs.find match, 
-            limit:limit
-            sort:_timestamp:-1
+    Docs.find match, 
+        limit:limit
+        sort:_timestamp:-1
 Meteor.publish 'me', ->
     Meteor.users.find({_id:@userId},{
         # fields:

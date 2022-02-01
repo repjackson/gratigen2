@@ -369,3 +369,36 @@ template(name='user_edit_finance')
                             i.shield.icon
                             |admin 
                         +number_edit key='credit' label='edit credit' direct=true            
+                        
+                        
+                        
+template(name='user_edit_membership')
+    .ui.padded.stackable.grid 
+        .row 
+            .sixteen.wide.column
+                .ui.header
+                    i.id.badge.outline.icon
+                    | riverside membership
+        .row 
+            .sixteen.wide.column
+                .ui.big.green.button.pay_membership
+                    |pay $250 for membership
+                each transactions
+                    .ui.segment
+                        a.ui.header(href="/transaction/#{_id}/view") #{when}
+                        |#{amount} amount
+                        if charge 
+                            .ui.header charge
+                        |#{charge.result.id}
+                        .ui.header $#{charge.result.amount}
+                        if is_admin
+                            +remove_button
+                            +print_this
+                // +user_edit_finance
+                if is_admin
+                    .ui.header
+                        i.shield.icon
+                        |admin
+                    +array_edit key='levels' label='levels' direct=true
+                    +array_edit key='roles' label='roles' direct=true
+                        
